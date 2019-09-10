@@ -1,0 +1,51 @@
+<div id="BIDINGAREA" style="z-index:500" >	
+<div class="BIDINGAREA_L1">
+	<div class="BIDINGAREA_L1_TP">
+		<div id="Number_1">
+			<div ng-class="cssClass[cssClassIndex[0]]" ng-click="!isEnabled[0] ||selectSuitNum(0)">I</div>
+		</div>
+		<div class="BIDINGAREA_L1_BTM_2">
+			<div id="Number_2">
+				<div ng-class="cssClass[cssClassIndex[1]]" ng-click="!isEnabled[1] || selectSuitNum(1)">2</div>
+			</div>
+			<div id="Number_3">
+				<div ng-class="cssClass[cssClassIndex[2]]" ng-click="!isEnabled[2] || selectSuitNum(2)">3</div>
+			</div>
+			<div id="Number_4">
+				<div ng-class="cssClass[cssClassIndex[3]]"  ng-click="!isEnabled[3] || selectSuitNum(3)">4</div>
+			</div>
+			<div id="Number_5">
+				<div ng-class="cssClass[cssClassIndex[4]]"  ng-click="!isEnabled[4] || selectSuitNum(4)">5</div>
+			</div>
+			<div id="Number_6">
+				<div ng-class="cssClass[cssClassIndex[5]]" ng-click="!isEnabled[5] || selectSuitNum(5)">6</div>
+			</div>
+		</div>
+		<div id="Number_7">
+			<div ng-class="cssClass[cssClassIndex[6]]" ng-click="!isEnabled[6] || selectSuitNum(6)">7</div>
+		</div>							
+	</div>
+	<div class="BIDINGAREA_L1_BTM">
+		<div id="PASS"><div ng-class="cssClass[cssClassDblRdblPass[0]]" ng-click="dblRdblPassClick(0)">pass</div></div>
+		<div class="BIDINGAREA_L1_BTM_2">
+			<div id="BCARD_1"  ng-click="selectSuit(0)"><div class="BTM_cardW"><img ng-src="assets/images/misc/{{bidSuitStatus[0]==0 ?'C_G':(bidSuitStatus[0]==1?'C':'C_Y')}}.svg"  ></div></div>
+			<div id="BCARD_2"  ng-click="selectSuit(1)"><div class="BTM_cardW"><img ng-src="assets/images/misc/{{bidSuitStatus[1]==0 ?'D_G':(bidSuitStatus[1]==1?'D':'D_Y')}}.svg"   ></div></div>
+			<div id="BCARD_3"  ng-click="selectSuit(2)"><div class="BTM_cardW"><img ng-src="assets/images/misc/{{bidSuitStatus[2]==0 ?'H_G':(bidSuitStatus[2]==1?'H':'H_Y')}}.svg"   ></div></div>
+			<div id="BCARD_4"  ng-click="selectSuit(3)"><div class="BTM_cardW"><img ng-src="assets/images/misc/{{bidSuitStatus[3]==0 ?'S_G':(bidSuitStatus[3]==1?'S':'S_Y')}}.svg"   ></div></div>
+			<div id="BCARD_5"  ng-click="selectSuit(4)"><div ng-class="cssClass[bidSuitStatus[4]]"  >NT</div></div>
+
+
+			<!-- <div id="BCARD_1"><div ng-class="cssClassSuit[cssClassIndexSuit[0]]"    ng-click="selectSuit(0)">&#x2663;</div></div> 			
+			<div id="BCARD_2"><div ng-class="cssClassSuit[cssClassIndexSuit[1]]"    ng-click="selectSuit(1)">&#x2666;</div></div>
+			<div id="BCARD_3"><div ng-class="cssClassSuit[cssClassIndexSuit[2]]"    ng-click="selectSuit(2)">&#x2665;</div></div>
+			<div id="BCARD_4"><div ng-class="cssClassSuit[cssClassIndexSuit[3]]"    ng-click="selectSuit(3)">&#x2660;</div></div>
+			<div id="BCARD_5"><div ng-class="cssClass[cssClassIndexSuit[4]]"        ng-click="selectSuit('4')">NT</div></div>-->
+		</div>
+		<div id="IDBID" ng-style="{'background-color' : isBidSelected?'#FF8E00':''}"  ng-click="bidClick()" ><div ng-class="isBidSelected? 'BID_TX_ChangeW' : 'BID_TX_Change2'" >BID</div></div>
+	</div>
+</div>
+<div class="BIDINGAREA_R1">
+	<div id="BIDINGAREA_R1_TP"  ng-click="dblRdblPassClick(1)" ><div ng-class="cssClass[cssClassDblRdblPass[1]]" >double</div></div>
+	<div id="BIDINGAREA_R1_BTM"  ng-click="dblRdblPassClick(2)" ><div ng-class="cssClass[cssClassDblRdblPass[2]]" >redouble</div></div>
+</div>
+</div>

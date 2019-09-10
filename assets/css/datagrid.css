@@ -1,0 +1,191 @@
+@font-face {
+    font-family: 'DejaVu Sans';
+    src:url('../font/DejaVuSans-webfont.eot');
+    src: url('../font/DejaVuSans-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/DejaVuSans.ttf') format('truetype'),
+         url('../font/DejaVuSans-webfont.svg#DejaVuSansBook') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+	font-family: 'Roboto';  
+	src:url('../font/Roboto-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+} 
+
+@font-face {
+	font-family: 'Roboto Bold';  
+	src:url('../font/Roboto-Bold.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+} 
+
+@font-face {
+	font-family: 'Roboto Italic';  
+	src:url('../font/Roboto-Italic.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+ @font-face {
+    font-family: 'Roboto Medium';
+	src: url('../font/Roboto-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+.simple-data-grid {
+    border-collapse: collapse;
+		
+}
+table{
+width:84.68vw;
+margin-top:5.5vh;
+margin-left:5vw;
+border:solid 0px red;
+}
+.simple-data-grid thead th {
+    padding: 2vh 0;
+	border-bottom: solid 1px #ff8e00;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: top;
+	font-size: 2.77vh;
+	font-family: 'Roboto';
+	
+}
+.simple-data-grid thead th a {
+    color: #ff8e00;
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: top;
+	font-family: 'Roboto';
+}
+.simple-data-grid thead th a .sort {
+    margin-left: 1vh;
+    font-size: 2.77vh;
+	font-family: 'Roboto';
+}
+.simple-data-grid thead tr.sorted:hover {
+    cursor: pointer;
+}
+.simple-data-grid thead th:last-child {
+    border-right: none;
+}
+.simple-data-grid tbody td {
+	padding: 2.2vh 0;
+	color:#b2b2b2;
+	font-size: 2.77vh;
+	font-family: 'Roboto';
+}
+
+.simple-data-grid tbody tr {
+    border-bottom: solid 1px #ff8e00;
+}
+
+.simple-data-grid tfoot td {
+    padding: 0.5em;
+	font-size: 2.77vh;
+	font-family: 'Roboto';
+}
+
+.simple-data-grid tfoot .pagination {
+    /*background: #000;*/
+    text-align: center;
+}
+
+.simple-data-grid tfoot .pagination ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    float: none;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.simple-data-grid tfoot .pagination li {
+    float: left;
+}
+
+.simple-data-grid tfoot .pagination a {
+    padding: 0 0.5em;
+}
+
+.simple-data-grid tfoot .pagination li.disabled a,
+.simple-data-grid tfoot .pagination li.disabled a:hover,
+.simple-data-grid tfoot .pagination li.active a,
+.simple-data-grid tfoot .pagination li.active a:hover {
+    cursor: default;
+    text-decoration: none;
+	color:#b2b2b2;
+}
+.simple-data-grid tfoot .pagination a{
+color:#ff8e00;
+text-decoration:none;
+font-family: 'Roboto';
+}
+
+tbody .privacy_lock{
+    
+width: 2.222vh;
+height: 3.055vh;
+background: url("../images/lock_white.svg") center center no-repeat;
+background-size: 2.222vh 3.055vh;
+}
+tbody .privacy_unlock{
+    
+width: 2.222vh;
+height: 3.055vh;
+background: url("../images/lock_ofwhite.svg") center center no-repeat;
+background-size: 2.222vh 3.055vh;
+}
+
+
+tbody .history_lock{
+    
+width: 2.222vh;
+height: 3.055vh;
+background: url("../images/lock_white.svg") center center no-repeat;
+background-size: 2.222vh 3.055vh;
+}
+
+tbody .history_unlock{
+    width: 2.222vh;
+height: 3.055vh;
+background: url("../images/lock_ofwhite.svg") center center no-repeat;
+background-size: 2.222vh 3.055vh;
+}
+
+
+
+thead .sorted .column_history, thead .sorted .column_kibitzer {
+text-align:center;
+}
+
+.column_time{
+width:12%;
+}
+.column_{
+width:3%;
+}
+.column_host{
+width:42%;
+}
+.column_players{
+width:8%;
+padding-left: 3vh;
+}
+.column_history{
+text-align:center;
+width:27%;
+}
+.column_kibitzer{
+text-align:center;
+width:8%;
+}
+
+
+.privacy_unlock{
+   width:3%; 
+}

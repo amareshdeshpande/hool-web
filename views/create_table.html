@@ -1,0 +1,55 @@
+
+	 <div id="createTablebody" ng-controller="createTableCtrl">
+	 
+	 	<div id="dvbody2" >
+				<div class="PageThreeTotalArea" style="opacity: 0.4">
+					<div class="PageThreeTotal">
+						<div class="PageThreeTime">
+							<div class="TitleTxt"><div class="TitleTextNamecl">Time</div></div>	
+							<div class="TitleBXarea">
+								<div id="Time_Count_Neg"  >-</div>	<!--ng-click="table.turnTime>15 ? table.turnTime=table.turnTime-5 :15"-->
+								<div id="Time_Count_Sec"><div class="Time_Count_SecCls"><!--{{table.turnTime}}--> ∞ sec</div></div>
+								<div id="Time_Count_Pos"  >+</div><!-- ng-click="table.turnTime=table.turnTime+5" -->
+							</div>	
+						</div>
+						<div class="PageThreeHistory">
+							<div class="TitleTxt"><div class="TitleTextNamecl">Play History</div></div>	
+							<div class="TitleBXarea">
+								<div id="playhistoryon" ><!-- ng-click="table.history=1"-->
+									<div  ng-class="table.history==1?'ActiveClor':'DactiveClor'">on</div></div>
+								<div id="playhistoryoff" ><!-- ng-click="table.history=0"-->
+									<div  ng-class="table.history==0?'ActiveClor':'DactiveClor'">off</div></div>
+							</div>	
+						</div>
+						<div class="PageThreePrivicy">
+							<div class="TitleTxt"><div class="TitleTextNamecl">Table</div></div>	
+							<div class="TitleBXarea">
+								<div id="tableon" ><!-- ng-click="table.privacy=0" -->
+									<div ng-class="table.privacy==0?'ActiveClor':'DactiveClor'" >open</div>
+								</div>
+								<div id="tableoff" ><!-- ng-click="table.privacy=1"-->
+									<div ng-class="table.privacy==1?'ActiveClor':'DactiveClor'">private</div>
+								</div>	
+							</div>	
+						</div>
+						<div class="PageThreeKibitzer">
+							<div class="TitleTxt"><div class="TitleTextNamecl">Kibitzer</div></div>	
+							<div class="TitleBXarea">
+								<div id="kibitzeron" ><!--ng-click="table.kibitzer=1" -->
+									<div ng-class="table.kibitzer==0?'ActiveClor':'DactiveClor'">on</div>
+								</div>
+								<div id="kibitzeroff" ><!--ng-click="table.kibitzer=0" -->
+									<div ng-class="table.kibitzer==1?'ActiveClor':'DactiveClor'">off</div>
+								</div>	
+							</div>	
+						</div>
+					</div>
+				</div>		
+                
+				 <div class="plays_btn" ng-click="createTable()">
+					<img class="lplay_btn" src="assets/images/HOOLAsset5mdpi.svg">
+				 </div>   
+			</div>
+	 
+		
+	 </div>

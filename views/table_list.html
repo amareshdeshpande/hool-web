@@ -1,0 +1,55 @@
+
+	 <div id="tableList">
+	 
+	 	<div id="dvbody2">
+
+	  <table ng-table="tableParams" id="grid"  class="table table-bordered" >
+        <thead>
+            <tr>
+                <th rowspan="2">ID</th>
+                <th colspan="2">primary</th>
+                <th colspan="2">secondary</th>
+            </tr>
+            <tr>
+                <th>NAME</th>
+                <th>AGE</th>
+                <th>NAME</th>
+                <th>AGE</th>
+            </tr>
+        <thead>
+        <tbody>
+            <tr ng-repeat="person in $data">
+                <td data-title="'id'" >
+                    {{person.id}}
+                </td>
+                <td data-title="'Name'">
+                    {{person.primary.name}}
+                </td>
+                <td data-title="'Age'">
+                    {{person.primary.age}}
+                </td>
+                <td data-title="'Name'">
+                    {{person.secondary.name}}
+                </td>
+                <td data-title="'Age'">
+                    {{person.secondary.age}}
+                </td>
+            </tr>
+        </tbody>
+        </tbody>
+    </table>
+
+	 	</div>
+         <script>
+            $(function() {
+                $.mockjax({
+                    url: '*',
+                    response: ExampleData.handleMockjaxResponse
+                });
+
+                $('#grid').simple_datagrid({
+                    //order_by: true
+                });
+            });            
+        </script>		
+	 </div>	

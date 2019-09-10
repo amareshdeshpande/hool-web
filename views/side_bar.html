@@ -1,0 +1,34 @@
+<div id="leftal"  ng-controller="sideBarCtrl  as sb">  
+      <div id="Left_Icon_One"  ng-click="menu()">
+          <img id="imgX"  ng-src="{{menuIcon}}" >        
+      </div>
+      
+      <div id="Left_Icon_Two" ng-show="sidebar[0]"   ng-click="backBtnCliked()">
+        <img src="assets/images/HOOLAsset10mdpi.svg">
+      </div>
+
+      <div  class="tackback" ng-show="sidebar[2]&&isTakeBackEnabled" ng-click="TakeBack()">
+        <img id="imgTakeBack"  style="opacity:1"  src="assets/images/TakeBack.svg" alt="Takeback">   <!--ng-src="{{TakeBackIcon}}"-->
+      </div>
+
+      <div class="history" ng-show="sidebar[1]&&isHistoryEnabled"  ng-click="showHistory()">
+        <img style="opacity:1" src="assets/images/{{historyIcon}}.svg" alt="history"><!--HOOLAsset14mdpi-->
+      </div>
+     
+      <div  class="chat {{blinkClass}}" ng-show="sidebar[3]" ng-click="showChat()"> <!--ng-click="showChat()"-->
+        <img id="imgchatting"  style="opacity:1"  src="assets/images/{{chatIcon}}.svg" alt="chatting">
+      </div>
+
+
+      <!--Logout block-->
+      <div id="Left_Icon_Five"  ng-show="menuItems[0]" ng-click="logoutOrBack()">
+        <img  ng-src="{{logoutOrBackIcon}}" alt="Logout & Back">
+      </div>         
+      
+      <div id="Left_Icon_Six"  ng-show="menuItems[1]">
+        <img  style="opacity:0.2" src="assets/images/HOOLAsset16mdpi.svg">
+      </div>
+      <div id="Left_Icon_Seven"  ng-show="menuItems[2]"> <!--ng-click="settings()"-->
+        <img style="opacity:0.2" id="imgsetting" ng-src="{{settingIcon}}" >
+      </div>        
+</div> 

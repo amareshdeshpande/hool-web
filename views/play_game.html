@@ -1,0 +1,176 @@
+
+    <div id="dvbody" ng-controller="playGameCtrl">
+			 
+				<div class="Lft1">
+					<div class="LeftOneArea">
+						<div class="BID_Rgt_ADD" style="display:none">
+							<div class="ADD_AICON_L"><img src="assets/images/HOOLAsset8mdpi.svg"></div>
+						</div>
+						
+						<div class="BID_TopCard_New_L">
+							<div class="WBDR" id="BID_LEFT_L">
+								<!--<div class="BID_body_1"><div class="BID_TX_1">pattern</div></div>
+								<div class="BID_body_2"><div class="BID_TX_2">4,4,3,2</div></div>-->
+							</div>
+							<div class="WBDR" id="BID_LEFT_M"></div>
+							<div class="WBDR" id="BID_LEFT_R">
+								<!--<div class="BID_body_1"><div class="BID_TX_1">diamonds</div></div>
+								<div class="BID_body_2"><div class="BID_TX_2">4</div></div>-->
+							</div>
+						</div>
+					</div>
+					<div class="L_2_Text"><div class="inner"><div class="rotateL">{{leftMember.userName}}</div></div></div>
+				</div>	
+				
+				<div class="Mdl">
+					<div class="NorthPlayArea">
+						<div class="BID_TOP_ADD" style="display:none">
+							<img src="assets/images/HOOLAsset8mdpi.svg">
+						</div>
+						<div class="BID_TopCard">
+							<div class="WBDR" id="BID_TOP_L">
+								<!--<div class="BID_body_1"><div class="BID_TX_1">pattern</div></div>
+								<div class="BID_body_2"><div class="BID_TX_2">4,4,3,2</div></div>-->
+							</div>
+							<div class="WBDR" id="BID_TOP_M"></div>
+							<div class="WBDR" id="BID_TOP_R">
+								<!--<div class="BID_body_1"><div class="BID_TX_1">diamonds</div></div>
+								<div class="BID_body_2"><div class="BID_TX_2">4</div></div>-->
+							</div>
+						</div>
+					</div>
+					<div class="pname"><div class="inner"><div class="Tx_1">{{topMember.userName}}</div></div></div>
+					<div class="PlayArea">
+						<div class="Pointer">
+							<div class="P_Tx_EW"><div class="inner1"><div class="Tx_1">{{leftMember.pole}}</div></div></div>
+							<div class="P_Tx_MDB">
+								<div class="P_Tx_N"><div class="inner1"><div class="Tx_1">{{topMember.pole}}</div></div></div>
+								<div class="Pointer_MD"><img src="assets/images/HOOLAsset11mdpi.svg"></div>
+								<div class="P_Tx_N"><div class="inner1"><div class="Tx_1">{{bottomMember.pole}}</div></div></div>
+							</div>
+							<div class="P_Tx_EW"><div class="inner1"><div class="Tx_1">{{rightMember.pole}}</div></div></div>
+						</div>
+					</div>
+					<div class="pname"><div class="inner"><div class="Tx_1">{{bottomMember.userName}}</div></div></div>
+					<div class="SauthPlayArea">
+						<div class="BID_Bottom_ADD" style="display:none">
+							<img src="assets/images/HOOLAsset8mdpi.svg">
+						</div>
+						<div class="TotalCArds">
+						    <div ng-repeat="item in data">
+						        <div class="S_card" id="{{item.id}}" ng-style="{'margin-left':item.mrgn}">
+						          
+						        </div>
+						    </div>
+<!-- 
+							<div class="S_card" id="s1"></div>
+							<div class="S_card" id="s2"></div>
+							<div class="S_card" id="s3"></div>
+							<div class="S_card" id="s4"></div>
+							<div class="S_card" id="s5"></div>
+							<div class="S_card" id="s6"></div>
+							<div class="S_card" id="s7"></div>
+							<div class="S_card" id="s8"></div>
+							<div class="S_card" id="s9"></div>
+							<div class="S_card" id="s10"></div>
+							<div class="S_card" id="s11"></div>
+							<div class="S_card" id="s12"></div>
+							<div class="S_card" id="s13"></div> -->
+						</div>	
+					</div>
+				</div>
+				
+				
+				<div class="Rgt1">
+					<div class="R_2">
+						<div class="BID_Rgt_ADD" style="display:none">
+							<div class="ADD_AICON_R"><img src="assets/images/HOOLAsset8mdpi.svg"></div>
+						</div>
+						<div class="BID_TopCard_New_R">
+							<div class="WBDR" id="BID_RIGHT_L">
+								<!--<div class="BID_body_1"><div class="BID_TX_1">pattern</div></div>
+								<div class="BID_body_2"><div class="BID_TX_2">4,4,3,2</div></div>-->
+							</div>
+							<div class="WBDR" id="BID_RIGHT_M"></div>
+							<div class="WBDR" id="BID_RIGHT_R">	</div>
+						</div>
+					</div>
+					<div class="R_2_Text"><div class="inner"><div class="rotateR">{{rightMember.userName}}</div></div></div>
+				</div>
+				
+				<!---Extra Component----->
+
+			<div id="FIVECARDS"  ng-show="fiveCards" >					
+				<div class="CARDWITHBG" id="OFTION_1"  ng-style="{'opacity' : fiveCardArr[0]? 1 : 0.5}" ng-click="fiveCardsClick(0)">
+						<div class="FIVECARDS_1"><div class="BID_TX_1">HCP</div></div>
+					</div>
+					<div class="CARDWITHBG" id="OFTION_2" ng-style="{'opacity' : fiveCardArr[1] == true ? 1 : 0.5}" ng-click="fiveCardsClick(1)">
+						<div class="FIVECARDS_1"><div class="BID_TX_1">pattern</div></div>
+					</div>
+					<div class="CARDWITHBG" id="OFTION_3"  ng-style="{'opacity' : fiveCardArr[2] == true ? 1 : 0.5}" ng-click="fiveCardsClick(2)">
+						<div class="FIVECARDS_DB1"><div class="BID_TX_1">number of</div></div>
+						<div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml"><span>&#x2660;/&#x2665;/&#x2666;/&#x2663;</span></div></div>
+					</div>
+					<div class="CARDWITHBG" id="OFTION_4" ng-style="{'opacity' : fiveCardArr[3] == true ? 1 : 0.5}"  ng-click="fiveCardsClick(3)">
+						<div class="FIVECARDS_1"><div class="BID_TX_1">card</div></div>
+					</div>
+					<div class="CARDWITHBG" id="OFTION_5"  ng-style="{'opacity' : fiveCardArr[4] == true ? 1 : 0.5}" ng-click="fiveCardsClick(4)">
+						<div class="FIVECARDS_1"><div class="BID_TX_1">aces+kings</div></div>
+					</div>
+
+				  
+				</div>
+				
+				<div id="THREECARDS">
+					<div   ng-class="'CARDWITHBDR'" id="BID_1" ng-click="threeCard(1)">						
+						<!-- <ng-include src="threeCardPage"> -->
+						
+					</div>
+					<div  class="CARDWITHBDR" id="BID_2"  ng-click="threeCard(2)">
+						
+					</div>
+					<div class="CARDWITHBDR"  id="BID_3"  ng-click="threeCard(3)">
+					
+						
+					</div>
+				</div>
+				
+			    <div id="BIDINGAREA" style="display:none">
+					<div class="BIDINGAREA_L1">
+						<div class="BIDINGAREA_L1_TP">
+							<div id="Number_1"><div class="BID_TX_1">1</div></div>
+							<div class="BIDINGAREA_L1_BTM_2">
+								<div id="Number_2"><div class="BID_TX_1">2</div></div>
+								<div id="Number_3"><div class="BID_TX_1">3</div></div>
+								<div id="Number_4"><div class="BID_TX_1">4</div></div>
+								<div id="Number_5"><div class="BID_TX_Change1">5</div></div>
+								<div id="Number_6"><div class="BID_TX_1">6</div></div>
+							</div>
+							<div id="Number_7"><div class="BID_TX_1">7</div></div>
+						</div>
+						<div class="BIDINGAREA_L1_BTM">
+							<div id="PASS"><div class="BID_TX_1">pass</div></div>
+							<div class="BIDINGAREA_L1_BTM_2">
+								<div id="BCARD_1"><div class="BTM_cardW">&#x2663;</div></div>
+								<div id="BCARD_2"><div class="BTM_cardW">&#x2666;</div></div>
+								<div id="BCARD_3"><div class="BTM_cardY">&#x2665;</div></div>
+								<div id="BCARD_4"><div class="BTM_cardW">&#x2660;</div></div>
+								<div id="BCARD_5"><div class="BID_TX_1">NT</div></div>
+							</div>
+							<div id="IDBID"><div class="BID_TX_Change1">BID</div></div>
+						</div>
+					</div>
+					<div class="BIDINGAREA_R1">
+						<div id="BIDINGAREA_R1_TP"><div class="BID_TX_1">double</div></div>
+						<div id="BIDINGAREA_R1_BTM"><div class="BID_TX_Change2">redouble</div></div>
+					</div>
+				</div>	
+							
+				
+				 <div class="TpntArea"  ng-show="tpntArea"></div>	
+				
+				
+			<!---Page Three Closed----->
+</div>
+		
+			

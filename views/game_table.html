@@ -1,0 +1,328 @@
+<div id="dvbody" ng-controller="gameTableCtrl" ng-init="init()">
+			 
+	<div class="Lft1">
+		<div class="LeftOneArea">
+			<div class="BID_Rgt_ADD" ng-click="joinTableAsPlayer(3)"  ng-show="isJoinTable==0">
+				<div class="ADD_AICON_L"><img ng-src="{{leftMember.userImage}}"></div>
+			</div>
+			
+			<div class="BID_TopCard_New_L" ng-if="!leftMember.isDummy"  ng-show="isJoinTable==1||isJoinTable==2">
+				<div  id="BID_LEFT_L" ng-class="{'borderGlow':activePole[leftMember.pole]&&isShareActive&&!leftInfo[0],'WBG infoBG':leftInfo[0],'WBDR':!leftInfo[0]}"></div>				
+				<div  id="BID_LEFT_R" ng-class="{'borderGlow':activePole[leftMember.pole]&&isShareActive&&!leftInfo[1],'WBG infoBG':leftInfo[1],'WBDR':!leftInfo[1]}" ></div>				
+			</div>
+
+			<div class="TotalCArdsW" ng-style="{'width':((leftMember.cards.length-1)*7.0833+15)+'vh'}"  ng-if="leftMember.isDummy">
+					 <div ng-repeat="item in leftMember.cards" class="w_card" id="{{item}}" ng-style="{'margin-left': $index*7.0833+'vh'}" >
+						<img height="100%" width="100%" ng-src="assets/images/deck/{{item}}.svg">
+					</div>
+			</div>
+		</div>
+		<div class="L_2_Text"><div class="inner">			
+			<div ng-show="!leftMember.bidStatus" class="rotateL"  ng-style="{'color' : activePole[leftMember.pole]?'#FF8E00':'#B2B2B2'}" >
+				<span ng-if="leftMember.isHost"><img ng-src="{{activePole[leftMember.pole]?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
+				  {{isJoinTable>0?'('+leftMember.poleName+')':''}} {{leftMember.userName | capitalize}}
+			</div>
+			<div ng-show="leftMember.bidStatus" class="rotateL"  ng-style="{'color' : leftMember.highestBid?'#FF8E00':'#B2B2B2'}" >
+				<span ng-if="leftMember.isHost"><img ng-src="{{leftMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
+				  {{isJoinTable>0?'('+leftMember.poleName+')':''}}  {{leftMember.userName | capitalize}} {{'['+leftMember.bid.num+''|replace:'1':'I'}}
+				 <span ng-if="(leftMember.bid.suit+'').length>1" ng-style="{'color' : leftMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{leftMember.bid.suit}}</span>
+				 <img ng-if="(leftMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{leftMember.highestBid ? leftMember.bid.suit+'_Y' : leftMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}
+			</div>
+		</div></div>
+	</div>	
+	
+	<div class="Mdl">
+		<div class="NorthPlayArea">
+			<div class="BID_TOP_ADD" ng-click="joinTableAsPlayer(0)"  ng-show="isJoinTable==0">
+					<img  ng-src="{{topMember.userImage}}">
+			</div>
+			<div class="BID_TopCard"   ng-if="!(topMember.isDummy ||bottomMember.isDummy)"  ng-show="isJoinTable==1 || isJoinTable==2">
+				<div  id="BID_TOP_L" ng-class="{'borderGlow':activePole[topMember.pole]&&isShareActive&&!topInfo[0],'WBG infoBG':topInfo[0],'WBDR':!topInfo[0]}"></div>				
+				<div  id="BID_TOP_R" ng-class="{'borderGlow':activePole[topMember.pole]&&isShareActive&&!topInfo[1],'WBG infoBG':topInfo[1],'WBDR':!topInfo[1]}">	</div>
+			</div>
+
+			<!--show dummy and declared card to each other--  9.5833 for 130vh-->
+			<div class="TotalCArdsN" ng-if="topMember.isDummy" ng-style="{'width':((topMember.cards.length-1)*7.0833+15)+'vh'}" >
+				<div ng-repeat="item in topMember.cards" class="n_card" id="{{item}}" ng-click="playCard(item+dummy.pole,'dummy')" ng-style="{'margin-left': $index*7.0833+'vh','z-index':(13-$index)}">
+						<img height="100%" width="100%" ng-src="assets/images/deck/{{item}}.svg">
+				</div>
+			</div>
+
+			<div class="TotalCArdsN"  ng-if="bottomMember.isDummy" ng-style="{'width':((topMember.cards.length-1)*7.0833+15)+'vh'}" ng-show="isJoinTable==1 || isJoinTable==2" >
+				<div ng-repeat="item in topMember.cards" class="n_card" id="{{item}}"  ng-style="{'margin-left': $index*7.0833+'vh', 'z-index':(13-$index)}" >
+						<img height="100%" width="100%" ng-src="assets/images/deck/{{item}}.svg">
+				</div>
+			</div>
+			<!-- End-->
+			
+
+		</div>
+		<div class="pname">
+			<div class="inner">
+				<div ng-show="!topMember.bidStatus" class="Tx_2"   ng-style="{'color' : activePole[topMember.pole]?'#FF8E00':'#B2B2B2'}">
+					<span ng-if="topMember.isHost"><img ng-src="{{activePole[topMember.pole]?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
+					  {{isJoinTable>0?'('+topMember.poleName+')':''}} {{topMember.userName | capitalize}}</div>
+				
+				<div ng-show="topMember.bidStatus" class="Tx_2" ng-style="{'color' : topMember.highestBid?'#FF8E00':'#B2B2B2'}">
+					<span ng-if="topMember.isHost"><img ng-src="{{topMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
+					{{isJoinTable>0?'('+topMember.poleName+')':''}} {{topMember.userName | capitalize}}  {{'['+topMember.bid.num+''|replace:'1':'I' }}
+					 <span ng-if="(topMember.bid.suit+'').length>1" ng-style="{'color' : topMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{topMember.bid.suit}}</span>
+					 <img ng-if="(topMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{topMember.highestBid ? topMember.bid.suit+'_Y' : topMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}	
+				</div>
+			</div>
+		</div>
+
+		<div class="PlayArea" >
+
+			<div class="PlayCardAea" ng-show="isPlayStart">
+				<div id="PlayCardTop" ng-class="isPoleActiveToPlay[topMember.pole] ? 'borderGlow' : 'playCardBg'">
+					<img ng-show="playedCard[topMember.pole]"  ng-class="cardTrickArr[topMember.pole]?'':'cardImageOpacity'" ng-src="{{playedCard[topMember.pole]}}">
+				</div>
+				<div id="PlayCardBottom" ng-class="isPoleActiveToPlay[bottomMember.pole] ? 'borderGlow' : 'playCardBg'">
+					<img ng-show="playedCard[bottomMember.pole]" ng-class="cardTrickArr[bottomMember.pole]?'':'cardImageOpacity'" ng-src="{{playedCard[bottomMember.pole]}}">
+				</div>
+				<div id="PlayCardLeft" ng-class="isPoleActiveToPlay[leftMember.pole] ? 'borderGlow' : 'playCardBg'">
+					<img ng-show="playedCard[leftMember.pole]" ng-class="cardTrickArr[leftMember.pole]?'':'cardImageOpacity'" ng-src="{{playedCard[leftMember.pole]}}">
+				</div>
+				<div id="PlayCardRight" ng-class="isPoleActiveToPlay[rightMember.pole] ? 'borderGlow' : 'playCardBg'">
+					<img ng-show="playedCard[rightMember.pole]" ng-class="cardTrickArr[rightMember.pole]?'':'cardImageOpacity'" ng-src="{{playedCard[rightMember.pole]}}">
+				</div>
+			</div>
+			
+			
+			<div class="wrapper" ng-show="showScore">
+						<div class="box a"></div>
+						<div class="box b">N - S</div>
+						<div class="box c">E - W</div>
+						<div class="box d">Deal<br/>Score</div>
+						<div class="box e">{{NSScore}}</div>
+						<div class="box f">{{EWScore}}</div>
+						<div class="box g">Table<br/>Score</div>
+						<div class="box h">{{TotalNSPoint}}</div>
+						<div class="box i">{{TotalEWPoint}}</div>
+			</div>
+			<div class="Pointer">
+				<div class="P_Tx_EW"><div class="inner1"><div class="Tx_1 "><span  ng-if="isJoinTable==0" ng-style="{'color' : activePole[leftMember.pole]?'#FF8E00':'#B2B2B2'}">{{leftMember.poleName}}</span>
+					<img ng-if="isJoinTable>0" class="pointer_left" ng-src="{{activePole[leftMember.pole]?'assets/images/misc/Pointer_active.svg':'assets/images/misc/Pointer_normal.svg'}}"/></div></div></div>				
+				<div class="P_Tx_MDB">
+					<div class="P_Tx_N"><div class="inner1"><div class="Tx_1" ><span  ng-if="isJoinTable==0" ng-style="{'color' : activePole[topMember.pole]?'#FF8E00':'#B2B2B2'}">{{topMember.poleName}}</span>
+					<img ng-if="isJoinTable>0" class="pointer_up" ng-src="{{activePole[topMember.pole]?'assets/images/misc/Pointer_active.svg':'assets/images/misc/Pointer_normal.svg'}}"/></div></div></div>
+					<!-- <div class="Pointer_MD"><img src="assets/images/HOOLAsset11mdpi.svg"></div>	<div class="Pointer_MD"><img src="assets/images/HOOLAsset11mdpi.svg"></div> -->
+					<div class="Pointer_MD"><img src="assets/images/misc/Circ01.svg"></div>
+					<div class="P_Tx_N"><div class="inner1"><div class="Tx_1"><span  ng-if="isJoinTable==0" ng-style="{'color' : activePole[bottomMember.pole]?'#FF8E00':'#B2B2B2'}">{{bottomMember.poleName}}</span>
+						<img ng-if="isJoinTable>0" class="pointer_dwn" ng-src="{{activePole[bottomMember.pole]?'assets/images/misc/Pointer_active.svg':'assets/images/misc/Pointer_normal.svg'}}"/></div></div></div>
+				</div>
+				<div class="P_Tx_EW"><div class="inner1"><div class="Tx_1"><span  ng-if="isJoinTable==0" ng-style="{'color' : activePole[rightMember.pole]?'#FF8E00':'#B2B2B2'}">{{rightMember.poleName}}</span>
+					<img ng-if="isJoinTable>0" class="pointer_right" ng-src="{{activePole[rightMember.pole]?'assets/images/misc/Pointer_active.svg':'assets/images/misc/Pointer_normal.svg'}}"/></div></div></div>
+			</div>
+		</div>
+
+
+		<div class="pname"><div class="inner">
+			<div ng-show="!bottomMember.bidStatus" class="Tx_1" ng-style="{'color' : activePole[bottomMember.pole]?'#FF8E00':'#B2B2B2'}" >
+				<span ng-if="bottomMember.isHost"><img ng-src="{{activePole[bottomMember.pole]?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
+				  {{isJoinTable>0?'('+bottomMember.poleName+')':''}} {{bottomMember.userName | capitalize}}</div>
+			<div ng-show="bottomMember.bidStatus" class="Tx_1"  ng-style="{'color' : bottomMember.highestBid?'#FF8E00':'#B2B2B2'}" >
+				<span ng-if="bottomMember.isHost"><img ng-src="{{bottomMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
+				  {{isJoinTable>0?'('+bottomMember.poleName+')':''}} {{bottomMember.userName | capitalize}}  {{'['+bottomMember.bid.num+''|replace:'1':'I'}}
+				 <span ng-if="(bottomMember.bid.suit+'').length>1" ng-style="{'color' : bottomMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{bottomMember.bid.suit}}</span>
+				 <img  ng-if="(bottomMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{bottomMember.highestBid ? bottomMember.bid.suit+'_Y' : bottomMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}	
+			</div>
+		</div></div>
+		
+	</div>
+	<div class="SauthPlayArea">
+		<div class="BID_Bottom_ADD" ng-click="joinTableAsPlayer(2)"  ng-show="isJoinTable==0">
+			<img ng-src="{{bottomMember.userImage}}">					
+		</div>
+		
+		<div class="TotalCArds" ng-style="{'width':((bottomMember.cards.length-1)*7.0833+15)+'vh'}" ng-show="isJoinTable==1||isJoinTable==2">												
+			<div ng-repeat="item in bottomMember.cards" ng-class="bottomMember.isDummy? 's_card divGreyDummyCard':'s_card'" id="{{item}}" ng-click="playCard(item+bottomMember.pole,'bottom')" ng-style="{'margin-left': $index*7.0833+'vh'}">
+				<img height="100%" width="100%" ng-src="assets/images/deck/{{item}}.svg" ng-class="bottomMember.isDummy?'imgGreyDummyCard':''">
+			</div>						  
+		</div>		
+	</div>
+	<div class="Rgt1">
+		<div class="R_2" style="z-index:4">
+			<div class="BID_Rgt_ADD" ng-click="joinTableAsPlayer(1)"  ng-show="isJoinTable==0" >
+				<div class="ADD_AICON_R"><img ng-src="{{rightMember.userImage}}"></div>
+			</div>
+			<div class="BID_TopCard_New_R"  ng-if="!rightMember.isDummy"  ng-show="isJoinTable==1||isJoinTable==2">
+				<div  id="BID_RIGHT_L" ng-class="{'borderGlow':activePole[rightMember.pole]&&isShareActive&&!rightInfo[0],'WBG infoBG':rightInfo[0],'WBDR':!rightInfo[0]}" ></div>
+				<div  id="BID_RIGHT_R" ng-class="{'borderGlow':activePole[rightMember.pole]&&isShareActive&&!rightInfo[1],'WBG infoBG':rightInfo[1],'WBDR':!rightInfo[1]}">	</div>
+			</div>
+			<div id="rightcard" ng-if="rightMember.isDummy">
+				<div class="TotalCArdsE"   ng-style="{'width':((rightMember.cards.length-1)*7.0833+15)+'vh'}">
+					<div ng-repeat="item in rightMember.cards | orderBy:'$index':true" class="e_card" id="{{item}}" ng-style="{'margin-left': $index*7.0833+'vh'}" >
+							<img height="100%" width="100%" ng-src="assets/images/deck/{{item}}.svg">
+					</div> 
+				</div>
+			</div>
+
+		</div>
+		<div class="R_2_Text"><div class="inner" style="width:10px">
+			<!-- <div class="rotateR">{{rightMember.userName}}</div> -->
+			<div ng-show="!rightMember.bidStatus" class="rotateR" ng-style="{'color' : activePole[rightMember.pole]?'#FF8E00':'#B2B2B2'}" >
+				<span ng-if="rightMember.isHost"><img ng-src="{{activePole[rightMember.pole]?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span></span>
+				  {{isJoinTable>0?'('+rightMember.poleName+')':''}} {{rightMember.userName | capitalize}}
+			</div>
+			<div ng-show="rightMember.bidStatus" class="rotateR"	ng-style="{'color' : rightMember.highestBid?'#FF8E00':'#B2B2B2'}" >
+				<span ng-if="rightMember.isHost"><img ng-src="{{rightMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
+				  {{isJoinTable>0?'('+rightMember.poleName+')':''}} {{rightMember.userName | capitalize}}  {{'['+rightMember.bid.num+''|replace:'1':'I'}}
+				 <span ng-if="(rightMember.bid.suit+'').length>1" ng-style="{'color' : rightMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{rightMember.bid.suit}}</span>				
+				 <img ng-if="(rightMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{rightMember.highestBid ? rightMember.bid.suit+'_Y' : rightMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}
+				
+			</div>
+		</div></div>
+	</div>
+	
+	<div id="FIVECARDS"  ng-show="threeCards" >					
+		<div class="CARDWITHBG infoBG" id="OFTION_1"  ng-style="{'opacity' : sevenCardArr[0]? 1 : 0.5}" ng-click="threeCardClick(0)">
+			<div class="FIVECARDS_1"><div class="BID_TX_1">HCP</div></div>
+		</div>
+		<div class="CARDWITHBG   infoBG" id="OFTION_2" ng-style="{'opacity' : sevenCardArr[1] == true ? 1 : 0.5}" ng-click="threeCardClick(1)">
+			<div class="FIVECARDS_1"><div class="BID_TX_1">pattern</div></div>
+		</div>
+		<div class="CARDWITHBG	infoBG" id="OFTION_3"  ng-style="{'opacity' : sevenCardArr[2] == true ? 1 : 0.5}" ng-click="threeCardClick(2)">
+				<div class="newdivtx"><div class="BID_TX_1">number of</div></div>
+				<div class="newdivtxcd"><div class="BIDC_NewTX">
+					<!--<span>♠ ♥ ♦ ♣</span>-->
+					<img src="assets/images/misc/S.svg">
+					<img src="assets/images/misc/H.svg">
+					<img src="assets/images/misc/D.svg">
+					<img src="assets/images/misc/C.svg">
+				</div></div>
+		</div>
+	</div>
+	
+	<div id="BID2CARDS" ng-show="isJoinTable==1">
+		<div  id="TWO_1" class="CARDWITHBDR BID_1" ng-class="{'borderGlow':activePole[bottomMember.pole]&&isShareActive&&!bottomInfo[0],'infoBG':bottomInfo[0]}" ></div>	
+		<div  id="TWO_2" class="CARDWITHBDR BID_3" ng-class="{'borderGlow':activePole[bottomMember.pole]&&isShareActive&&!bottomInfo[1],'infoBG':bottomInfo[1]}" ></div>
+	</div>
+	<div ng-show="biddingStart">			
+		<bidding-block> </bidding-block>					
+		<div class="TpntArea"></div>
+	</div>
+
+	<div id="BID4CARDS" ng-show="isFourCard" style="z-index:200;">
+			<div class="CARDWITHBG_spd" id="CRD4_1" ng-style="{'opacity' : sevenCardArr[3]? 1 : 0.5}" ng-click="fourCardClicked(3)">
+				<div class="FIVECARDS_DB1"><div class="BID_TX_1">{{bottomMember.noOfCardSInSuit[0]+''| replace:'1':'I'}}</div></div>
+				<!-- <div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml">&#x2660;</div></div> -->
+				<div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml"><img src="assets/images/misc/S.svg"></div></div>
+			</div>
+			<div class="CARDWITHBG_hut" id="CRD4_2" ng-style="{'opacity' : sevenCardArr[4]? 1 : 0.5}" ng-click="fourCardClicked(4)">
+				<div class="FIVECARDS_DB1"><div class="BID_TX_1">{{bottomMember.noOfCardSInSuit[1]+''| replace:'1':'I'}}</div></div>
+				<!-- <div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml">&#x2665;</div></div> -->
+				<div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml"><img src="assets/images/misc/H.svg"></div></div>
+			</div>
+			<div class="CARDWITHBG_dmd" id="CRD4_3" ng-style="{'opacity' : sevenCardArr[5]? 1 : 0.5}" ng-click="fourCardClicked(5)">
+				<div class="FIVECARDS_DB1"><div class="BID_TX_1">{{bottomMember.noOfCardSInSuit[2]+''| replace:'1':'I'}}</div></div>
+				<!-- <div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml">&#x2666;</div></div> -->
+				<div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml"><img src="assets/images/misc/D.svg"></div></div>
+			</div>
+			<div class="CARDWITHBG_clb" id="CRD4_4" ng-style="{'opacity' : sevenCardArr[6]? 1 : 0.5}" ng-click="fourCardClicked(6)">
+				<div class="FIVECARDS_DB1"><div class="BID_TX_1">{{bottomMember.noOfCardSInSuit[3]+''| replace:'1':'I'}}</div></div>
+				<!-- <div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml">&#x2663;</div></div> -->
+				<div class="FIVECARDS_DB2"><div class="BID_SimbolTX_sml"><img src="assets/images/misc/C.svg"></div></div>
+			</div>
+	</div>					
+	
+	<div class="TpntArea"  ng-show="tpntArea"></div>
+	 
+	<div  ng-class="winningTrickSide=='right'? 'BidingCntTP':'BidingCntTP_2'"  ng-if="isPlayStart&&(!showScore)">
+		<div id="BidingCntNS">N-S</div>	
+		<div id="BidingCntEW">E-W</div>
+		<div id="BidingCntNO1">{{NSPoint+'' |replace:'1':'I'}}</div>
+		<div id="BidingCntNO2">{{EWPoint+'' |replace:'1':'I'}}</div>
+	</div>
+
+	<div ng-class="gameContractSide=='right'? 'BidingCntBTMNew  color-white':'BidingCntBTMNew_2  color-white'"  ng-if="!showScore&&(isBiddingStart || isPlayStart)">
+		<div id="BidNew1">{{HighestBid.poleName}}</div>		
+		<div id="BidNew2">{{HighestBid.num |replace:'1':'I'}} <span ng-if="HighestBid.suit=='NT'">{{HighestBid.suit}}</span><img ng-if="HighestBid.suit!='NT'" ng-src="assets/images/misc/{{HighestBid.suit}}.svg" style="height:2.5vh"/></div>
+		<div class="BidNewCls3">
+			<div id="BidNewId4"  ng-style="{'color' : HighestBid.double>=1?'#fff':'#242424'}">X</div>	
+			<div id="BidNewId5"  ng-style="{'color' : HighestBid.double==2?'#fff':'#242424'}">X</div>
+		</div>
+	</div>
+	<!---Page Three Closed----->
+	
+	
+	<!-- for showing score -->
+		<div class="bidboxarea"  ng-show="showScore">	
+				<div class="BidingCntBTMNew_2  color-grey">
+					<div id="BidNew1">{{HighestBid.poleName}}</div>		
+					<div id="BidNew2">{{HighestBid.num |replace:'1':'I'}} <span ng-if="HighestBid.suit=='NT'">{{HighestBid.suit}}</span><img ng-if="HighestBid.suit!='NT'" ng-src="assets/images/misc/{{HighestBid.suit}}.svg" style="height:2.5vh"/></div>
+					<div class="BidNewCls3">
+						<div id="BidNewId4"  ng-style="{'color' : HighestBid.double>=1?'#b2b2b2':'#242424'}">X</div>	
+						<div id="BidNewId5"  ng-style="{'color' : HighestBid.double==2?'#b2b2b2':'#242424'}">X</div>
+					</div>
+				</div>
+				<div class="BidingCntBTMNew  color-grey">
+					<div id="BidingCntNS">N-S</div>	
+					<div id="BidingCntEW">E-W</div>
+					<div id="BidingCntNO1">{{NSPoint+'' |replace:'1':'I'}}</div>
+					<div id="BidingCntNO2">{{EWPoint+'' |replace:'1':'I'}}</div>
+				</div>
+		   </div>
+		
+		   
+
+
+
+		   <div ng-show="IsTakeBackVisible">
+			<div class="TpntAreaTB" ></div>
+			<div id="AltBoxx1" >
+				<div class="MsgBoxx1">{{vPlayerName+' wants to take back card'}}</div>
+				<div class="Acpt1" ng-click="TakeBackApproval(1)">Accept</div>
+				<div class="Rejt1" ng-click="TakeBackApproval(0)">Reject</div>		
+			</div>				
+		</div>
+
+
+
+
+			<div class="TpntAreaHist" ng-show="tpntAreaHist"></div>
+			<div id="oneto13_T" ng-show="IsHistoryVisible" ng-repeat="item in playedCardsByTop">
+				<div class="card_T_{{$index+1}} historyCardLoose" ><img ng-src="assets/images/deck/{{item.card}}.svg" ng-class="{'cardImageOpacity':!item.won}"></div>
+			</div>				
+			<div id="oneto13_B" ng-show="IsHistoryVisible" ng-repeat="item in playedCardsByBottom">
+				<div class="card_{{$index+1}} historyCardLoose"><img ng-src="assets/images/deck/{{item.card}}.svg" ng-class="{'cardImageOpacity':!item.won}"></div>	
+			</div>	
+			<div id="oneto13_L" ng-show="IsHistoryVisible" ng-repeat="item in playedCardsByLeft">
+				<div class="card_T_{{$index+1}} historyCardLoose"><img ng-src="assets/images/deck/{{item.card}}.svg" ng-class="{'cardImageOpacity':!item.won}"></div>
+			</div>
+			<div id="oneto13_R" ng-show="IsHistoryVisible" ng-repeat="item in playedCardsByRight">
+				<div class="card_T_{{$index+1}} historyCardLoose"><img ng-src="assets/images/deck/{{item.card}}.svg" ng-class="{'cardImageOpacity':!item.won}"></div>
+			</div>
+
+			<div class="Pointer" ng-show="tpntAreaHist">
+				<div class="P_Tx_EW"><div class="inner1"><div class="Tx_1 "><span  ng-if="isJoinTable==0" ng-style="{'color' : activePole[leftMember.pole]?'#FF8E00':'#B2B2B2'}">{{leftMember.poleName}}</span>
+					<img ng-if="isJoinTable>0" class="pointer_left" ng-src="{{activePole[leftMember.pole]?'assets/images/misc/Pointer_active.svg':'assets/images/misc/Pointer_normal.svg'}}"/></div></div></div>				
+				<div class="P_Tx_MDB">
+					<div class="P_Tx_N"><div class="inner1"><div class="Tx_1" ><span  ng-if="isJoinTable==0" ng-style="{'color' : activePole[topMember.pole]?'#FF8E00':'#B2B2B2'}">{{topMember.poleName}}</span>
+					<img ng-if="isJoinTable>0" class="pointer_up" ng-src="{{activePole[topMember.pole]?'assets/images/misc/Pointer_active.svg':'assets/images/misc/Pointer_normal.svg'}}"/></div></div></div>
+					<!-- <div class="Pointer_MD"><img src="assets/images/HOOLAsset11mdpi.svg"></div>	<div class="Pointer_MD"><img src="assets/images/HOOLAsset11mdpi.svg"></div> -->
+					<div class="Pointer_MD"><img src="assets/images/misc/Circ01.svg"></div>
+					<div class="P_Tx_N"><div class="inner1"><div class="Tx_1"><span  ng-if="isJoinTable==0" ng-style="{'color' : activePole[bottomMember.pole]?'#FF8E00':'#B2B2B2'}">{{bottomMember.poleName}}</span>
+						<img ng-if="isJoinTable>0" class="pointer_dwn" ng-src="{{activePole[bottomMember.pole]?'assets/images/misc/Pointer_active.svg':'assets/images/misc/Pointer_normal.svg'}}"/></div></div></div>
+				</div>
+				<div class="P_Tx_EW"><div class="inner1"><div class="Tx_1"><span  ng-if="isJoinTable==0" ng-style="{'color' : activePole[rightMember.pole]?'#FF8E00':'#B2B2B2'}">{{rightMember.poleName}}</span>
+					<img ng-if="isJoinTable>0" class="pointer_right" ng-src="{{activePole[rightMember.pole]?'assets/images/misc/Pointer_active.svg':'assets/images/misc/Pointer_normal.svg'}}"/></div></div></div>
+			</div>
+
+	<!--<div id="oneto13_T" ng-show="IsHistoryVisible" ng-repeat="item in playedCardsByTop">
+		<div class="card_T_{{$index+1}}"><img ng-src="assets/images/deck/{{item}}.svg"></div>
+	</div>				
+	<div id="oneto13_B" ng-show="IsHistoryVisible" ng-repeat="item in playedCardsByBottom">
+		<div class="card_{{$index+1}}"><img ng-src="assets/images/deck/{{item}}.svg"></div>		
+	</div>	
+	<div id="oneto13_L" ng-show="IsHistoryVisible" ng-repeat="item in playedCardsByLeft">
+		<div class="card_{{$index+1}}"><img ng-src="assets/images/deck/{{item}}.svg"></div>
+	</div>
+	<div id="oneto13_R" ng-show="IsHistoryVisible" ng-repeat="item in playedCardsByRight">
+		<div class="card_{{$index+1}}"><img ng-src="assets/images/deck/{{item}}.svg"></div>
+	</div>-->
+
+</div>
+
+

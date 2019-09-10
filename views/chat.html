@@ -1,0 +1,27 @@
+<div id="ChatingArea" >
+	<div class="ChatingRlst" style="overflow-y: auto; width:100vw;" schroll-bottom="messages">
+		afdsafsdafsdaf
+		<div ng-repeat="msg in messages" >
+			<div ng-if="msg.sender==username" class="ChatingTxMe">
+				<span id="MeMsg">You</span> <span id="MeMsgTx">{{ msg.content }} </span>
+			</div>
+			<div ng-if="msg.sender!=username" class="ChatingTxYou">
+				<span id="YouMsg">{{msg.sender}}</span> <span id="YoueMsgTx">{{ msg.content }} </span>				
+			</div>
+		</div>
+	</div>
+	<div class="ChatingBox" ng-show="IsChatActive">
+		<form ng-submit="sendChatMessage(chat);">
+			<div class="ChatingTypeBD">
+				<input type="text" class="ChatingType" ng-model="chat.message" ng-keypress="checkIfEnterKeyWasPressed($event)" placeholder="Type..."/>
+				<!--<textarea rows="2" class="ChatingType" ng-model="chat.message" ng-trim="false" ng-keypress="checkIfEnterKeyWasPressed($event)" placeholder="Type..." required></textarea>-->
+			</div>
+			<button type="submit" class="ChatingAro"><div id="ChatingAroX"></div></button>
+		</form>
+	</div>	
+</div>
+<div class="TpntAreaChat"></div>
+
+<!--<div class="ChatingNotificationTx"><span id="NotificationMsg">Mace Windo is requesting access as a Kibitzer</span><span id="NotificationAccept">Accept</span><span id="NotificationDeny">Deny</span></div>
+<div class="ChatingTxMe"><span id="MeMsg">Me</span> <span id="MeMsgTx">Maul consectetuer adipiscing elit, sed diam nonu </span></div>
+<div class="ChatingTxYou"><span id="YouMsg">You</span> <span id="YoueMsgTx">Sem depis ot fit nonter. Lorem ipsumdolor sit. </span></div>-->

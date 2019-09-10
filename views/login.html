@@ -1,0 +1,24 @@
+
+
+	<div id="loginbody" ng-init="init()">
+		<div class="container">
+		  <div id="login">
+			<form action="javascript:void(0);" ng-submit="signIn()">
+
+				<p class="bhi"><span class="fme-user"></span>
+					<input type="text" placeholder="Username" ng-model="member.loginId" required>
+				</p> 
+				<p class="bhi"><span class="fme-lock"></span>
+					<input type="password" placeholder="Password" ng-model="member.password" required>
+				</p> 
+				<p class="bhi"><input type="submit" value="sign in"></p>
+				<p class="iup" ng-show="isWrongLoginInfo" >Incorrect username or password</p>
+				<p>
+					<a href="#/register" style="color:white;text-decoration: none; float:left;">sign up</a>
+					<a href="#/recover/password" style="color:white;text-decoration: none; float:right;">forgot password</a>
+				</p>				
+			  
+			</form>
+		  </div> 
+		</div>
+	</div>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="UTF-8"></meta>
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+	<title>HOOL</title>
+	<link rel="shortcut icon" href="favicon.ico" sizes="16x16" type="image/ico"/> 
+	<link rel="shortcut icon" href="favicon.png" sizes="16x16" type="image/png"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"></meta>	  
+	<script src="assets/plugins/angular/angular.min.js"></script>	  
+	<script src="assets/plugins/angular/angular-route.js"></script>
+	<script src="assets/plugins/angular/ngStorage.js"></script>	
+	
+	<link href="assets/css/style.css" rel='stylesheet' type='text/css' ></link>
+	
+	<link rel="stylesheet" href="assets/css/datagrid.css"></link>
+	<link rel="stylesheet" href="assets/plugins/ng-notify/ng-notify.min.css" type="text/css"/>
+	<script src="assets/js/jquery-1.9.1.min.js"></script>
+	<script src="assets/js/jquery.mockjax.js"></script>
+	<script src="assets/js/simple.datagrid.js"></script>
+	<script src="assets/js/appwarp.min.js"></script>
+	<script src="assets/plugins/ng-notify/ng-notify.min.js"></script>
+</head>	  
+<body  ng-app="hoolApp">
+ 
+   <ng-view>  </ng-view>
+   
+   <script src="assets/plugins/ng-stomp/ng-stomp.standalone.min.js"></script>
+   <script src="assets/plugins/jQuery/jquery-3.1.1.min.js"></script>
+   <script src="config.js"></script> 
+   <script src="global.js"></script> 
+   <script src="app/controllers/memberCtrl.js"></script> 
+   <script src="app/controllers/mainCtrl.js"></script> 
+
+   <script src="app/controllers/tableKbzCtrl.js"></script>  
+   <script src="app/controllers/tableCtrl.js"></script>  
+   <script src="app/controllers/playGameCtrl.js"></script> 
+   
+   <script src="app/services/memberServ.js"></script>  
+   <script src="app/services/tableServ.js"></script>  
+   <script src="app/services/commonServ.js"></script> 
+   <script src="app/services/playgameServ.js"></script> 
+</body>
+</html>

@@ -1,0 +1,103 @@
+
+	 <div id="joinInviteTable"  ng-controller="joinAfterCtrl">
+
+	 	 <div id="dvbody">
+			 
+				<div class="Lft1" ng-hide="tablePlayerInfo[3].status==0">
+					<div class="LeftOneArea">
+						<div class="BID_Rgt_ADD">
+							<div class="ADD_AICON_L"><img ng-click="joinOrInvite(3)" ng-src="{{tablePlayerInfo[3].userImage}}"></div>
+						</div>					
+					</div>
+					<div class="L_2_Text"><div class="inner"><div class="rotateL">{{tablePlayerInfo[3].userName}}</div></div></div>
+				</div>
+
+				<div class="Lft1" ng-show="tablePlayerInfo[3].status==0">
+					<div class="LeftOneArea">
+						<div class="BID_Rgt_ADD">
+							<div class="ADD_AICON_L"><img ng-click="joinTableAsPlayer(3)" ng-src="{{imgSrc}}"></div>
+						</div>					
+					</div>
+					<div class="L_2_Text"><div class="inner"><div class="rotateL">{{joinText}}</div></div></div>
+				</div>	
+
+
+
+
+				<div class="Mdl">
+
+					<div  ng-hide="tablePlayerInfo[0].status==0">
+						<div class="NorthPlayArea">
+							<div class="BID_TOP_ADD" ><img  ng-src="{{tablePlayerInfo[0].userImage}}"></div>
+						</div>
+						<div class="pname"><div class="inner"><div class="Tx_1">{{tablePlayerInfo[0].userName}}</div></div></div>
+				   </div>
+
+				   <div  ng-show="tablePlayerInfo[0].status==0">
+						<div class="NorthPlayArea">
+							<div class="BID_TOP_ADD" ><img  ng-click="joinTableAsPlayer(0)" ng-src="{{imgSrc}}"></div>
+						</div>
+						<div class="pname"><div class="inner"><div class="Tx_1">{{joinText}}</div></div></div>
+				   </div>
+
+
+					<div class="PlayArea">
+						<div class="Pointer">
+							<div class="P_Tx_EW"><div class="inner1"><div class="Tx_1">W</div></div></div>
+							<div class="P_Tx_MDB">
+								<div class="P_Tx_N"><div class="inner1"><div class="Tx_1">N</div></div></div>
+								<div class="Pointer_MD"><img src="assets/images/HOOLAsset11mdpi.svg"></div>
+								<div class="P_Tx_N"><div class="inner1"><div class="Tx_1">S</div></div></div>
+							</div>
+							<div class="P_Tx_EW"><div class="inner1"><div class="Tx_1">E</div></div></div>
+						</div>
+					</div>
+
+
+
+					<div  ng-hide="tablePlayerInfo[2].status==0">
+						<div class="pname"><div class="inner"><div class="Tx_1">{{tablePlayerInfo[2].userName}}</div></div></div>
+						<div class="SauthPlayArea">
+							<div class="BID_Bottom_ADD"><img  ng-src="{{tablePlayerInfo[2].userImage}}"></div>						
+						</div>
+				    </div>
+
+				    <div  ng-show="tablePlayerInfo[2].status==0">
+						<div class="pname"><div class="inner"><div class="Tx_1">{{joinText}}</div></div></div>
+						<div class="SauthPlayArea">
+							<div class="BID_Bottom_ADD"><img ng-click="joinTableAsPlayer(2)" ng-src="{{imgSrc}}"></div>						
+						</div>
+				    </div>
+
+				</div>		
+				
+
+
+				
+				
+				<div class="Rgt1" ng-hide="tablePlayerInfo[1].status==0">
+					<div class="R_2">
+						<div class="BID_Rgt_ADD" >
+							<div class="ADD_AICON_R"><img ng-src="{{tablePlayerInfo[1].userImage}}""></div>
+						</div>
+						
+					</div>
+					<div class="R_2_Text"><div class="inner"><div class="rotateR">{{tablePlayerInfo[1].userName}}</div></div></div>
+				</div>
+
+
+				<div class="Rgt1" ng-show="tablePlayerInfo[1].status==0">
+					<div class="R_2">
+						<div class="BID_Rgt_ADD" >
+							<div class="ADD_AICON_R"><img ng-click="joinTableAsPlayer(1)" ng-src="{{imgSrc}}"></div>
+						</div>
+						
+					</div>
+					<div class="R_2_Text"><div class="inner"><div class="rotateR">{{joinText}}</div></div></div>
+				</div>
+				
+				
+			</div>
+	 	
+		
+	 </div>
