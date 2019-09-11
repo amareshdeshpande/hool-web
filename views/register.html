@@ -1,37 +1,24 @@
-
-	 <div id="loginbody">
-		<div class="container">
-		  <div id="login">
-			<form name="userForm"  ng-submit="userForm.$valid && register()">
-			  
-
-			  	<p class="bhi">
-					<span class="fme-user"></span>
-					<input type="text" name="loginId"  placeholder="User Name" ng-model="member.userName"  required>
-				</p> 
-
-				 <p ng-show="userForm.email.$touched && userForm.email.$error.required">Providing a username is mandatory.</p> 
-
-				<p class="bhi">
-					<span class="email-ic"></span>
-					<input type="text" name="email"  placeholder="Email" ng-model="member.email"    ng-pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i'
-					   required >
-				</p> 
-				<p  style="color:red;text-decoration: none;" ng-show="userForm.email.$dirty && userForm.email.$error.pattern">Please Enter Valid Email<p> 			
-               
-
-					<span class="fme-lock"></span>
-					<input type="password" name="password"  placeholder="Password"	ng-model="member.password"  required>		
-
-				</p> 
-								 				 	
-					<!-- JS because of IE support; better: placeholder="Password" -->
-				
-				<p><input type="submit" value="Sign Up" ></p>
-				<p><a href="#!/login" style="color:white;text-decoration: none;">Sign In</a></p>
-			  
-			</form>
-		  </div> 
-
-		</div>
+<div id="loginbody">
+	<div class="container">
+		<div id="login">
+		<form name="userForm"  ng-submit="userForm.$valid && register()">
+			<p class="bhi">
+				<span class="fme-user"></span>
+				<input type="text" name="loginId"  placeholder="User Name" ng-model="member.userName"  required>
+			</p> 
+			<p ng-show="userForm.email.$touched && userForm.email.$error.required">Providing a username is mandatory.</p> 
+			<p class="bhi">
+				<span class="email-ic"></span>
+				<input type="text" name="email"  placeholder="Email" ng-model="member.email" ng-pattern = '/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i'
+						required >
+			</p> 
+			<p  style="color:red;text-decoration: none;" ng-show="userForm.email.$dirty && userForm.email.$error.pattern">Please Enter Valid Email<p> <span class="fme-lock"></span>
+				<input type="password" name="password"  placeholder="Password"	ng-model="member.password"  required>	
+			</p>		 				 	
+			<!-- JS because of IE support; better: placeholder="Password" -->
+			<p><input type="submit" value="Sign Up" ></p>
+			<p><a href="#!/login" style="color:white;text-decoration: none;">Sign In</a></p>
+		</form>
+		</div> 
 	</div>
+</div>
