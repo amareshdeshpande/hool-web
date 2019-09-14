@@ -25,8 +25,10 @@
 	<script src="assets/plugins/ng-notify/ng-notify.min.js"></script>
 </head>	  
 <body  ng-app="hoolApp">
- 
-   <ng-view>  </ng-view>
+    <div style="background-color: #ff8e00; width:100vw;height: 100vh;" ng-show="isSplashOn">
+       <img src="assets/images/logo.gif" style="left:38vw;top:30vh;position:absolute; width:25vw;">
+    </div>
+   <ng-view ng-hide="isSplashOn">  </ng-view>
    
    <script src="assets/plugins/ng-stomp/ng-stomp.standalone.min.js"></script>
    <script src="assets/plugins/jQuery/jquery-3.1.1.min.js"></script>
@@ -42,6 +44,7 @@
    <script src="app/services/memberServ.js"></script>  
    <script src="app/services/tableServ.js"></script>  
    <script src="app/services/commonServ.js"></script> 
-   <script src="app/services/playgameServ.js"></script> 
+   <script src="app/services/playgameServ.js"></script>
+  
 </body>
 </html>

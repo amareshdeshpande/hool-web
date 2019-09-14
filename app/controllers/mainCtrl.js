@@ -88,7 +88,7 @@
         }
    });
 
-   app.controller('sideBarCtrl',function($scope, $rootScope,commonServ,$location, $localStorage){
+   app.controller('sideBarCtrl',function($scope, $rootScope,commonServ,$location, $localStorage,$timeout){
      
        $rootScope.isChatClicked=false;
        $rootScope.isMenuClicked=false;   
@@ -112,7 +112,12 @@
                 $rootScope.chatArea='';
             }else{
                  $rootScope.isChatClicked=true;  
-                 $rootScope.chatArea='views/chat.html';
+                 $rootScope.chatArea='views/chat.html';                
+                 $timeout(function(){ 
+                    //this peice of code is written to put scroll in bottom of the screen 
+                    $scope.messages.push({sender:"", type: 'NA', content:""});					
+                }, 100);
+                 
             }            
             if($rootScope.historyIcon=="HOOLAsset14mdpi_on"){
                 $rootScope.tpntAreaHist=false;

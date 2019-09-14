@@ -443,16 +443,12 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	var isPositionTaken=true;
 	$scope.joinTableAsPlayer=function(val){			
 		if(isPositionTaken){
-			isPositionTaken=false;	
-			
+			isPositionTaken=false;				
 			if(($scope.topMember.status==0 && val==0) || ($scope.rightMember.status==0 && val==1) ||
 					($scope.bottomMember.status==0 && val==2)||($scope.leftMember.status==0 && val==3)){
-
-				var tableInfo={memberType:'KIBITZER', gameTableMemberKey : {tableId : table.id, memberId :memberId}};
+				//var tableInfo={memberType:'KIBITZER', gameTableMemberKey : {tableId : table.id, memberId :memberId}};
 				var playerInfo={gameTableMemberKey : {tableId : table.id, memberId : memberId}, pole:val,memberType:'PLAYER'};		
-				
-				tableServ.joinTableAsPlayer(playerInfo).then(function(result){
-					//console.log(JSON.stringify(result.data));
+				tableServ.joinTableAsPlayer(playerInfo).then(function(result){					
 					if(result.data.status='SUCCESS'){
 						loggedInMemberPole=val;
 						// update game table  player info on player join 					

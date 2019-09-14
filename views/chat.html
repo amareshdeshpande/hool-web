@@ -1,11 +1,10 @@
 <div id="ChatingArea" >
-	<div class="ChatingRlst" style="overflow-y: auto; width:100vw;" schroll-bottom="messages">
-		afdsafsdafsdaf
+	<div class="ChatingRlst" style="overflow-y: auto; width:100vw;" schroll-bottom="messages">		
 		<div ng-repeat="msg in messages" >
-			<div ng-if="msg.sender==username" class="ChatingTxMe">
+			<div ng-if="msg.sender==username && msg.type=='CHAT'" class="ChatingTxMe">
 				<span id="MeMsg">You</span> <span id="MeMsgTx">{{ msg.content }} </span>
 			</div>
-			<div ng-if="msg.sender!=username" class="ChatingTxYou">
+			<div ng-if="msg.sender!=username && msg.type=='CHAT'" class="ChatingTxYou">
 				<span id="YouMsg">{{msg.sender}}</span> <span id="YoueMsgTx">{{ msg.content }} </span>				
 			</div>
 		</div>

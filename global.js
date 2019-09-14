@@ -1,13 +1,17 @@
 (function () {
     'use strict';
     var app = angular.module("hoolApp");    
-    app.run(function($rootScope, tableServ, webapiUrl, $timeout,$interval, $localStorage, $location, $window, $stomp) {  	
+    app.run(function($rootScope,tableServ, webapiUrl, $timeout,$interval, $localStorage, $location, $window, $stomp) {  	
         let subscription={}; 
         let wsConn=null;
         let channel;
         let memberInfo;
         $rootScope.lastSavedMessageId=0;
         $rootScope.lastPlayedMemberId=0;
+        $rootScope.isSplashOn=true;
+        $timeout(function(){
+            $rootScope.isSplashOn=false;
+        },4000);
 
         // store the interval promise in this variable
         /*let promise;
