@@ -1,2 +1,2 @@
 # hool-web
-Web gaming application 
+Web playing card online based gaming application 
