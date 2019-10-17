@@ -124,7 +124,12 @@
 					memberId=memberInfo.memberId;										
 					var tableInfo={memberType:'KIBITZER', gameTableMemberKey : {tableId : table.id, memberId : memberId}};				
 					
-					tableServ.joinTableAsKibitzer(tableInfo).then(function(result){										
+					tableServ.joinTableAsKibitzer(tableInfo).then(function(result){							
+						if($rootScope.isMenuClicked){ 
+							commonServ.resetMenu();
+							commonServ.setSideBar($rootScope.pageNo);
+							$rootScope.menuArea='';
+						}									
 						$localStorage.memberType='KIBITZER';
 						$localStorage.table=JSON.stringify(table);
 						//console.log("Joined table info : "+JSON.stringify(table));
@@ -165,7 +170,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	var imgSrc="assets/images/HOOLAsset8mdpi.svg";
 	var table=JSON.parse($localStorage.table);
 	var isKibitzerMovedToOwnScreen=false;
-
+	var claimAcceptedByPlayer=0;
 	var memberInfo=JSON.parse($localStorage.memberinfo);	
 	var addName="Open";	
 	var poleArr=['N','E','S','W'];
@@ -179,8 +184,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	var shareCount=0;	
 	var dealerPole=-1;
 	$scope.activePole=[false,false,false,false];
-	$scope.topMember={status:0}; $scope.rightMember={status:0};$scope.bottomMember={status:0};$scope.leftMember={status:0};
-	
+	$scope.topMember={status:0}; $scope.rightMember={status:0,isClaimed:false};$scope.bottomMember={status:0};$scope.leftMember={status:0,isClaimed:false};
+	$scope.claimed.pole=-1; //0: north, 1: East, 2: South and 3: West
 	$scope.init=function(){
 		tableServ.gameTableRecord(table.id).then(function(result){					
 			populatePlayerList(result.data.table);
@@ -310,8 +315,21 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				$timeout(function(){				
 					onTakeBackDone(JSON.parse(payload.content));				
 				},1000);				
-			}
-			else if(payload.type=='CHAT'){					
+			}else if(payload.type=='CLAIM_REQUEST'){					
+				$timeout(function(){	
+					//$scope.vPlayerName=payload.sender;				
+					showAcceptRejectClaimDialogueBox(JSON.parse(payload.content));
+				},1000);							
+			}else if(payload.type=='CLAIM_APPROVAL'){	
+				claimAcceptedByPlayer+=1;	
+				let data = JSON.parse(payload.content);			
+				if(claimAcceptedByPlayer==2 || $scope.Declarer.pole==data.accepted_by_pole){
+					$timeout(function(){									
+						onClaimAcceptRejectDone();	
+						claimAcceptedByPlayer=0;			
+					},1000);
+				}				
+			}else if(payload.type=='CHAT'){					
 				$timeout(function(){					
 					$scope.showChatMessage(payload);				
 				},1000);
@@ -360,11 +378,9 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	 * ***************************************************************************/
 	var onTakeBackClicked=function(data){		
 		turnOffWhenPlayerTurnToPlay();
-		if(isOpponentAbleToTackBack){					
-			var vSide=data.playerPole;		
+		if(isOpponentAbleToTackBack){
 			lastCardPlayedInfo=data;
-			//console.log(vSide+"==="+((vSide+3)%4)+"==="+((vSide+1)%4)+"======"+loggedInMemberPole);	
-			//console.log($scope.Declarer.pole+"==="+$scope.dummy.pole);
+			var vSide=data.playerPole;			
 			if(loggedInMemberPole==((vSide+3)%4) || loggedInMemberPole==((vSide+1)%4)){											
 				if(!$scope.bottomMember.isDummy){	//to not show takeback alert for dummy																		
 					if(loggedInMemberPole==$scope.Declarer.pole || $scope.topMember.pole==$scope.dummy.pole){
@@ -441,14 +457,15 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 
 	/*************TAKE BACK CARD MODEL ENDS HERE************************** */
 	var isPositionTaken=true;
-	$scope.joinTableAsPlayer=function(val){			
+	$scope.joinTableAsPlayer=function(val){				
 		if(isPositionTaken){
 			isPositionTaken=false;				
 			if(($scope.topMember.status==0 && val==0) || ($scope.rightMember.status==0 && val==1) ||
 					($scope.bottomMember.status==0 && val==2)||($scope.leftMember.status==0 && val==3)){
 				//var tableInfo={memberType:'KIBITZER', gameTableMemberKey : {tableId : table.id, memberId :memberId}};
 				var playerInfo={gameTableMemberKey : {tableId : table.id, memberId : memberId}, pole:val,memberType:'PLAYER'};		
-				tableServ.joinTableAsPlayer(playerInfo).then(function(result){					
+				
+				tableServ.joinTableAsPlayer(playerInfo).then(function(result){										
 					if(result.data.status='SUCCESS'){
 						loggedInMemberPole=val;
 						// update game table  player info on player join 					
@@ -467,7 +484,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		var count=0;		
 		angular.forEach(data, function(value, key){
 			var isHost=table.hostId == value.gameTableMemberKey.memberId ? true: false;			
-			var palyerInfo={pole:value.pole, userName:value.member.userName, memberId:value.member.id,
+			var palyerInfo={pole:value.pole, userName:value.member.username, memberId:value.member.id,
 			userImage:'assets/images/profile_icon/'+value.member.imageName,status:1,
 			poleName:poleArr[value.pole],bidStatus:false,isHost:isHost,highestBid:false};
 			if(value.pole==0){
@@ -1563,9 +1580,21 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				index1= $scope.bottomMember.cards.indexOf(data.cardNo+data.cardSuit);
 				if(index1!=-1)
 					$scope.bottomMember.cards.splice(index1, 1);			
-			}				
-			
-		} 		
+			}
+		}
+		 
+		//To reduce played card from claimed pole side
+		if($scope.claimed.pole==$scope.leftMember.pole){
+			let indx= $scope.leftMember.cards.indexOf(data.cardNo+data.cardSuit);
+				if(indx!=-1)
+					$scope.leftMember.cards.splice(indx, 1);
+		}
+		if($scope.claimed.pole==$scope.rightMember.pole){
+			let indx= $scope.rightMember.cards.indexOf(data.cardNo+data.cardSuit);
+				if(indx!=-1)
+					$scope.rightMember.cards.splice(indx, 1);
+		}
+
 		//console.log("Turn count: "+turnCount+" Takeback permission status : "+isOpponentAbleToTackBack);		
 		if(turnCount==4){
 			$rootScope.isTakeBackEnabled=false;			
@@ -1618,10 +1647,10 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 						playedCardInfo=[];
 					
 						if(wonTricksCount[0]+wonTricksCount[1]==13){ //upen 
-							var biddingContractNo = parseInt($scope.Declarer.bid.substring(0,1));
-							var biddingContractPole = parseInt($scope.Declarer.pole);
+							let biddingContractNo = parseInt($scope.Declarer.bid.substring(0,1));
+							let biddingContractPole = parseInt($scope.Declarer.pole);
 							
-							var dealInfo=$scope.HighestBid;								
+							let dealInfo=$scope.HighestBid;								
 							dealInfo.wonTricks=wonTricksCount;
 							dealInfo.tableId=table.id;
 							dealInfo.doubleCount=$scope.HighestBid.double;
@@ -1631,8 +1660,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 						    if(loggedInMemberPole==dealerPole){	
 								tableServ.saveGameResult(dealInfo).then(function(result){						
 									 $rootScope.sendMessage({sender: memberInfo.memberId, type: 'SCORE', content:JSON.stringify(result.data)}); 
-								 });							
-						     }														
+								});							
+						    }														
 						}						
 					  },2000);   // As per Arun suggestion
 					}
@@ -1734,6 +1763,9 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		$scope.rightMember.highestBid=false;	
 		$scope.bottomMember.highestBid=false;
 		
+		$scope.leftMember.isClaimed=false;
+		$scope.rightMember.isClaimed=false;
+		$scope.claimed.pole=-1;
 		$scope.bottomMember.cards=[];
 		
 		isFirstCardPlayed=false;
@@ -1943,7 +1975,119 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		//if(newValue != oldValue && newValue==true)		 
 		  turnOffWhenPlayerTurnToPlay();		
 	},true);
+	
+	/***************************************************************************************
+	 * This block of code written to claim tricks by player to approve by opponent.
+	 * Once player claims for selected tricks then all cards of that player will be visible  
+	 * for all axcept his/her partner. But it's not applicable for Dummy and kibitzer.
+	 * *************************************************************************************/
+	$scope.claimNoCls =[];
+	$scope.range = function(min, max, step){
+		step = step || 1;
+		var input = [];
+		let numberOfPlayedTricks=wonTricksCount[0]+wonTricksCount[1];
+		for (var i = min; i <= max-numberOfPlayedTricks; i += step) input.push(i);
+		return input;
+	};
+	$scope.selectedTricksToClaim = 0;
+	$rootScope.showTricksClaimDialogueBox=function(){	
+		$scope.selectedTricksToClaim = 0;	
+		$scope.isTrickClaimVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;	
+		for (var i = 0; i <= 13; i++){ 						
+			$scope.claimNoCls[i]='grid-item btn';			
+		}		
+	};
+	$rootScope.selectTricksToClaim=function(tricks){
+		for (var i = 0; i <= 13; i++){ 						
+			$scope.claimNoCls[i]=(tricks == i? 'grid-item btn-active': 'grid-item btn');			
+		}
+		$scope.selectedTricksToClaim = tricks;			
+	};
+	$scope.claimSelectedTricksToApprove=function(){		
+		$scope.isTrickClaimVisible = $scope.tpntArea = false;
+		let content=JSON.stringify({'claimed_by_pole':loggedInMemberPole,'claimed_tricks':$scope.selectedTricksToClaim,'sender': $localStorage.username});
+		let claimMessage = {sender: $localStorage.username, type: 'CLAIM_REQUEST', content:content};	
+		$rootScope.sendMessage(claimMessage);
+	};
 
+	var claimedInfo=null;
+	var showAcceptRejectClaimDialogueBox = function(content){		
+		if(content.claimed_by_pole==$scope.rightMember.pole){
+			$scope.rightMember.isClaimed=true;
+		}else if(content.claimed_by_pole==$scope.leftMember.pole){			
+			$scope.leftMember.isClaimed=true;
+		}
+		claimedInfo=content;
+		$scope.claimed.pole=content.claimed_by_pole;
+		let claimeSide=content.claimed_by_pole;			
+		if(loggedInMemberPole==((claimeSide+3)%4) || loggedInMemberPole==((claimeSide+1)%4)){											
+			if(!$scope.bottomMember.isDummy){	//to not show takeback alert for dummy																		
+				if(loggedInMemberPole==$scope.Declarer.pole || $scope.topMember.pole==$scope.dummy.pole){
+					$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
+					$scope.claimedTricks=content.claimed_tricks;
+					$scope.claimedByPlayer=content.sender;		
+				}else{						
+					//if(loggedInMemberPole==(claimeSide== 3 ? 0 : claimeSide+1)){
+						$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
+						$scope.claimedTricks=content.claimed_tricks;
+						$scope.claimedByPlayer=content.sender;
+					//}
+				}
+			}
+		}
+	};
+	var isAccept=true;
+	$scope.acceptRejectClaimedTricks=function(actionCode){	
+		//Action Code 0 is rejected and 1 stand for accepted
+		if(isAccept){
+			isAccept=false;
+			if(actionCode==1){
+				$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
+				let claimMessage = {sender: $localStorage.username, type: 'CLAIM_APPROVAL', content:JSON.stringify({'accepted_by_pole':loggedInMemberPole,'claim_tricks':$scope.selectedTricksToClaim})};	
+				$rootScope.sendMessage(claimMessage);
+				isAccept=true;
+			}else{
+				$scope.isClaimAcceptRejectVisible = $scope.tpntArea =false;
+				isAccept=true;
+			}
+		};
+	};
+
+	var onClaimAcceptRejectDone= function(content){	
+		$scope.isClaimAcceptRejectVisible = $scope.tpntArea =false;	
+		$scope.isMessageVisibleAfterClaim = $scope.tpntArea = $scope.tpntArea ==true? false:true;
+		let claimedTricks=claimedInfo.claimed_tricks;
+		let claimedByPole=claimedInfo.claimed_by_pole;		
+		if(claimedByPole==0 || claimedByPole==2){
+			wonTricksCount[0]=wonTricksCount[0] + claimedTricks;
+			console.log("Total gained tricks by NS : "+wonTricksCount[0]);
+		}else if(claimedByPole==1 || claimedByPole==3){
+			wonTricksCount[1]=wonTricksCount[1] + claimedTricks;
+			console.log("Total gained tricks by EW : "+wonTricksCount[1]);
+		}
+		
+		$timeout(function(){
+			$scope.isMessageVisibleAfterClaim = $scope.tpntArea =false;
+			let biddingContractNo = parseInt($scope.Declarer.bid.substring(0,1));
+			let biddingContractPole = parseInt($scope.Declarer.pole);		
+			let dealInfo=$scope.HighestBid;								
+			dealInfo.wonTricks=wonTricksCount;
+			dealInfo.tableId=table.id;
+			dealInfo.doubleCount=$scope.HighestBid.double;
+			$scope.isPoleActiveToPlay=[false,false,false,false];
+			$scope.activePole=[false,false,false,false];
+			claimedInfo=null;		
+			if(loggedInMemberPole==dealerPole){	
+				tableServ.saveGameResult(dealInfo).then(function(result){						
+						$rootScope.sendMessage({sender: memberInfo.memberId, type: 'SCORE', content:JSON.stringify(result.data)}); 
+				});							
+			}		
+		},4000);
+	};
+	
+    /***********************************************************************************************
+	 * This block of code will be used in case of controller unload
+	 ************************************************************************************************/
 	$scope.$on('$destroy', function() {					        
 		var tableInfo={tableId : table.id, memberId : memberInfo.memberId};	 
 		if($localStorage.memberType=="PLAYER" || ($localStorage.memberType=="KIBITZER" && isKibitzerMovedToOwnScreen==false)){      

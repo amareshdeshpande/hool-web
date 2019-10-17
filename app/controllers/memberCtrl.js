@@ -16,10 +16,9 @@
         
         $scope.signIn=function () {           
             var res = memberServ.validate($scope.member);          
-            res.then(function (result) {
-                if(result.status==200){                	
-                    var token= result.data.token_type+' '+result.data.access_token;               
-                    $localStorage.token=token;
+            res.then(function (result) {               
+                if(result.status==200){ 
+                    $localStorage.token='Bearer '+result.data.token;  
                     memberServ.userInfo($scope.member.loginId).then(function(result){ 
                                         	
                     	$localStorage.username=$scope.member.loginId;
@@ -51,13 +50,13 @@
             var res = memberServ.register($scope.member);
             res.then(function (result) {            
                 if(result.data.status=='SUCCESS'){
-                    alert(result.data.message);   
+                    //alert(result.data.message);   
                     $location.path('/login'); 
                 }else if(result.data.status=='INFO'){
                     alert(result.data.message);   
                 }
             }, function (error) { 
-                 alert(JSON.stringify(error));
+                //alert(JSON.stringify(error));
                 console.log("--------"+error);            
             });
         }        

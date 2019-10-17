@@ -340,6 +340,7 @@ height:11.38vh;
 transform:translateY(-50%);
 
 }
+
 #Left_Icon_One{
 margin:0px;
 padding:0px;
@@ -347,7 +348,7 @@ position:absolute;
 width:2.65vw;
 height:2.65vw;
 left:1.25vw;
-top:4.1vh;
+top:10.1vh;
 }
 #Left_Icon_Two{
 margin:0px;
@@ -3539,7 +3540,7 @@ background-color:red;
 			position:absolute;
 			width:2.65vw;
 			height:2.65vw;
-			bottom:25.77vh;
+			bottom:35.77vh;
 			left:1.25vw;
 			z-index:13;
 			}
@@ -3549,10 +3550,22 @@ background-color:red;
 			position:absolute;
 			width:2.65vw;
 			height:2.65vw;
-			bottom:15.3vh;
+			bottom:25.77vh;
 			left:1.25vw;
 			z-index:12;
 			}
+
+			.claim{
+				margin:0px;
+				padding:0px;
+				position:absolute;
+				width:2.65vw;
+				height:3vw;
+				bottom:15.3vh;
+				left:1.25vw;
+				z-index:11;
+			}
+
 			.chat{
 			margin:0px;
 			padding:0px;
@@ -3734,3 +3747,291 @@ background-color:red;
 	background-color: #ff8e00;
 	border-radius: 50px;
 }
+
+/****Claim Tricks CSS starts here********/
+.claimdiv-score{
+	position:absolute;
+	width:56.3vh;
+	height:10.275vh;
+	left:50%;
+	top:45vh;
+	-moz-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);	
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	
+	border:solid 1px #FF8E00;
+	z-index:4000;	
+	}
+	.claim-asprej{
+	position:absolute;
+	width:84.16vh;
+	height:20.55vh;
+	top:58.5vh;
+	left:50%;
+	-moz-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);	
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	z-index:47;
+	border:solid 1px #FF8E00;
+	}
+	.claim-view{
+	position:absolute;
+	width:84.16vh;
+	height:20.55vh;
+	top:20.83vh;
+	left:50%;
+	-moz-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);	
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	z-index:47;
+	border:solid 1px #FF8E00;
+	}
+	.claim-view .btn{
+		cursor: pointer;
+		color:#B2B2B2;;	
+	}
+	.claim-view .btn:hover{
+		cursor: pointer;
+		color:#FF8E00;
+	}
+	.claim-view .btn-active{
+		cursor: pointer;
+		color:#FF8E00;
+	}
+
+	.claimdiv{
+	position:absolute;
+	width:56.3vh;
+	height:10.275vh;
+	left:50%;
+	-moz-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);	
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);	
+	}
+	.doyouclaim{
+	color:#B2B2B2;
+	font-family: 'Roboto';  
+	font-size:2.77vh;
+	text-align:center;
+	margin:0px;
+	padding:0px;
+	position:relative;
+	top:50%;
+	left:50%;
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);	
+	-o-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);	
+	}
+	.doyouclaim-tx{
+	color:#FF8E00;
+	font-family: 'Roboto';  
+	font-size:2.77vh;
+	text-align:center;
+	margin:0px;
+	padding:0px;
+	position:relative;
+	top:50%;
+	left:50%;
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);	
+	-o-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);	
+	}
+	.Claim_TX_1{
+	margin:0px;
+	padding:0px;
+	position:relative;
+	top:50%;
+	left:50%;
+	
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);	
+	-o-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);	
+			
+	color:#FF8E00;
+	text-align:center;
+	font-family: 'Roboto';  
+	font-size:2.77vh;
+	}
+	.claimbtn{
+	position:absolute;
+	width:13.88vh;
+	height:10.275vh;
+	left:0px;
+	border-right:solid 1px #FF8E00;
+	}
+	.cancelbtn{
+	position:absolute;
+	width:13.88vh;
+	height:10.275vh;
+	right:0px;
+	border-left:solid 1px #FF8E00;
+	}
+	.claimareadwn{
+	position:absolute;
+	width:84.16vh;
+	height:10.175vh;
+	bottom:0px;
+	}
+	.claimnmbr{
+	position:absolute;
+	width:84vh;
+	height:10.175vh;
+	top:0px;
+	border-bottom:solid 1px #FF8E00;
+	padding:0vh 0.5vh;
+	}
+	.grid-container {
+	  display: grid;
+	  grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+	}
+	.grid-item {		
+	color:#B2B2B2;
+	text-align:center;
+	font-family: 'Roboto';  
+	font-size:3.33vh;
+	line-height:10.3vh;
+	}
+	
+	
+	.BidingCntTP-PR{
+	position:absolute;
+	z-index:50;
+	top:2.22vh;
+	right:2.22vh;
+	width:15.277vh;
+	height:10vh;
+	z-index:999999999999999;
+	}
+	#BidingCntNS-PR{
+	position:absolute;
+	top:0;
+	left:0;
+	width:6vh;
+	height:5vh;
+	border-top:solid 1px #FF8E00;
+	border-left:solid 1px #FF8E00;
+	border-right:solid 1px #FF8E00;
+	border-bottom:solid 1px #FF8E00;
+	color:#FFFFFF;
+	font-family: 'Roboto';
+	font-size:2.77vh;
+	text-align:center;
+	line-height:5vh;
+	}
+	#BidingCntEW-PR{
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:6vh;
+	height:5vh;
+	border-left:solid 1px #FF8E00;
+	border-right:solid 1px #FF8E00;
+	border-bottom:solid 1px #FF8E00;
+	color:#FFFFFF;
+	font-family: 'Roboto';
+	font-size:2.77vh;
+	text-align:center;
+	line-height:5.2vh;
+	}
+	#BidingCntNO1-PR{
+	position:absolute;
+	top:0;
+	right:0;
+	width:9.5vh;
+	height:5vh;
+	border-top:solid 1px #FF8E00;
+	border-right:solid 1px #FF8E00;
+	border-bottom:solid 1px #FF8E00;
+	color:#FFFFFF;
+	font-family: 'Roboto';
+	font-size:2.77vh;
+	text-align:center;
+	line-height:5vh;
+	}
+	#BidingCntNO2-PR{
+	position:absolute;
+	bottom:0;
+	right:0;
+	width:9.5vh;
+	height:5vh;
+	border-right:solid 1px #FF8E00;
+	border-bottom:solid 1px #FF8E00;
+	color:#FFFFFF;
+	font-family: 'Roboto';
+	font-size:2.77vh;
+	text-align:center;
+	line-height:5.2vh;
+	}
+	
+	/******************************/
+	
+	.profile-pic{
+	margin:0px;
+	padding:0px;
+	position:absolute;
+	width:2.65vw;
+	height:2.65vw;
+	left:0;
+	top:0;
+	/*border:solid 2px #FF8E00;*/
+	border-radius: 50%;
+	display: inline-block;
+	}
+	.profile-pic img {
+	margin:0px;
+	padding:0px;
+	position:absolute;
+	width:2.5vw;
+	height:2.5vw;
+	border-radius: 50%;
+	display: inline-block;
+	}
+	
+	.hidden {display:none}
+	
+	.signout-tx{
+	position:absolute;
+	width: 5.31vw;
+	top:8.5vh;
+	color:#FF8E00;
+	font-family: 'Roboto';
+	font-size:1.77vh;
+	text-align:center;
+	}
+	#triangle-down {
+		position:absolute;
+		bottom:0;
+		left:0.85vw;
+		width: 0;
+		height: 0;
+		border-left: 0.5vw solid transparent;
+		border-right: 0.5vw solid transparent;
+		border-top: 0.6vw solid #FF8E00;
+	}
+	.pfp{
+		margin:0px;
+		padding:0px;
+		position:absolute;
+		width:2.65vw;
+		height:3.06vw;
+		left:1.25vw;
+		top:2vh;
+		border:solid 0px #FF8E00;
+	}
+
+	
+	

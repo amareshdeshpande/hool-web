@@ -8,36 +8,30 @@
             return $http({
                 method: 'POST',
                 url: webapiUrl + '/oauth/token',
-                data: $.param({
+                data: {
                     username: credential.loginId,
-                    password: credential.password,
-                    grant_type: 'password'
-                }),
-                headers: { 
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': 'Basic cmVhZC13cml0ZS1jbGllbnQ6c3ByaW5nLXNlY3VyaXR5LW9hdXRoMi1yZWFkLXdyaXRlLWNsaWVudC1wYXNzd29yZDEyMzQ='
-                }
+                    password: credential.password
+                },
+                headers: {'Content-Type': 'application/json'}
             });
         };
 
         
-        this.register=function(member){
-         //   alert(JSON.stringify(member));
+        this.register=function(member){        
             return $http({
                 method:'POST',
-                url:webapiUrl+'/member/register',
+                url:webapiUrl+'/register',
                 data:member,
                 headers: {'Content-Type': 'application/json'}
             });
         };
         
 
-        this.userInfo=function(username){            
+        this.userInfo=function(username){                 
             return $http({
                 method: 'GET',
-                url: webapiUrl + '/member/'+username,              
-                headers: { 
-                    'Content-Type': 'application/json',
+                url: webapiUrl + '/api/member/'+username,              
+                headers: {                    
                     'Authorization': $localStorage.token
                 }
             });

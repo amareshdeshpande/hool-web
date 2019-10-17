@@ -7,7 +7,7 @@
         var menuActive=[true,true,true];
         var menuInActive=[false,false,false];
         var menuItems=menuInActive;
-        var sidebar=menuInActive;
+        var sidebar=menuInActive;       
     	return{
     		resetMenu:function(){
     			 $rootScope.isMenuClicked=false;
@@ -19,11 +19,12 @@
     		},menuClicked:function(){
     			$rootScope.isMenuClicked=true;
     			$rootScope.menuIcon="assets/images/HOOLAsset18mdpi.svg"; 
-                $rootScope.menuItems=[true,true,true];
-                $rootScope.logoutOrBackIcon="assets/images/HOOLAsset17mdpi.svg";               
+                $rootScope.menuItems=[true,true,true];                                    
                 if($rootScope.pageNo==4){
-                	 $rootScope.logoutOrBackIcon="assets/images/HOOLAsset10mdpi.svg";
-                }               
+                    $rootScope.logoutOrBackIcon="assets/images/HOOLAsset10mdpi.svg";  //back icon
+                }else{
+                    $rootScope.logoutOrBackIcon="assets/images/HOOLAsset17mdpi.svg"; // logout icon                   
+                }              
     		},hideSideItem:function(){
                $rootScope.sidebar=[false,false,false,false];
             },setSideBar:function(val){                
@@ -33,6 +34,7 @@
                     $rootScope.sidebar=[false,false,false,false];
                     $rootScope.sidebar[0]=true; 
                 }else if(val==3){
+                    $rootScope.sidebar[0]=true; 
                     $rootScope.sidebar[1]=false; 
                     $rootScope.sidebar[2]=false;  
                     $rootScope.sidebar[3]=false;

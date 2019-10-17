@@ -89,21 +89,24 @@
    });
 
    app.controller('sideBarCtrl',function($scope, $rootScope,commonServ,$location, $localStorage,$timeout){
-     
-       $rootScope.isChatClicked=false;
-       $rootScope.isMenuClicked=false;   
-       $rootScope.historyIcon="HOOLAsset14mdpi";
-       $rootScope.chatIcon="HOOLAsset13mdpi";
-         $scope.menu=function(){ 
+       let memberInfo=JSON.parse($localStorage.memberinfo);
+       $rootScope.imageName=memberInfo.imageName;
+       $rootScope.loginId=memberInfo.loginId;
+
+        $rootScope.isChatClicked=false;
+        $rootScope.isMenuClicked=false;   
+        $rootScope.historyIcon="HOOLAsset14mdpi";
+        $rootScope.chatIcon="HOOLAsset13mdpi";
+        $scope.menu=function(){ 
             if(!$rootScope.isMenuClicked){ 
-                 commonServ.hideSideItem();                 
-                 commonServ.menuClicked();
+                commonServ.hideSideItem();                 
+                commonServ.menuClicked();
             }else{ 
                 commonServ.resetMenu();
                 commonServ.setSideBar($rootScope.pageNo);
                 $rootScope.menuArea='';
             } 
-         }
+        }
 
         $scope.showChat=function(){ 
             $rootScope.chatIcon= ($rootScope.chatIcon=="HOOLAsset13mdpi")?"HOOLAsset13mdpi_on":"HOOLAsset13mdpi";            
@@ -136,20 +139,21 @@
             $rootScope.isChatClicked=false;
             $rootScope.messages = [];
             $scope.changePage('views/home.html',1);
+            //alert("back#"+$rootScope.pageNo);   
          }
 
          $scope.logoutOrBack=function(){  
-            //alert("#"+$rootScope.pageNo);           
+            //alert("logout#"+$rootScope.pageNo);           
             $rootScope.isChatClicked=false; 
-            $rootScope.messages = [];
-            if($rootScope.pageNo==2){
-                $scope.changePage('views/home.html',1);
-            } 			
-  			else if($rootScope.pageNo==3 || $rootScope.pageNo==4 || $rootScope.pageNo==5){    
-                //$localStorage.table=null;   //Added by Upendra 2019.02.07 (to clear joined table info)            
+            $rootScope.messages = [];       
+            //$rootScope.pageNo==3 || $rootScope.pageNo==4 || $rootScope.pageNo==5 			
+  			if($rootScope.pageNo==4){                           
                   $scope.changePage('views/join_table.html',2);
-  			}else{   
-  	       	 	$rootScope.disconnect();	
+  			}else{ 
+                var r = confirm("Do you want to logout?");
+                if (r == true) {
+                    $rootScope.disconnect();	
+                }  	       	 	
   			}              
         }
         $scope.TakeBack=function(){             

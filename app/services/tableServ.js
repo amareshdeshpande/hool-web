@@ -42,10 +42,7 @@
                     method: 'POST',
                     url: webapiUrl + '/api/game/table/join',
                     data: tableInfo,
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': $localStorage.token
-                    }
+                    headers: { 'Authorization': $localStorage.token}
                  });
             }
 
@@ -54,10 +51,7 @@
                     method: 'PUT',
                     url: webapiUrl + '/api/game/table/change/member/type',
                     data: memberInfo,
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': $localStorage.token
-                    }
+                    headers: {'Authorization': $localStorage.token}
                  });
             }
             

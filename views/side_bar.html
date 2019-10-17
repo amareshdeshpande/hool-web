@@ -1,4 +1,13 @@
-<div id="leftal"  ng-controller="sideBarCtrl  as sb">  
+<div id="leftal"  ng-controller="sideBarCtrl  as sb">       
+      <div class="pfp">
+          <div class="profile-pic"><img ng-src="assets/images/profile_icon/{{imageName}}" alt="{{loginId}}" title="{{loginId}}" /></div>
+          <!-- <div id="triangle-down"></div> -->
+      </div>
+      <div id="popupwindow" class="hidden">
+          <!--<div class="signout"><img src="images/logout.png"></div>-->
+          <div class="signout-tx">Sign Out</div>	
+      </div>
+
       <div id="Left_Icon_One"  ng-click="menu()">
           <img id="imgX"  ng-src="{{menuIcon}}" >        
       </div>
@@ -14,7 +23,11 @@
       <div class="history" ng-show="sidebar[1]&&isHistoryEnabled"  ng-click="showHistory()">
         <img style="opacity:1" src="assets/images/{{historyIcon}}.svg" alt="history"><!--HOOLAsset14mdpi-->
       </div>
-     
+
+      <div  class="claim" ng-show="sidebar[1]&&isHistoryEnabled" ng-click="showTricksClaimDialogueBox()">
+        <img id="imgClainTricks"  style="opacity:1"  src="assets/images/claim_horn.svg"  alt="claim tricks">
+      </div>
+
       <div  class="chat {{blinkClass}}" ng-show="sidebar[3]" ng-click="showChat()"> <!--ng-click="showChat()"-->
         <img id="imgchatting"  style="opacity:1"  src="assets/images/{{chatIcon}}.svg" alt="chatting">
       </div>
