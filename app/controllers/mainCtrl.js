@@ -3,12 +3,7 @@
   var app = angular.module("hoolApp");
   //This block of code is used for Main page in which SideBar, Chat and main boday exists
   app.controller('mainCtrl',function($scope,$rootScope,commonServ,$sessionStorage, $localStorage,$location,$window,ngNotify,$timeout){
-         $scope.viewName='views/home.html';
-         $rootScope.pageNo=1;
-         $rootScope.menuItems=[false,false,false];
-         $rootScope.sidebar=[false,false,false,false];
-         $scope.notClicked=true;
-		 
+         $scope.viewName='views/home.html';        
          if(!$sessionStorage.memberinfo){
               $location.path('/login'); 
          }else{    
@@ -16,20 +11,15 @@
             $rootScope.initializeWebSocket();   
          }
          
-		 $scope.changePage=function(pageName,no){
+		 $scope.changePage=function(pageName,no){             
             $rootScope.pageNo=no;               
             $scope.viewName=pageName;               
-            commonServ.setSideBar(1);
+            commonServ.setSideBar(no);
+            //alert($rootScope.pageNo);
          }
-
-         $rootScope.changePage=function(pageName,no){
-            $rootScope.pageNo=no;               
-            $scope.viewName=pageName;               
-            commonServ.setSideBar(1);
-        }
+         
          $scope.chat= {};
-         $rootScope.messages = [];
-         //$scope.IsChatActive=($localStorage.memberType=='KIBITZER')?false:true;
+         $rootScope.messages = [];         
          $scope.IsChatActive=true;
          $scope.sendChatMessage=function(chat){  
             if(chat.message)  {  
@@ -60,10 +50,9 @@
 
 
    app.controller('homeCtrl',function($scope, $rootScope,commonServ,$localStorage){
-	  
+        //$rootScope.sidebar=[true,true,true,true,true,true];
         $rootScope.menuIcon="assets/images/HOOLAsset4mdpi.svg"; 
-        $rootScope.settingIcon="assets/images/HOOLAsset15mdpi.svg";              
-
+        $rootScope.settingIcon="assets/images/HOOLAsset15mdpi.svg"; 
         $rootScope.pageNo=1;
         $scope.one = true; 
         $scope.two = true; 
@@ -94,20 +83,10 @@
        $rootScope.loginId=memberInfo.loginId;
 
         $rootScope.isChatClicked=false;
-        $rootScope.isMenuClicked=false;   
+        //$rootScope.isMenuClicked=false;   
         $rootScope.historyIcon="HOOLAsset14mdpi";
         $rootScope.chatIcon="HOOLAsset13mdpi";
-        $scope.menu=function(){ 
-            if(!$rootScope.isMenuClicked){ 
-                commonServ.hideSideItem();                 
-                commonServ.menuClicked();
-            }else{ 
-                commonServ.resetMenu();
-                commonServ.setSideBar($rootScope.pageNo);
-                $rootScope.menuArea='';
-            } 
-        }
-
+        
         $scope.showChat=function(){ 
             $rootScope.chatIcon= ($rootScope.chatIcon=="HOOLAsset13mdpi")?"HOOLAsset13mdpi_on":"HOOLAsset13mdpi";            
             if($rootScope.isChatClicked){
@@ -138,24 +117,44 @@
          $scope.backBtnCliked=function(){            
             $rootScope.isChatClicked=false;
             $rootScope.messages = [];
-            $scope.changePage('views/home.html',1);
-            //alert("back#"+$rootScope.pageNo);   
+            //alert($rootScope.pageNo)
+            if($rootScope.pageNo==2 ||$rootScope.pageNo==3)
+                $scope.changePage('views/home.html',1); 
+            else{
+                $rootScope.confirmbox={
+                    message:"Do you want to exit the table?", 
+                    boxType:"logout", 
+                    btnYes:"yes",
+                    btnNo:"no",
+                    boxType:"confirm",
+                    boxCode:"back"};
+                $rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = true; 
+            }           
          }
 
-         $scope.logoutOrBack=function(){  
-            //alert("logout#"+$rootScope.pageNo);           
+         $scope.logout=function(){                   
             $rootScope.isChatClicked=false; 
-            $rootScope.messages = [];       
-            //$rootScope.pageNo==3 || $rootScope.pageNo==4 || $rootScope.pageNo==5 			
-  			if($rootScope.pageNo==4){                           
-                  $scope.changePage('views/join_table.html',2);
-  			}else{ 
-                var r = confirm("Do you want to logout?");
-                if (r == true) {
-                    $rootScope.disconnect();	
-                }  	       	 	
-  			}              
+            $rootScope.messages = [];
+            $rootScope.confirmbox={
+                message:"Do you want to logout?", 
+                boxType:"logout", 
+                btnYes:"yes",
+                btnNo:"no",
+                boxType:"confirm",
+                boxCode:"logout"};
+            $rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = true;                         
         }
+        $rootScope.getUserResponse=function(actionCode){ 
+            $rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = false; 
+            if (actionCode == 1 && $rootScope.confirmbox.boxCode=="logout") {
+                $rootScope.disconnect();
+                $rootScope.sidebar=[false,false,false,false,false,false];  	
+            }else if(actionCode == 1 && $rootScope.confirmbox.boxCode=="back"){
+                $scope.changePage('views/join_table.html',3); 
+                $rootScope.sidebar=[true,false,false,false,false,false];  
+            }
+        }  
+
         $scope.TakeBack=function(){             
 			$rootScope.takeBack();
         }              

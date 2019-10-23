@@ -2,6 +2,7 @@
     'use strict';
     var app = angular.module("hoolApp");    
     app.run(function($rootScope,tableServ, webapiUrl, $timeout,$interval, $localStorage, $location, $window, $stomp) {  	
+        $rootScope.IsLogoutConfirmBoxVisible = $rootScope.IsLightBoxOn = false;    
         let subscription={}; 
         let wsConn=null;
         let channel;

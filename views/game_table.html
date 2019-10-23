@@ -2,7 +2,7 @@
 			 
 	<div class="Lft1">
 		<div class="LeftOneArea">
-			<div class="BID_Rgt_ADD" ng-click="joinTableAsPlayer(3)"  ng-show="isJoinTable==0">
+			<div class="BID_Rgt_ADD btn" ng-click="joinTableAsPlayer(3)"  ng-show="isJoinTable==0">
 				<div class="ADD_AICON_L"><img ng-src="{{leftMember.userImage}}"></div>
 			</div>
 			
@@ -33,7 +33,7 @@
 	
 	<div class="Mdl">
 		<div class="NorthPlayArea">
-			<div class="BID_TOP_ADD" ng-click="joinTableAsPlayer(0)"  ng-show="isJoinTable==0">
+			<div class="BID_TOP_ADD btn" ng-click="joinTableAsPlayer(0)"  ng-show="isJoinTable==0">
 					<img  ng-src="{{topMember.userImage}}">
 			</div>
 			<div class="BID_TopCard"   ng-if="!(topMember.isDummy ||bottomMember.isDummy)"  ng-show="isJoinTable==1 || isJoinTable==2">
@@ -130,7 +130,7 @@
 		
 	</div>
 	<div class="SauthPlayArea">
-		<div class="BID_Bottom_ADD" ng-click="joinTableAsPlayer(2)"  ng-show="isJoinTable==0">
+		<div class="BID_Bottom_ADD btn" ng-click="joinTableAsPlayer(2)"  ng-show="isJoinTable==0">
 			<img ng-src="{{bottomMember.userImage}}">					
 		</div>
 		
@@ -142,7 +142,7 @@
 	</div>
 	<div class="Rgt1">
 		<div class="R_2" style="z-index:4">
-			<div class="BID_Rgt_ADD" ng-click="joinTableAsPlayer(1)"  ng-show="isJoinTable==0" >
+			<div class="BID_Rgt_ADD btn" ng-click="joinTableAsPlayer(1)"  ng-show="isJoinTable==0" >
 				<div class="ADD_AICON_R"><img ng-src="{{rightMember.userImage}}"></div>
 			</div>
 			<div class="BID_TopCard_New_R"  ng-if="!rightMember.isDummy||!rightMember.isClaimed"  ng-show="isJoinTable==1||isJoinTable==2">
@@ -165,7 +165,7 @@
 			</div>
 			<div ng-show="rightMember.bidStatus" class="rotateR"	ng-style="{'color' : rightMember.highestBid?'#FF8E00':'#B2B2B2'}" >
 				<span ng-if="rightMember.isHost"><img ng-src="{{rightMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
-				  {{isJoinTable>0?'('+rightMember.poleName+')':''}} {{rightMember.userName | capitalize}}  {{'['+rightMember.bid.num+''|replace:'1':'I'}}
+				  {{isJoinTable>0?'('+rightMember.poleName+')':''}} {{rightMember.username | capitalize}}  {{'['+rightMember.bid.num+''|replace:'1':'I'}}
 				 <span ng-if="(rightMember.bid.suit+'').length>1" ng-style="{'color' : rightMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{rightMember.bid.suit}}</span>				
 				 <img ng-if="(rightMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{rightMember.highestBid ? rightMember.bid.suit+'_Y' : rightMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}
 				
@@ -280,7 +280,7 @@
 		<div class="claimareadwn">
 			<div class="claimbtn"><div class="Claim_TX_1 btn" ng-click="tpntArea=isTrickClaimVisible=false">Cancel</div></div>
 			<div class="claimdiv">
-				<div class="doyouclaim">How many more tricks do you claim?</div>
+				<div class="doyouclaim">How many more tricks you want to claim?</div>
 			</div>
 			<div class="cancelbtn"><div class="Claim_TX_1 btn" ng-click="claimSelectedTricksToApprove()">Claim</div></div>
 		</div>
@@ -288,11 +288,11 @@
 
 	<!--This html view is for opponent to accept or reject Claim -->		
 	<div class="claim-asprej" style="z-index:500" ng-show="isClaimAcceptRejectVisible">	
-		<div class="claimnmbr"><div class="doyouclaim-tx">{{claimedByPlayer}}: I claim {{claimedTricks}} tricks.</div></div>					
+		<div class="claimnmbr"><div class="doyouclaim-tx">{{claimedByPlayer}}: I claim {{claimedTricks}} more tricks.</div></div>					
 		<div class="claimareadwn">
 			<div class="claimbtn"><div class="Claim_TX_1" ng-click="acceptRejectClaimedTricks(0)">Reject</div></div>
 			<div class="claimdiv">
-				<div class="doyouclaim">Claim trick</div>
+				<div class="doyouclaim">&nbsp;</div>
 			</div>
 			<div class="cancelbtn"><div class="Claim_TX_1" ng-click="acceptRejectClaimedTricks(1)">Accept</div></div>
 		</div>

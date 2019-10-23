@@ -24,12 +24,19 @@
 	<script src="assets/js/appwarp.min.js"></script>
 	<script src="assets/plugins/ng-notify/ng-notify.min.js"></script>
 </head>	  
-<body  ng-app="hoolApp">
-    <div style="background-color: #ff8e00; width:100vw;height:100vh;" ng-show="isSplashOn">
-       <img src="assets/images/logo.gif" style="left:50%;top:50%;position:absolute; width:271px;height: 162px;margin-left:-135px;margin-top:-81px;">
-    </div>
-   <ng-view ng-hide="isSplashOn">  </ng-view>
-   
+<body  ng-app="hoolApp" ng-init="IsConfirmBoxOn = false">
+	<div id="splash-screen" ng-show="isSplashOn"><img src="assets/images/logo.gif"></div>
+    <ng-view ng-hide="isSplashOn">  </ng-view>
+	
+   	<!--To show lightbox in background-->
+	<div class="lightbox-main" ng-show="IsLightBoxOn" ng-cloak></div>
+	<div class="loading" ng-show="IsLoadingOn"><img src="assets/images/loading.svg" ng-cloak/></div>	
+   	<!--this block of html code is written to show confirmation box to logout-->		
+	<div class="main-alert-box" ng-show="IsConfirmBoxOn" ng-model="confirmbox.boxCode" ng-cloak>
+		<div class="MsgBoxx1">{{confirmbox.message}}</div>
+		<div class="Acpt1" ng-if="confirmbox.boxType=='confirm'" ng-click="getUserResponse(1)">{{confirmbox.btnYes}}</div>
+		<div class="Rejt1" ng-if="confirmbox.boxType=='confirm'" ng-click="getUserResponse(0)">{{confirmbox.btnNo}}</div>		
+	</div>
    <script src="assets/plugins/ng-stomp/ng-stomp.standalone.min.js"></script>
    <script src="assets/plugins/jQuery/jquery-3.1.1.min.js"></script>
    <script src="config.js"></script> 

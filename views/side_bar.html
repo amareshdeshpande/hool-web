@@ -2,46 +2,30 @@
       <div class="pfp">
           <div class="profile-pic"><img ng-src="assets/images/profile_icon/{{imageName}}" alt="{{loginId}}" title="{{loginId}}" /></div>
           <!-- <div id="triangle-down"></div> -->
-      </div>
-      <div id="popupwindow" class="hidden">
-          <!--<div class="signout"><img src="images/logout.png"></div>-->
-          <div class="signout-tx">Sign Out</div>	
+      </div>     
+
+      <div id="logout"  ng-click="logout()">
+          <img id="imgX"  class="btn" src="assets/images/logout.svg"  title="Logout">        
+      </div>     
+    
+
+      <div  class="tackback" ng-show="sidebar[4]" ng-click="TakeBack()">
+        <img id="imgTakeBack" class="btn" style="opacity:1"  src="assets/images/TakeBack.svg" alt="Takeback"  title="Takeback played card">   <!--ng-src="{{TakeBackIcon}}"-->
       </div>
 
-      <div id="Left_Icon_One"  ng-click="menu()">
-          <img id="imgX"  ng-src="{{menuIcon}}" >        
-      </div>
-      
-      <div id="Left_Icon_Two" ng-show="sidebar[0]"   ng-click="backBtnCliked()">
-        <img src="assets/images/HOOLAsset10mdpi.svg">
+      <div  class="claim" ng-show="sidebar[2]" ng-click="showTricksClaimDialogueBox()">
+        <img  style="opacity:1"  class="btn" src="assets/images/claim.png"  alt="claim tricks"  title="Claim">
       </div>
 
-      <div  class="tackback" ng-show="sidebar[2]&&isTakeBackEnabled" ng-click="TakeBack()">
-        <img id="imgTakeBack"  style="opacity:1"  src="assets/images/TakeBack.svg" alt="Takeback">   <!--ng-src="{{TakeBackIcon}}"-->
+      <div class="history" ng-show="sidebar[3]"  ng-click="showHistory()">
+        <img style="opacity:1" class="btn" src="assets/images/{{historyIcon}}.svg" alt="history"  title="History"/>
       </div>
 
-      <div class="history" ng-show="sidebar[1]&&isHistoryEnabled"  ng-click="showHistory()">
-        <img style="opacity:1" src="assets/images/{{historyIcon}}.svg" alt="history"><!--HOOLAsset14mdpi-->
+      <div  class="chat {{blinkClass}}" ng-show="sidebar[1]" ng-click="showChat()"> 
+        <img id="imgchatting"  style="opacity:1" class="btn" src="assets/images/{{chatIcon}}.svg" alt="chatting"  title="Chat">
       </div>
 
-      <div  class="claim" ng-show="sidebar[1]&&isHistoryEnabled" ng-click="showTricksClaimDialogueBox()">
-        <img id="imgClainTricks"  style="opacity:1"  src="assets/images/claim_horn.svg"  alt="claim tricks">
-      </div>
-
-      <div  class="chat {{blinkClass}}" ng-show="sidebar[3]" ng-click="showChat()"> <!--ng-click="showChat()"-->
-        <img id="imgchatting"  style="opacity:1"  src="assets/images/{{chatIcon}}.svg" alt="chatting">
-      </div>
-
-
-      <!--Logout block-->
-      <div id="Left_Icon_Five"  ng-show="menuItems[0]" ng-click="logoutOrBack()">
-        <img  ng-src="{{logoutOrBackIcon}}" alt="Logout & Back">
-      </div>         
-      
-      <div id="Left_Icon_Six"  ng-show="menuItems[1]">
-        <img  style="opacity:0.2" src="assets/images/HOOLAsset16mdpi.svg">
-      </div>
-      <div id="Left_Icon_Seven"  ng-show="menuItems[2]"> <!--ng-click="settings()"-->
-        <img style="opacity:0.2" id="imgsetting" ng-src="{{settingIcon}}" >
-      </div>        
+      <div class="back" ng-show="sidebar[0]"   ng-click="backBtnCliked()">
+        <img src="assets/images/HOOLAsset10mdpi.svg" class="btn" title="Back">
+      </div>     
 </div> 

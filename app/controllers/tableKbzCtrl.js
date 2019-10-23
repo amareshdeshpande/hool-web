@@ -7,13 +7,12 @@
         $scope.IsTakeBackVisible=false;
         $scope.vPlayerName="";
         var isTakeBackApproved=0;
-        var lastCardPlayedInfo={};
-        $rootScope.isTakeBackEnabled=false;
-        $rootScope.isHistoryEnabled=false;	//history only visible if first card played
+        var lastCardPlayedInfo={};            
+        //$rootScope.isHistoryEnabled=false;	//history only visible if first card played
+        $rootScope.sidebar[3]=false;
         //$rootScope.pageNo=3;
         $scope.isJoinTable=0;
-        $scope.startingPole=0;	
-        commonServ.setSideBar(5);	
+        $scope.startingPole=0;	      
         var imgSrc="assets/images/HOOLAsset8mdpi.svg";
         var table=JSON.parse($localStorage.table);
         
@@ -154,7 +153,8 @@
                                         }
                                         //To enable history button
                                         if(hstry.inCompleteRound.length>0 || hstry.playedCard.length>0){
-                                            $rootScope.isHistoryEnabled=true;
+                                            //$rootScope.isHistoryEnabled=true;
+                                            $rootScope.sidebar[3]=true;
                                         }                                        
                                     }
                                 });
@@ -276,7 +276,8 @@
 
                 turnCount-=1;
                 if(turnCount<=0 && wonTricksCount[0]+wonTricksCount[1]<=0){
-                    $rootScope.isHistoryEnabled=false;
+                    //$rootScope.isHistoryEnabled=false;
+                    $rootScope.sidebar[3]=false;
                 }
                 //$scope.playedCard.splice(data.playerPole,1);	
                 $scope.playedCard[data.playerPole]=null;
@@ -325,7 +326,7 @@
             var count=0;		
             angular.forEach(data, function(value, key){			
                 var isHost=table.hostId==value.gameTableMemberKey.memberId?true:false;			
-                var palyerInfo={pole:value.pole, userName:value.member.userName,memberId:value.member.id,
+                var palyerInfo={pole:value.pole, username:value.member.username,memberId:value.member.id,
                 userImage:'assets/images/profile_icon/'+value.member.imageName,status:1,
                 poleName:poleArr[value.pole],bidStatus:false,isHost:isHost,highestBid:false};
                
@@ -439,7 +440,8 @@
             //console.log("played Card : "+data.cardNo + data.cardSuit+" by pole"+data.pole);
             //console.log("==========: "+JSON.stringify(playedCardInfo));
             turnCount+=1;
-            $rootScope.isHistoryEnabled=true;	
+            //$rootScope.isHistoryEnabled=true;
+            $rootScope.sidebar[3]=true;	
             if(turnCount==4){
                 //console.log("played Cards List: "+JSON.stringify(playedCardInfo));
                 for(var i=0;i<playedCardInfo.length; i++){
@@ -898,7 +900,8 @@
             //To hid bidding and won trick box
             $scope.isBiddingInfoBoxVisible=false;
             $scope.isWonTricksInfoBoxVisible=false;
-            $rootScope.isHistoryEnabled=false;
+            //$rootScope.isHistoryEnabled=false;
+            $rootScope.sidebar[3]=false;
             $rootScope.tpntAreaHist=false;
             $rootScope.IsHistoryVisible=false;
             $rootScope.historyIcon="HOOLAsset14mdpi";
@@ -1036,7 +1039,8 @@
             $scope.HighestBid={double:0};
             $scope.topMember={status:0}; $scope.rightMember={status:0};
             $scope.bottomMember={status:0};$scope.leftMember={status:0};
-            $rootScope.isHistoryEnabled=false;
+            //$rootScope.isHistoryEnabled=false;
+            $rootScope.sidebar[3]=false;
             $rootScope.tpntAreaHist=false;
             $rootScope.IsHistoryVisible=false;
             $rootScope.historyIcon="HOOLAsset14mdpi";

@@ -1,3 +1,6 @@
+/**************************************************
+Max value of z-index is in CSS  is 20001 
+***************************************************/
 /* ---------- login open---------- */
 * {
 	-moz-box-sizing: border-box;
@@ -279,6 +282,18 @@ body
 	/*display:none;*/
 }
 
+.lightbox-main{
+	position:fixed;
+	background-color:#18072B;
+	width:100vw;
+	height:100vh;
+	z-index:20000;
+	top:0px;
+	margin: 0px;	
+	opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+
 .hoollogos
 {
 	margin-left:4.1vh;
@@ -348,7 +363,7 @@ position:absolute;
 width:2.65vw;
 height:2.65vw;
 left:1.25vw;
-top:10.1vh;
+top:12vh;
 }
 #Left_Icon_Two{
 margin:0px;
@@ -3119,7 +3134,22 @@ z-index: 50;
 .BID_TOP_ADD img,  .ADD_AICON_R img, .ADD_AICON_L img{
 background-color:red;
 }	
-*/			
+*/
+.main-alert-box{
+	position:absolute;
+	background-color:#18072B;
+	width:60vh;
+	height:19vh;
+	margin-top:-11vh;
+	left:50%;
+	top:50%;
+	-moz-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);	
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	z-index:20001;	
+}			
 
 #AltBoxx1{
 	position:absolute;
@@ -3134,9 +3164,10 @@ background-color:red;
 	-ms-transform: translateX(-50%);	
 	-o-transform: translateX(-50%);
 	transform: translateX(-50%);
-	z-index:16000;
-	
+	z-index:16000;	
 	}
+
+
 	.MsgBoxx1{
 	position:absolute;
 	border:solid 1px #FF8E00;
@@ -3144,7 +3175,7 @@ background-color:red;
 	height:11vh;
 	top:0px;
 	left:0px;
-	color:#b2b2b2;
+	color:#FF8E00;
 	/*color:#FF8E00;*/
 	font-family: 'DejaVu Sans'; 
 	font-size:2.77vh;
@@ -3534,66 +3565,72 @@ background-color:red;
 		line-height:0px;
 		}
 
+		
 		.tackback{
+			margin: 0px;
+			padding: 0px;
+			position: absolute;
+			width: 2.65vw;
+			height: 2.65vw;
+			bottom: 36vh;
+			left: 1.25vw;
+			z-index: 13;
+		}
+		.tackback img{
+			margin: 0px;
+			padding: 0px;
+			width: 2.65vw;
+			height: 2.65vw;
+		}
+		.claim{
 			margin:0px;
 			padding:0px;
 			position:absolute;
 			width:2.65vw;
 			height:2.65vw;
-			bottom:35.77vh;
-			left:1.25vw;
-			z-index:13;
-			}
-			.history{
-			margin:0px;
-			padding:0px;
-			position:absolute;
-			width:2.65vw;
-			height:2.65vw;
-			bottom:25.77vh;
+			bottom:28vh;
 			left:1.25vw;
 			z-index:12;
-			}
-
-			.claim{
-				margin:0px;
-				padding:0px;
-				position:absolute;
-				width:2.65vw;
-				height:3vw;
-				bottom:15.3vh;
-				left:1.25vw;
-				z-index:11;
-			}
-
-			.chat{
+		}
+		.claim img{
 			margin:0px;
 			padding:0px;
 			position:absolute;
 			width:2.65vw;
-			height:3vw;
-			bottom:4.1vh;
+			height:2.65vw;
+		}
+
+		.history{
+			margin:0px;
+			padding:0px;
+			position:absolute;
+			width:2.65vw;
+			height:2.65vw;
+			bottom:20vh;
 			left:1.25vw;
 			z-index:11;
-			}
-			.tackback{
-				margin: 0px;
-				padding: 0px;
-				position: absolute;
-				width: 2.65vw;
-				height: 2.65vw;
-				bottom: 25.77vh;
-				left: 1.25vw;
-				z-index: 13;
-			}
-			.tackback img{
-				margin: 0px;
-				padding: 0px;
-				width: 2.65vw;
-				height: 2.65vw;
-		
-			}
+		}		
 
+		.chat{
+			margin:0px;
+			padding:0px;
+			position:absolute;
+			width:2.65vw;
+			height:2.65vw;
+			bottom:12vh;
+			left:1.25vw;
+			z-index:11;
+		}
+		.back{
+			margin:0px;
+			padding:0px;
+			position:absolute;
+			width:2.65vw;
+			height:2.65vw;
+			bottom:4vh;
+			left:1.25vw;
+		}
+			
 			.BID_Bottom2CardsBlank{
 				position:absolute;
 				height:13.88vh;
@@ -3754,7 +3791,7 @@ background-color:red;
 	width:56.3vh;
 	height:10.275vh;
 	left:50%;
-	top:45vh;
+	top:20.83vh;
 	-moz-transform: translateX(-50%);
 	-webkit-transform: translateX(-50%);
 	-ms-transform: translateX(-50%);	
@@ -3768,7 +3805,7 @@ background-color:red;
 	position:absolute;
 	width:84.16vh;
 	height:20.55vh;
-	top:58.5vh;
+	top:20.83vh;
 	left:50%;
 	-moz-transform: translateX(-50%);
 	-webkit-transform: translateX(-50%);
@@ -3914,7 +3951,7 @@ background-color:red;
 	right:2.22vh;
 	width:15.277vh;
 	height:10vh;
-	z-index:999999999999999;
+	z-index:999999;
 	}
 	#BidingCntNS-PR{
 	position:absolute;
@@ -3995,8 +4032,8 @@ background-color:red;
 	margin:0px;
 	padding:0px;
 	position:absolute;
-	width:2.5vw;
-	height:2.5vw;
+	width:2.65vw;
+	height:2.65vw;
 	border-radius: 50%;
 	display: inline-block;
 	}
@@ -4027,11 +4064,44 @@ background-color:red;
 		padding:0px;
 		position:absolute;
 		width:2.65vw;
-		height:3.06vw;
+		height:2.65vw;
 		left:1.25vw;
-		top:2vh;
+		top:4vh;
 		border:solid 0px #FF8E00;
 	}
 
+	#logout{
+		margin:0px;
+		padding:0px;
+		position:absolute;
+		width:2.65vw;
+		height:2.65vw;
+		left:1.25vw;
+		top:12vh;
+	}
 	
-	
+	.btn{
+		cursor: pointer;
+		color:#B2B2B2;;	
+	}
+
+	.loading{
+		left:50%;
+		top:45%;
+		position:fixed;
+		z-index: 20001;
+	}
+
+	#splash-screen{
+		background-color: #ff8e00; 
+		width:100vw;
+		height:100vh;
+	}
+	#splash-screen img{
+		left:50%;top:50%;
+		position:absolute; 
+		width:271px;
+		height: 162px;
+		margin-left:-135px;
+		margin-top:-81px;
+	}

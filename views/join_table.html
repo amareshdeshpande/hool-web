@@ -1,48 +1,34 @@
 
-	 <div id="createTablebody" ng-controller="joinTableCtrl">
-	 
-	 	<div id="dvbody2">
-				 
-        
-                  <table id="grid"  class="simple-data-grid">
-                     <!-- <tr>
-                        <th  ng-click="sortData('turnTime')">	Time 	 <div  ng-class="arrow-up"></div></th>
-                        <th  ng-click="sortData('host')">	USer <div  ng-class="getSortClass('host')"></div></th>
-                        <th  ng-click="sortData('host')">	Host     <div  ng-class="getSortClass('host')"></div></th>                       
-                        <th  ng-click="sortData('numOfPlayer')">Players  <div  ng-class="getSortClass('numOfPlayer')"></div></th>
-                        <th  ng-click="sortData('privacy')">Privacy  <div  ng-class="getSortClass('privacy')"></div></th>
-                        <th  ng-click="sortData('Kibitzer')">Kibitzer<div  ng-class="getSortClass('kibitzer')"></div></th>
-                       
-                     </tr> -->
+<div id="createTablebody" ng-controller="joinTableCtrl">	 
+<div id="dvbody2">
+      <table id="grid"  class="simple-data-grid">                    
+            <thead>
+            <tr class="sorted">
+                  <th data-key="time" class="column_time"  ng-click="sortData('turnTime')" >
+                  <a href="javascript:void(0)">Time<span class="sort desc sprite-icons-up">▼</span></a></th>
+                  <th data-key="" class="column_"><a href="javascript:void(0)"></a></th>
+                  <th data-key="host" class="column_host" ng-click="sortData('hostName')" >
+                  <a href="javascript:void(0)">Host</a></th>
+                  <th data-key="players" class="column_players" ng-click="sortData('noOfPlayer')" >
+                  <a href="javascript:void(0)">Players</a></th>
+                  <th data-key="history" class="column_history"><a href="javascript:void(0)">History</a></th>
+                  <th data-key="kibitzer" class="column_kibitzer" ng-click="sortData('noOfKibitzer')" >
+                  <a href="javascript:void(0)">Kibitzers</a></th>
+            </tr>
+            </thead>
 
-                     <thead>
-                        <tr class="sorted">
-                           <th data-key="time" class="column_time"  ng-click="sortData('turnTime')" >
-                              <a href="javascript:void(0)">Time<span class="sort desc sprite-icons-up">▼</span></a></th>
-                           <th data-key="" class="column_"><a href="javascript:void(0)"></a></th>
-                           <th data-key="host" class="column_host" ng-click="sortData('hostName')" >
-                              <a href="javascript:void(0)">Host</a></th>
-                           <th data-key="players" class="column_players" ng-click="sortData('noOfPlayer')" >
-                              <a href="javascript:void(0)">Players</a></th>
-                           <th data-key="history" class="column_history"><a href="javascript:void(0)">History</a></th>
-                           <th data-key="kibitzer" class="column_kibitzer" ng-click="sortData('noOfKibitzer')" >
-                              <a href="javascript:void(0)">Kibitzers</a></th>
-                        </tr>
-                     </thead>
-
-
-                     <tbody>
-                        <tr ng-repeat = "table in $root.tables | orderBy:sortColumn:reverseSort" ng-click="clickTableList(table)">
-                           <td class="column_time" ><!--{{ table.turnTime }}--> ∞ {{second}}</td> 
-                           <td  ng-class="table.privacy==1?'privacy_lock':'privacy_unlock'"></td>                     
-                           <td class="column_host">{{ table.hostName }}</td>                       
-                           <td class="column_players">&nbsp;&nbsp;&nbsp;{{ table.noOfPlayer}}<span>/</span>{{table.tableType}}</td>
-                           <td ng-class="table.history==1?'history_unlock':'history_lock'" ></td>
-                          <!--  <td ng-if="table.kibitzer==0" ><img height="3.055vh" width="2.222vh" src="assets/images/lock_ofwhite.svg"></td> -->
-                           <td ng-show="table.kibitzer==1" class="column_kibitzer"></td>
-                           <td ng-hide="table.kibitzer==1" class="column_kibitzer">{{ table.noOfKibitzer}}</td>
-                        </tr> 
-                     </tbody>
-                  </table> 
-			</div>
-	 </div>
+            <tbody>
+            <tr ng-repeat = "table in $root.tables | orderBy:sortColumn:reverseSort" ng-click="clickTableList(table)">
+                  <td class="column_time" ><!--{{ table.turnTime }}--> ∞ {{second}}</td> 
+                  <td  ng-class="table.privacy==1?'privacy_lock':'privacy_unlock'"></td>                     
+                  <td class="column_host">{{ table.hostName }}</td>                       
+                  <td class="column_players">&nbsp;&nbsp;&nbsp;{{ table.noOfPlayer}}<span>/</span>{{table.tableType}}</td>
+                  <td ng-class="table.history==1?'history_unlock':'history_lock'" ></td>
+                  <!--  <td ng-if="table.kibitzer==0" ><img height="3.055vh" width="2.222vh" src="assets/images/lock_ofwhite.svg"></td> -->
+                  <td ng-show="table.kibitzer==1" class="column_kibitzer"></td>
+                  <td ng-hide="table.kibitzer==1" class="column_kibitzer">{{ table.noOfKibitzer}}</td>
+            </tr> 
+            </tbody>
+      </table> 
+      </div>
+</div>

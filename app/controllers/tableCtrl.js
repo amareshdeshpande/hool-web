@@ -5,16 +5,15 @@
   var memberId=0;  
   var isGameTableCreated=true;
   app.controller("createTableCtrl", function ($scope, $rootScope,$localStorage,$timeout,$window,commonServ,$http,$location,tableServ) {
-		$rootScope.pageNo=2;
-    	commonServ.resetMenu();    	
-    	commonServ.setSideBar(2);	
+		$rootScope.pageNo=2;    	
 		$rootScope.table={history:1, kibitzer:0, privacy:0, turnTime:15, tableType:4, NoOfKibitzer:100};			
 		$scope.selectHistory=function(val){
 			$rootScope.table.history=val;			
 		};	
 
 		$scope.createTable=function(){				
-			if(isGameTableCreated==true){	
+			if(isGameTableCreated==true){
+				$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = true;	
 				isGameTableCreated=false;						
 				tableServ.createTable($rootScope.table).then(function(result){					
 					var table=result.data.gameTable;
@@ -31,7 +30,8 @@
 						var channelName="game_table_"+table.id;					
 						$rootScope.joinChannel(channelName);
 						isGameTableCreated=true; 						
-						$scope.changePage('views/game_table.html',4);				
+						$scope.changePage('views/game_table.html',4);
+						$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = false;				
 					});
 				});				
 			}
@@ -44,8 +44,7 @@
 //=============================================================================================================
 
 	app.controller("joinInviteCtrl", function ($scope, $rootScope,$localStorage,$timeout,commonServ,$location,$window,$http) {
-	    $rootScope.pageNo=2;	//upen
-    	commonServ.setSideBar(3);	
+	    $rootScope.pageNo=2;	//upen    
 		$scope.joinText='OPEN';
 		$scope.imgSrc="assets/images/HOOLAsset8mdpi.svg";
 		$scope.imgSrcUser="assets/images/compass.png";
@@ -84,10 +83,7 @@
 //============================================================================================================
 
 	app.controller("joinTableCtrl",function($scope,$rootScope,commonServ,webapiUrl,$timeout,tableServ,$window,$localStorage,ngNotify, $interval){
-	 		 $rootScope.pageNo=2;	
-	 		 commonServ.resetMenu();    	
-	    	 commonServ.setSideBar(3);	
-    	     
+	 		 $rootScope.pageNo=2;		 		
 			 $scope.second='Sec';
 			 //$interval(function(){  
 				tableServ.getTableList().then(function(result){ 				 				
@@ -110,7 +106,6 @@
 				}else{
 					return '';
 				}
-
 			};
 
 			/** sort table on header click  End=============*/
@@ -119,17 +114,18 @@
 			$scope.clickTableList=function(table){				
 				/* PLAYER, HOST,KIBITZER*/
 				if(!($scope.tableListClicked)){
+					$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = true;
 					$scope.tableListClicked=true;
 					var memberInfo=JSON.parse($localStorage.memberinfo);				
 					memberId=memberInfo.memberId;										
 					var tableInfo={memberType:'KIBITZER', gameTableMemberKey : {tableId : table.id, memberId : memberId}};				
 					
 					tableServ.joinTableAsKibitzer(tableInfo).then(function(result){							
-						if($rootScope.isMenuClicked){ 
+						/*if($rootScope.isMenuClicked){ 
 							commonServ.resetMenu();
 							commonServ.setSideBar($rootScope.pageNo);
 							$rootScope.menuArea='';
-						}									
+						}*/													
 						$localStorage.memberType='KIBITZER';
 						$localStorage.table=JSON.stringify(table);
 						//console.log("Joined table info : "+JSON.stringify(table));
@@ -140,7 +136,8 @@
 							$scope.changePage('views/game_table.html',4);
 						}else{
 							$scope.changePage('views/game_table_kbz.html',4);
-						}																				
+						}
+						$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = false;																				
 					});
 				} 
 			};
@@ -155,18 +152,18 @@
 
 
 app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,webapiUrl,tableServ,$timeout,$localStorage,$sce,$location,ngNotify) {
+	  
 	var isOpponentAbleToTackBack=true;
 	var isAbleToPlay=true;
 	$scope.IsTakeBackVisible=false;
 	$scope.vPlayerName="";
 	var isTakeBackApproved=0;
 	var lastCardPlayedInfo={};
-	$rootScope.isTakeBackEnabled=false;
-	$rootScope.isHistoryEnabled=false;	//history only visible if first card played
+	//$rootScope.isTakeBackEnabled=false;
+	//$rootScope.isHistoryEnabled=false;	//history only visible if first card played
 	$rootScope.pageNo=4;
 	$scope.isJoinTable=0;
 	$scope.startingPole=0;	
-	commonServ.setSideBar(4);	
 	var imgSrc="assets/images/HOOLAsset8mdpi.svg";
 	var table=JSON.parse($localStorage.table);
 	var isKibitzerMovedToOwnScreen=false;
@@ -185,7 +182,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	var dealerPole=-1;
 	$scope.activePole=[false,false,false,false];
 	$scope.topMember={status:0}; $scope.rightMember={status:0,isClaimed:false};$scope.bottomMember={status:0};$scope.leftMember={status:0,isClaimed:false};
-	$scope.claimed.pole=-1; //0: north, 1: East, 2: South and 3: West
+	var claimeSide=-1; //0: north, 1: East, 2: South and 3: West
 	$scope.init=function(){
 		tableServ.gameTableRecord(table.id).then(function(result){					
 			populatePlayerList(result.data.table);
@@ -222,7 +219,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 								updateLeavedUserInfo(payload.sender);									
 							}else{
 								//if($localStorage.memberType=="KIBITZER" && table.hostId!=memberInfo.memberId){					
-									$scope.changePage('views/join_table.html',2);						
+									$scope.changePage('views/join_table.html',3);						
 								//};	
 							}								
 						});
@@ -254,12 +251,12 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 									$scope.leftMember.isHost=true;	
 								}
 							}else{
-								$scope.changePage('views/join_table.html',2);
+								$scope.changePage('views/join_table.html',3);
 							}								
 						});
 					}
 					else if($localStorage.memberType=="KIBITZER" && table.hostId!=memberInfo.memberId && playersInfo.length==0 && !table.hostId){
-						$scope.changePage('views/join_table.html',2);
+						$scope.changePage('views/join_table.html',3);
 					}
 				}					
 			}else if(payload.type=='DISTRIBUTE'){
@@ -351,7 +348,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	$rootScope.takeBack=function(){				
 		var takebackMessage = {sender: $localStorage.username, type: 'TAKEBACK_REQUEST', content:JSON.stringify(lastCardPlayedInfo)};	
 		$rootScope.sendMessage(takebackMessage);
-		$rootScope.isTakeBackEnabled=false;		//Added by Shuvankar dated 2019.01.28 (for hiding takeback button once clicked)
+		//$rootScope.isTakeBackEnabled=false;		//Added by Shuvankar dated 2019.01.28 (for hiding takeback button once clicked)
+		$rootScope.sidebar[4]=false;
 	};
 
 	/****************************************************************************
@@ -421,7 +419,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 			}			
 			turnCount-=1;
 			if(turnCount<=0 && wonTricksCount[0]+wonTricksCount[1]<=0){
-				$rootScope.isHistoryEnabled=false;
+				//$rootScope.isHistoryEnabled=false;
+				$rootScope.sidebar[3]=false;
 			}
 			//$scope.playedCard.splice(data.playerPole,1);	
 			$scope.playedCard[data.playerPole]=null;	
@@ -436,7 +435,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 			playedCardInfo = playedCardInfo.splice(0, playedCardInfo.length-1);
 			//console.log('playedCardInfo.length : '+playedCardInfo.length);
 			lastCardPlayedInfo={};				
-			$rootScope.isTakeBackEnabled=false;	
+			//$rootScope.isTakeBackEnabled=false;	
+			$rootScope.sidebar[4]=false;
 			isOpponentAbleToTackBack=true;
 			if(data.isDummy==false && data.playerPole==loggedInMemberPole){
 				deletePreviousCardFromHistory();
@@ -458,11 +458,11 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	/*************TAKE BACK CARD MODEL ENDS HERE************************** */
 	var isPositionTaken=true;
 	$scope.joinTableAsPlayer=function(val){				
-		if(isPositionTaken){
+		if(isPositionTaken){			
 			isPositionTaken=false;				
 			if(($scope.topMember.status==0 && val==0) || ($scope.rightMember.status==0 && val==1) ||
 					($scope.bottomMember.status==0 && val==2)||($scope.leftMember.status==0 && val==3)){
-				//var tableInfo={memberType:'KIBITZER', gameTableMemberKey : {tableId : table.id, memberId :memberId}};
+				$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = true;
 				var playerInfo={gameTableMemberKey : {tableId : table.id, memberId : memberId}, pole:val,memberType:'PLAYER'};		
 				
 				tableServ.joinTableAsPlayer(playerInfo).then(function(result){										
@@ -472,7 +472,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 						$localStorage.memberType="PLAYER";
 						var chatMessage = {sender: $localStorage.username, type: 'UGTL', content:null};
 						$rootScope.sendMessage(chatMessage);
-					}					
+					}
+					$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = false;					
 				});				
 			}
 			isPositionTaken=true;
@@ -484,7 +485,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		var count=0;		
 		angular.forEach(data, function(value, key){
 			var isHost=table.hostId == value.gameTableMemberKey.memberId ? true: false;			
-			var palyerInfo={pole:value.pole, userName:value.member.username, memberId:value.member.id,
+			var palyerInfo={pole:value.pole, username:value.member.username, memberId:value.member.id,
 			userImage:'assets/images/profile_icon/'+value.member.imageName,status:1,
 			poleName:poleArr[value.pole],bidStatus:false,isHost:isHost,highestBid:false};
 			if(value.pole==0){
@@ -619,10 +620,10 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 
 
 	function resetPlayerSides(){
-		$scope.topMember={pole:0,status:0,userImage:imgSrc,userName:addName,poleName:poleArr[0]};
-		$scope.rightMember={pole:1,status:0,userImage:imgSrc,userName:addName,poleName:poleArr[1]};
-		$scope.bottomMember={pole:2,status:0,userImage:imgSrc,userName:addName,poleName:poleArr[2]};
-		$scope.leftMember={pole:3,status:0,userImage:imgSrc,userName:addName,poleName:poleArr[3]};
+		$scope.topMember={pole:0,status:0,userImage:imgSrc,username:addName,poleName:poleArr[0]};
+		$scope.rightMember={pole:1,status:0,userImage:imgSrc,username:addName,poleName:poleArr[1]};
+		$scope.bottomMember={pole:2,status:0,userImage:imgSrc,username:addName,poleName:poleArr[2]};
+		$scope.leftMember={pole:3,status:0,userImage:imgSrc,username:addName,poleName:poleArr[3]};
 
 	}
 
@@ -1516,9 +1517,11 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				$scope.activePole[pole]=false;
 				//In this version fourth player woun't be able to take back
 				if(turnCount<3){	
-					$rootScope.isTakeBackEnabled=true;																			
+					//$rootScope.isTakeBackEnabled=true;
+					$rootScope.sidebar[4]=true;																			
 				}	
-				$rootScope.isHistoryEnabled=true;	//history only visible if first card played											
+				//$rootScope.isHistoryEnabled=true;	//history only visible if first card played		
+				$rootScope.sidebar[3]=true;									
 			}
 		}		
 	};
@@ -1554,18 +1557,22 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 
 		if(loggedInMemberPole==data.pole || ($scope.dummy.pole==data.pole && $scope.topMember.pole==$scope.dummy.pole)){
 			if($scope.bottomMember.pole!=$scope.dummy.pole)
-				$rootScope.isTakeBackEnabled=true;
+				$rootScope.sidebar[4]=true;
+				//$rootScope.isTakeBackEnabled=true;
 		}			
 		else{
-			$rootScope.isTakeBackEnabled=false;
+			//$rootScope.isTakeBackEnabled=false;
+			$rootScope.sidebar[4]=false;		
 		}
 		$scope.activePole[data.pole]=false;
 		$scope.isPoleActiveToPlay[data.pole]= false;
 		$scope.playedCard[data.pole]="assets/images/deck/"+data.cardNo + data.cardSuit+".svg";	
 		playedCardInfo[turnCount]= data.cardNo + "-"+ data.cardSuit+"-"+data.pole;		
 		turnCount+=1;
-		$rootScope.isHistoryEnabled=true;		
-		if($scope.bottomMember.pole!=$scope.dummy.pole){		
+		//$rootScope.isHistoryEnabled=true;		
+		$rootScope.sidebar[3]=true;		
+		if($scope.bottomMember.pole!=$scope.dummy.pole){
+			$rootScope.sidebar[2]=true;		
 			var index2=$scope.dummy.cards.indexOf(data.cardNo+data.cardSuit);			
 			if(index2!=-1){				
 				$scope.dummy.cards.splice(index2, 1); 
@@ -1582,14 +1589,14 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 					$scope.bottomMember.cards.splice(index1, 1);			
 			}
 		}
-		 
-		//To reduce played card from claimed pole side
-		if($scope.claimed.pole==$scope.leftMember.pole){
+
+		//To reduce played card from left & right side except dummy pole
+		if($scope.leftMember.pole != $scope.dummy.pole){
 			let indx= $scope.leftMember.cards.indexOf(data.cardNo+data.cardSuit);
 				if(indx!=-1)
 					$scope.leftMember.cards.splice(indx, 1);
 		}
-		if($scope.claimed.pole==$scope.rightMember.pole){
+		if($scope.rightMember.pole != $scope.dummy.pole){
 			let indx= $scope.rightMember.cards.indexOf(data.cardNo+data.cardSuit);
 				if(indx!=-1)
 					$scope.rightMember.cards.splice(indx, 1);
@@ -1597,7 +1604,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 
 		//console.log("Turn count: "+turnCount+" Takeback permission status : "+isOpponentAbleToTackBack);		
 		if(turnCount==4){
-			$rootScope.isTakeBackEnabled=false;			
+			//$rootScope.isTakeBackEnabled=false;	
+			$rootScope.sidebar[4]=false;		
 			for(var i=0;i<playedCardInfo.length; i++){
 				var card=playedCardInfo[i].split('-');
 				currCardNo= card[0];
@@ -1735,8 +1743,11 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	var showGameResult=function(result){		 
 		showAllCards();
 		$timeout(function(){
-			$rootScope.isTakeBackEnabled=false;
-			$rootScope.isHistoryEnabled=false;
+			//$rootScope.isTakeBackEnabled=false;
+			$rootScope.sidebar[4]=false;
+			//$rootScope.isHistoryEnabled=false;
+			$rootScope.sidebar[3]=false;
+			$rootScope.sidebar[2]=false;
 			$rootScope.IsHistoryVisible=false;			
 			$rootScope.tpntAreaHist=false;
 			$rootScope.historyIcon= "HOOLAsset14mdpi";
@@ -1764,9 +1775,12 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		$scope.bottomMember.highestBid=false;
 		
 		$scope.leftMember.isClaimed=false;
-		$scope.rightMember.isClaimed=false;
-		$scope.claimed.pole=-1;
+		$scope.rightMember.isClaimed=false;		
 		$scope.bottomMember.cards=[];
+
+		$rootScope.sidebar[4]=false;//takeback			
+		$rootScope.sidebar[3]=false;//history
+		$rootScope.sidebar[2]=false;//claim
 		
 		isFirstCardPlayed=false;
         $scope.isJoinTable=1;
@@ -1777,6 +1791,14 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		$scope.activePole=[false,false,false,false];
 		wonTricksCount=[0,0];
 		$scope.HighestBid={};
+
+		tempCardNo=0;
+		tempSuitName="NA";	
+		currCardNo=0;
+		currSuitName="NA";
+		tempTrickWinnerPole=-1;
+		turnCount=0;
+		playedCardInfo=[];
 	
 		// reset InfoSharing
 		resetSharingInfo();
@@ -1831,7 +1853,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		$scope.HighestBid={double:0};
 		$scope.topMember={status:0}; $scope.rightMember={status:0};
 		$scope.bottomMember={status:0};$scope.leftMember={status:0};
-		$rootScope.isHistoryEnabled=false;
+		//$rootScope.isHistoryEnabled=false;
+		$rootScope.sidebar[3]=false;
 		$rootScope.tpntAreaHist=false;
 		$rootScope.IsHistoryVisible=false;
 		$rootScope.historyIcon="HOOLAsset14mdpi";
@@ -1892,16 +1915,16 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				});					
 			}else if($scope.isJoinTable>0){		
 				if($scope.topMember.memberId==leavedMemberId){
-					$scope.topMember.userName=addName;
+					$scope.topMember.username=addName;
 					$scope.topMember.isHost=false;
 				}else if($scope.rightMember.memberId==leavedMemberId){
-					$scope.rightMember.userName=addName;
+					$scope.rightMember.username=addName;
 					$scope.rightMember.isHost=false;
 				}else if($scope.bottomMember.memberId==leavedMemberId){
-					$scope.bottomMember.userName=addName;
+					$scope.bottomMember.username=addName;
 					$scope.bottomMember.isHost=false;
 				}else if($scope.leftMember.memberId==leavedMemberId){
-					$scope.leftMember.userName=addName;	
+					$scope.leftMember.username=addName;	
 					$scope.leftMember.isHost=false;
 				}
 				
@@ -2017,9 +2040,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		}else if(content.claimed_by_pole==$scope.leftMember.pole){			
 			$scope.leftMember.isClaimed=true;
 		}
-		claimedInfo=content;
-		$scope.claimed.pole=content.claimed_by_pole;
-		let claimeSide=content.claimed_by_pole;			
+		claimedInfo=content;		
+		claimeSide=content.claimed_by_pole;			
 		if(loggedInMemberPole==((claimeSide+3)%4) || loggedInMemberPole==((claimeSide+1)%4)){											
 			if(!$scope.bottomMember.isDummy){	//to not show takeback alert for dummy																		
 				if(loggedInMemberPole==$scope.Declarer.pole || $scope.topMember.pole==$scope.dummy.pole){
@@ -2095,8 +2117,10 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				$rootScope.leaveChannel();					
 			});
 		}
-		$rootScope.isTakeBackEnabled=false;
-		$rootScope.isHistoryEnabled=false;
+		//$rootScope.isTakeBackEnabled=false;
+		$rootScope.sidebar[4]=false;
+		//$rootScope.isHistoryEnabled=false;
+		$rootScope.sidebar[3]=false;
 	});
 });
 

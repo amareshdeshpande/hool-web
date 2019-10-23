@@ -16,15 +16,14 @@
       $scope.fiveCardArr=[true,true,true,true,true];
       $scope.threeCardArr=[true,true,true];
       $scope.used=false;
-      $scope.threeCardNo=-1;
-      commonServ.setSideBar($rootScope.pageNo);
+      $scope.threeCardNo=-1;    
   
       playersInfo=JSON.parse($localStorage.playersInfo);
       memberInfo=JSON.parse($localStorage.memberinfo);
       table=JSON.parse($localStorage.table);	    
       
       angular.forEach(playersInfo,function(value,key){
-          if(memberInfo.loginId==value.userName){
+          if(memberInfo.loginId==value.username){
             loggedInMemberInfo=value;                    
           }
       });

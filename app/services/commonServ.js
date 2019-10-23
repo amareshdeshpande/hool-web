@@ -2,9 +2,42 @@
     'use strict';
     var app =angular.module("hoolApp");
     var wsConnection=null;
-    app.factory("commonServ",function($rootScope,webapiUrl){    
-        
-        var menuActive=[true,true,true];
+    app.factory("commonServ",function($rootScope){
+        /*********************************************************************
+         * PageNo details 1:home Page, 2:CreateTable Page, 3:Table List page, 
+         * 4:Gametable Page, 5:Kibitzer page
+         * Index details in Sidebar variable  0:back, 1: chat, 2:claim, 3:history,
+         * 4:tackeback
+         *********************************************************************/          
+    	return{
+    		hideSideItem:function(){
+               $rootScope.sidebar=[false,false,false,false,false];
+            },setSideBar:function(pageNo){                       
+                if(pageNo==1){//home page
+                    $rootScope.sidebar=[false,false,false,false,false];
+                }else if(pageNo==2){//Create game table page
+                    $rootScope.sidebar=[true,false,false,false,false];        
+                }else if(pageNo==3){//Game table list
+                    $rootScope.sidebar=[true,false,false,false,false];                      
+                }
+                else if(pageNo==4){//Game table page
+                    $rootScope.sidebar=[true,true,false,false,false];                   
+                }
+                else if(pageNo==5){//kibitzer page
+                    $rootScope.sidebar=[true,false,false,false,false];                    
+                }  
+            }
+    	};
+    });
+ } ());	 
+
+
+
+
+
+
+
+ /**var menuActive=[true,true,true];
         var menuInActive=[false,false,false];
         var menuItems=menuInActive;
         var sidebar=menuInActive;       
@@ -50,6 +83,4 @@
                     $rootScope.sidebar[3]=true;                     
                 }  
             }
-    	};
-    });
- } ());	 
+    	}; */

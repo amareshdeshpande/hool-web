@@ -21,11 +21,11 @@
 			<div class="inner">			
 				<div ng-show="!leftMember.bidStatus" class="rotateL"  ng-style="{'color' : activePole[3]?'#FF8E00':'#B2B2B2'}" >
 					<span ng-if="leftMember.isHost"><img ng-src="{{activePole[3]?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
-					{{isJoinTable>0?'('+leftMember.poleName+')':''}} {{leftMember.userName | capitalize}}
+					{{isJoinTable>0?'('+leftMember.poleName+')':''}} {{leftMember.username | capitalize}}
 				</div>
 				<div ng-show="leftMember.bidStatus" class="rotateL"  ng-style="{'color' : leftMember.highestBid?'#FF8E00':'#B2B2B2'}" >
 					<span ng-if="leftMember.isHost"><img ng-src="{{leftMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
-					{{isJoinTable>0?'('+leftMember.poleName+')':''}}  {{leftMember.userName | capitalize}} {{'['+leftMember.bid.num+''|replace:'1':'I'}}
+					{{isJoinTable>0?'('+leftMember.poleName+')':''}}  {{leftMember.username | capitalize}} {{'['+leftMember.bid.num+''|replace:'1':'I'}}
 					<span ng-if="(leftMember.bid.suit+'').length>1" ng-style="{'color' : leftMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{leftMember.bid.suit}}</span>
 					<img ng-if="(leftMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{leftMember.highestBid ? leftMember.bid.suit+'_Y' : leftMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}
 				</div>
@@ -55,11 +55,11 @@
 			<div class="inner">
 				<div ng-show="!topMember.bidStatus" class="Tx_2"   ng-style="{'color' : activePole[0]?'#FF8E00':'#B2B2B2'}">
 					<span ng-if="topMember.isHost"><img ng-src="{{activePole[0]?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
-					  {{isJoinTable>0?'('+topMember.poleName+')':''}} {{topMember.userName | capitalize}}</div>
+					  {{isJoinTable>0?'('+topMember.poleName+')':''}} {{topMember.username | capitalize}}</div>
 				
 				<div ng-show="topMember.bidStatus" class="Tx_2" ng-style="{'color' : topMember.highestBid?'#FF8E00':'#B2B2B2'}">
 					<span ng-if="topMember.isHost"><img ng-src="{{topMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
-					{{isJoinTable>0?'('+topMember.poleName+')':''}} {{topMember.userName | capitalize}}  {{'['+topMember.bid.num+''|replace:'1':'I' }}
+					{{isJoinTable>0?'('+topMember.poleName+')':''}} {{topMember.username | capitalize}}  {{'['+topMember.bid.num+''|replace:'1':'I' }}
 					 <span ng-if="(topMember.bid.suit+'').length>1" ng-style="{'color' : topMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{topMember.bid.suit}}</span>
 					 <img ng-if="(topMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{topMember.highestBid ? topMember.bid.suit+'_Y' : topMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}	
 				</div>
@@ -114,10 +114,10 @@
 		<div class="pname"><div class="inner">
 			<div ng-show="!bottomMember.bidStatus" class="Tx_1" ng-style="{'color' : activePole[2]?'#FF8E00':'#B2B2B2'}" >
 				<span ng-if="bottomMember.isHost"><img ng-src="{{activePole[2]?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
-				  {{isJoinTable>0?'('+bottomMember.poleName+')':''}} {{bottomMember.userName | capitalize}}</div>
+				  {{isJoinTable>0?'('+bottomMember.poleName+')':''}} {{bottomMember.username | capitalize}}</div>
 			<div ng-show="bottomMember.bidStatus" class="Tx_1"  ng-style="{'color' : bottomMember.highestBid?'#FF8E00':'#B2B2B2'}" >
 				<span ng-if="bottomMember.isHost"><img ng-src="{{bottomMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
-				  {{isJoinTable>0?'('+bottomMember.poleName+')':''}} {{bottomMember.userName | capitalize}}  {{'['+bottomMember.bid.num+''|replace:'1':'I'}}
+				  {{isJoinTable>0?'('+bottomMember.poleName+')':''}} {{bottomMember.username | capitalize}}  {{'['+bottomMember.bid.num+''|replace:'1':'I'}}
 				 <span ng-if="(bottomMember.bid.suit+'').length>1" ng-style="{'color' : bottomMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{bottomMember.bid.suit}}</span>
 				 <img  ng-if="(bottomMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{bottomMember.highestBid ? bottomMember.bid.suit+'_Y' : bottomMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}	
 			</div>
@@ -159,14 +159,14 @@
 			</div>
 		</div>
 		<div class="R_2_Text"><div class="inner" style="width:10px">
-			<!-- <div class="rotateR">{{rightMember.userName}}</div> -->
+			<!-- <div class="rotateR">{{rightMember.username}}</div> -->
 			<div ng-show="!rightMember.bidStatus" class="rotateR" ng-style="{'color' : activePole[1]?'#FF8E00':'#B2B2B2'}" >
 				<span ng-if="rightMember.isHost"><img ng-src="{{activePole[1]?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span></span>
-				  {{isJoinTable>0?'('+rightMember.poleName+')':''}} {{rightMember.userName | capitalize}}
+				  {{isJoinTable>0?'('+rightMember.poleName+')':''}} {{rightMember.username | capitalize}}
 			</div>
 			<div ng-show="rightMember.bidStatus" class="rotateR"	ng-style="{'color' : rightMember.highestBid?'#FF8E00':'#B2B2B2'}" >
 				<span ng-if="rightMember.isHost"><img ng-src="{{rightMember.highestBid?'assets/images/misc/Crown_active.svg':'assets/images/misc/Crown_dull.svg'}}" style="width:3.33vh" /></span>
-				  {{isJoinTable>0?'('+rightMember.poleName+')':''}} {{rightMember.userName | capitalize}}  {{'['+rightMember.bid.num+''|replace:'1':'I'}}
+				  {{isJoinTable>0?'('+rightMember.poleName+')':''}} {{rightMember.username | capitalize}}  {{'['+rightMember.bid.num+''|replace:'1':'I'}}
 				 <span ng-if="(rightMember.bid.suit+'').length>1" ng-style="{'color' : rightMember.highestBid?'#FF8E00':'#B2B2B2','font-size':'3.33vh'}">{{rightMember.bid.suit}}</span>				
 				 <img ng-if="(rightMember.bid.suit+'').length==1" ng-src="assets/images/misc/{{rightMember.highestBid ? rightMember.bid.suit+'_Y' : rightMember.bid.suit+'_W'}}.svg" style="width:2.5vh">{{']'}}				
 			</div>
