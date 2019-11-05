@@ -17,6 +17,7 @@
 				isGameTableCreated=false;						
 				tableServ.createTable($rootScope.table).then(function(result){					
 					var table=result.data.gameTable;
+					$rootScope.table=table;
 					/* PLAYER, HOST,KIBITZER*/				
 					var memberInfo=JSON.parse($localStorage.memberinfo);				
 					memberId=memberInfo.memberId;								
@@ -30,7 +31,7 @@
 						var channelName="game_table_"+table.id;					
 						$rootScope.joinChannel(channelName);
 						isGameTableCreated=true; 						
-						$scope.changePage('views/game_table.html',4);
+						$rootScope.changePage('views/game_table.html',4);
 						$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = false;				
 					});
 				});				
@@ -72,7 +73,7 @@
 			$scope.currentSide=val;
 					
 			$timeout(function(){
-				$scope.changePage('views/play_game.html',4);					
+				$rootScope.changePage('views/play_game.html',4);					
 			}, 1000);
 		};
 		$scope.$on('$destroy', function() {	
@@ -111,7 +112,8 @@
 			/** sort table on header click  End=============*/
 
 			$scope.tableListClicked=false;		
-			$scope.clickTableList=function(table){				
+			$scope.clickTableList=function(table){
+				$rootScope.table = table;				
 				/* PLAYER, HOST,KIBITZER*/
 				if(!($scope.tableListClicked)){
 					$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = true;
@@ -133,9 +135,9 @@
 						var channelName="game_table_"+table.id;								
 						$rootScope.joinChannel(channelName);	
 						if(table.noOfPlayer<4){					
-							$scope.changePage('views/game_table.html',4);
+							$rootScope.changePage('views/game_table.html',4);
 						}else{
-							$scope.changePage('views/game_table_kbz.html',4);
+							$rootScope.changePage('views/game_table_kbz.html',4);
 						}
 						$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = false;																				
 					});
@@ -206,7 +208,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 					//console.log("Length : "+result.data.table.length+" Type : "+$localStorage.memberType+" Host : "+table.hostId +"  User Id :"+memberInfo.memberId);
 					//result.data.table.length==0 && 
 					/*if($localStorage.memberType=="KIBITZER" && table.hostId!=memberInfo.memberId){
-						$scope.changePage('views/join_table.html',2);
+						$rootScope.changePage('views/join_table.html',2);
 					}*/					
 				});							
 			}else if(payload.type=='LEAVE'){			    
@@ -215,11 +217,11 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 					if(table.hostId==payload.sender){											
 						tableServ.getGameTableById(table.id).then(function(result){																	
 							if(result.data.table){													
-								table=result.data.table;								
+								$rootScope.table=table=result.data.table;								
 								updateLeavedUserInfo(payload.sender);									
 							}else{
 								//if($localStorage.memberType=="KIBITZER" && table.hostId!=memberInfo.memberId){					
-									$scope.changePage('views/join_table.html',3);						
+									$rootScope.changePage('views/join_table.html',3);						
 								//};	
 							}								
 						});
@@ -227,9 +229,15 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 						updateLeavedUserInfo(payload.sender);										
 					}
 					//To noify all user
-					ngNotify.config({html: false});
-					var msg=memberInfo.memberId == payload.sender? "you" : content.login_id;
-					ngNotify.set(msg+ " left the table!",{type: 'grimace',duration: 3000,position: 'top'});
+					let msg=memberInfo.memberId == payload.sender? "you" : content.login_id;
+					//ngNotify.config({html: false});					
+					//ngNotify.set(msg+ " left the table!",{type: 'grimace',duration: 3000,position: 'top'});
+					$rootScope.confirmbox={message : msg+ " left the table!", boxType : "alert", boxCode : "back"};
+					$rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = true;
+					$timeout(function(){
+						$rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = false;
+					},3000);
+
 					$timeout(function(){
 						resetGameTableOnLeave();
 						$rootScope.isChatClicked=false;                
@@ -240,7 +248,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 					if(content.is_sender_host){						
 						tableServ.getGameTableById(table.id).then(function(result){																	
 							if(result.data.table){	
-								table=result.data.table;								
+							    $rootScope.table = table = result.data.table;								
 								if($scope.topMember.memberId==result.data.table.hostId){
 									$scope.topMember.isHost=true;
 								}else if($scope.rightMember.memberId==result.data.table.hostId){
@@ -251,12 +259,12 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 									$scope.leftMember.isHost=true;	
 								}
 							}else{
-								$scope.changePage('views/join_table.html',3);
+								$rootScope.changePage('views/join_table.html',3);
 							}								
 						});
 					}
 					else if($localStorage.memberType=="KIBITZER" && table.hostId!=memberInfo.memberId && playersInfo.length==0 && !table.hostId){
-						$scope.changePage('views/join_table.html',3);
+						$rootScope.changePage('views/join_table.html',3);
 					}
 				}					
 			}else if(payload.type=='DISTRIBUTE'){
@@ -484,7 +492,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		resetPlayerSides();
 		var count=0;		
 		angular.forEach(data, function(value, key){
-			var isHost=table.hostId == value.gameTableMemberKey.memberId ? true: false;			
+			var isHost=table.hostId == value.gameTableMemberKey.memberId ? true: false;								
 			var palyerInfo={pole:value.pole, username:value.member.username, memberId:value.member.id,
 			userImage:'assets/images/profile_icon/'+value.member.imageName,status:1,
 			poleName:poleArr[value.pole],bidStatus:false,isHost:isHost,highestBid:false};
@@ -513,7 +521,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				//kibitzer 				
 				if($localStorage.memberType=="KIBITZER"){
 					isKibitzerMovedToOwnScreen=true;
-					$scope.changePage('views/game_table_kbz.html',5);
+					$rootScope.changePage('views/game_table_kbz.html',5);
 				}					
 			}			
 		});	
@@ -1929,7 +1937,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				}
 				
 				if($scope.topMember.memberId==table.hostId){
-					$scope.topMember.isHost=true;
+					$scope.topMember.isHost=true;								
 				}else if($scope.rightMember.memberId==table.hostId){
 					$scope.rightMember.isHost=true;
 				}else if($scope.bottomMember.memberId==table.hostId){
@@ -1937,6 +1945,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				}else if($scope.leftMember.memberId==table.hostId){
 					$scope.leftMember.isHost=true;	
 				}
+				$localStorage.table = table;
 			} 
 		},1000);		
 	}
@@ -2005,32 +2014,43 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	 * for all axcept his/her partner. But it's not applicable for Dummy and kibitzer.
 	 * *************************************************************************************/
 	$scope.claimNoCls =[];
+	$scope.isTricksActiveToClaim=[];
 	$scope.range = function(min, max, step){
 		step = step || 1;
 		var input = [];
-		let numberOfPlayedTricks=wonTricksCount[0]+wonTricksCount[1];
-		for (var i = min; i <= max-numberOfPlayedTricks; i += step) input.push(i);
+		let noOfPlayedTricks=wonTricksCount[0]+wonTricksCount[1];
+		for (var i = min; i <= max; i += step){ 
+			input.push(i);			
+		}	
 		return input;
 	};
 	$scope.selectedTricksToClaim = 0;
 	$rootScope.showTricksClaimDialogueBox=function(){	
+		$scope.isClaimBtnActive=false;
 		$scope.selectedTricksToClaim = 0;	
-		$scope.isTrickClaimVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;	
-		for (var i = 0; i <= 13; i++){ 						
-			$scope.claimNoCls[i]='grid-item btn';			
-		}		
+		$scope.isTrickClaimVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
+		let noOfPlayedTricks = wonTricksCount[0] + wonTricksCount[1];	
+		for (var i = 0; i <= 13; i++){ 
+			$scope.isTricksActiveToClaim[i]= i <=(13-noOfPlayedTricks)? true:false;
+			$scope.claimNoCls[i]= i <=(13-noOfPlayedTricks)? 'grid-item btn': 'grid-item btn-inactive'		
+		}	
 	};
-	$rootScope.selectTricksToClaim=function(tricks){
-		for (var i = 0; i <= 13; i++){ 						
+	$rootScope.selectTricksToClaim=function(tricks){		
+		let noOfPlayedTricks = wonTricksCount[0] + wonTricksCount[1];
+		for (var i = 0; i <= (13-noOfPlayedTricks); i++){ 
 			$scope.claimNoCls[i]=(tricks == i? 'grid-item btn-active': 'grid-item btn');			
 		}
-		$scope.selectedTricksToClaim = tricks;			
+		$scope.selectedTricksToClaim = tricks;
+		if(tricks>=0)
+			$scope.isClaimBtnActive=true;					
 	};
-	$scope.claimSelectedTricksToApprove=function(){		
-		$scope.isTrickClaimVisible = $scope.tpntArea = false;
-		let content=JSON.stringify({'claimed_by_pole':loggedInMemberPole,'claimed_tricks':$scope.selectedTricksToClaim,'sender': $localStorage.username});
-		let claimMessage = {sender: $localStorage.username, type: 'CLAIM_REQUEST', content:content};	
-		$rootScope.sendMessage(claimMessage);
+	$scope.claimSelectedTricksToApprove=function(){
+		if($scope.isClaimBtnActive){
+			$scope.isTrickClaimVisible = $scope.tpntArea = false;
+			let content=JSON.stringify({'claimed_by_pole':loggedInMemberPole,'claimed_tricks':$scope.selectedTricksToClaim,'sender': $localStorage.username});
+			let claimMessage = {sender: $localStorage.username, type: 'CLAIM_REQUEST', content:content};	
+			$rootScope.sendMessage(claimMessage);
+		}
 	};
 
 	var claimedInfo=null;
@@ -2047,17 +2067,21 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				if(loggedInMemberPole==$scope.Declarer.pole || $scope.topMember.pole==$scope.dummy.pole){
 					$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
 					$scope.claimedTricks=content.claimed_tricks;
-					$scope.claimedByPlayer=content.sender;		
-				}else{						
-					//if(loggedInMemberPole==(claimeSide== 3 ? 0 : claimeSide+1)){
-						$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
-						$scope.claimedTricks=content.claimed_tricks;
-						$scope.claimedByPlayer=content.sender;
-					//}
+					$scope.claimedByPlayer = content.sender;
+					let msg=content.claimed_tricks>1 ? "I claim "+content.claimed_tricks+" tricks":(content.claimed_tricks==1?"I claim "+content.claimed_tricks+" trick":"I concede all the tricks");
+					$scope.claimedMessage=msg;		
+				}else{	
+					$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
+					$scope.claimedTricks=content.claimed_tricks;
+					$scope.claimedByPlayer=content.sender;
+					let msg=content.claimed_tricks>1 ? "I claim "+content.claimed_tricks+" tricks":(content.claimed_tricks==1?"I claim "+content.claimed_tricks+" trick":"I concede all the tricks");
+					$scope.claimedMessage=msg;	
 				}
 			}
 		}
 	};
+
+
 	var isAccept=true;
 	$scope.acceptRejectClaimedTricks=function(actionCode){	
 		//Action Code 0 is rejected and 1 stand for accepted

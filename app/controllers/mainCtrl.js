@@ -11,7 +11,7 @@
             $rootScope.initializeWebSocket();   
          }
          
-		 $scope.changePage=function(pageName,no){             
+		 $rootScope.changePage=function(pageName,no){             
             $rootScope.pageNo=no;               
             $scope.viewName=pageName;               
             commonServ.setSideBar(no);
@@ -23,9 +23,12 @@
          $scope.IsChatActive=true;
          $scope.sendChatMessage=function(chat){  
             if(chat.message)  {  
-                let payload={sender: $localStorage.username, type: 'CHAT', content:chat.message};
-                $scope.messages.push(payload);            
-                $rootScope.sendMessage(payload);  
+                let memberInfo=JSON.parse($localStorage.memberinfo);  
+                $scope.chat.userType = $localStorage.memberType;             
+                $scope.chat.isHost = memberInfo.memberId==$rootScope.table.hostId? true:false;
+                $scope.chat.imageName=memberInfo.imageName;
+                $scope.messages.push({sender: $localStorage.username, type: 'CHAT', content:chat});                
+                $rootScope.sendMessage({sender: $localStorage.username, type: 'CHAT', content:JSON.stringify(chat)});  
                 $scope.chat= {}; 
             }
          };
@@ -38,11 +41,17 @@
             }        
           };
 
-         $scope.showChatMessage=function(payload){           
+         $scope.showChatMessage=function(payload){   
+            payload.content=JSON.parse(payload.content);        
             if($localStorage.username!=payload.sender){
                 $scope.messages.push(payload);
             }          
         };
+
+        $scope.clearChatMessage=function(payload){           
+            $rootScope.messages = [];        
+        };
+
         $scope.avatarUrl = function(uuid){
             return 'http://robohash.org/'+uuid+'?set=set2&bgset=bg2&size=70x70';
         };
@@ -69,11 +78,11 @@
         $scope.createTable=function(){
         	if(!$localStorage.token)
         	 $rootScope.reLogin();        	 	    
-            $scope.changePage('views/create_table.html',2);
+            $rootScope.changePage('views/create_table.html',2);
         }
 
         $scope.joinTable=function(){
-             $scope.changePage('views/join_table.html',2);
+             $rootScope.changePage('views/join_table.html',2);
         }
    });
 
@@ -114,12 +123,9 @@
         }
 
 
-         $scope.backBtnCliked=function(){            
-            $rootScope.isChatClicked=false;
-            $rootScope.messages = [];
-            //alert($rootScope.pageNo)
+         $scope.backBtnCliked=function(){    
             if($rootScope.pageNo==2 ||$rootScope.pageNo==3)
-                $scope.changePage('views/home.html',1); 
+                $rootScope.changePage('views/home.html',1); 
             else{
                 $rootScope.confirmbox={
                     message:"Do you want to exit the table?", 
@@ -128,13 +134,11 @@
                     btnNo:"no",
                     boxType:"confirm",
                     boxCode:"back"};
-                $rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = true; 
+                 $rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = true; 
             }           
          }
 
-         $scope.logout=function(){                   
-            $rootScope.isChatClicked=false; 
-            $rootScope.messages = [];
+         $scope.logout=function(){ 
             $rootScope.confirmbox={
                 message:"Do you want to logout?", 
                 boxType:"logout", 
@@ -149,9 +153,14 @@
             if (actionCode == 1 && $rootScope.confirmbox.boxCode=="logout") {
                 $rootScope.disconnect();
                 $rootScope.sidebar=[false,false,false,false,false,false];  	
-            }else if(actionCode == 1 && $rootScope.confirmbox.boxCode=="back"){
-                $scope.changePage('views/join_table.html',3); 
-                $rootScope.sidebar=[true,false,false,false,false,false];  
+            }else if(actionCode == 1 && $rootScope.confirmbox.boxCode=="back"){                
+                if($rootScope.isChatClicked){//if chat is oppened
+                    $rootScope.isChatClicked=false;
+                    $rootScope.chatIcon="HOOLAsset13mdpi"
+                    $rootScope.chatArea='';                  
+                }
+                $rootScope.changePage('views/join_table.html',3); 
+                $rootScope.sidebar=[true,false,false,false,false,false];
             }
         }  
 

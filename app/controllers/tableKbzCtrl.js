@@ -171,7 +171,7 @@
                     tableServ.gameTableRecord(table.id).then(function(result){ 
                         kibitzerLeftReason="UGTL"; 
                         $scope.topMember=[]; $scope.rightMember=[]; $scope.bottomMember=[]; $scope.leftMember=[]; 
-                        $scope.changePage('views/game_table.html',4);
+                        $rootScope.changePage('views/game_table.html',4);
                         resetGameTableOnLeave();
                     });							
                 }else if(payload.type=='LEAVE'){    
@@ -181,10 +181,10 @@
                             if(result.data.table){//if table exists that means host is available													
                                 table=result.data.table;
                                 kibitzerLeftReason="UGTL"; 
-                                $scope.changePage('views/game_table.html',4);
+                                $rootScope.changePage('views/game_table.html',4);
                             }else{
                                 kibitzerLeftReason="LEAVE"; 
-                                $scope.changePage('views/join_table.html',2);
+                                $rootScope.changePage('views/join_table.html',2);
                             };	
                         };							
                     });            

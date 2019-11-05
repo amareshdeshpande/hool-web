@@ -293,6 +293,17 @@ body
 	opacity: 0.8;
     filter: alpha(opacity=80); /* For IE8 and earlier */
 }
+.lightbox-dark{
+	position:fixed;
+	background-color:#18072B;
+	width:100vw;
+	height:100vh;
+	z-index:20000;
+	top:0px;
+	margin: 0px;	
+	opacity: 0.95;
+    filter: alpha(opacity=90); /* For IE8 and earlier */
+}
 
 .hoollogos
 {
@@ -1792,6 +1803,15 @@ width:88vw;
 height:6.11vh;
 left:0px;
 }
+.ChatingDelete{
+	margin:0px;
+	padding:0px;
+	position:absolute;
+	left:0px;
+	width:6.11vh;
+	height:6.11vh;
+	background-color:#FF8E00;
+}
 .ChatingType{
 margin:0px;
 padding:0px;
@@ -1799,8 +1819,8 @@ position:absolute;
 width:100%;
 height:6.11vh;
 left:0px;
-
-padding-left:5vh;
+margin-left:6.11vh;
+padding-left:1vh;
 border:0px;
 outline:none;
 
@@ -2130,18 +2150,18 @@ margin-left:5.55vh;
 text-decoration:underline;
 }
 .ChatingTxMe{
-width:100%;
-/*position:absolute;*/
-bottom:10vh;
-margin:0px;
-/*font-family: 'Roboto';*/
-font-size:3.33vh;
-color:#B2B2B2;
-text-align:left;
-float:left;
-padding:3.33vh 0vh;
-text-decoration:none;
-border-bottom:dotted 1px gray;
+	width:100%;
+	/*position:absolute;*/
+	bottom:20vh;
+	margin:0px;
+	/*font-family: 'Roboto';*/
+	font-size:3.33vh;
+	color:#B2B2B2;
+	text-align:left;
+	float:left;
+	padding:3.33vh 0vh;
+	text-decoration:none;
+	border-bottom:dotted 1px gray;
 }
 #MeMsg{
 color:#FFFFFF;
@@ -2149,6 +2169,11 @@ color:#FFFFFF;
 #YouMsg{
 color:#FF8E00;
 }
+#KibiMsg{
+color:#4ab080;
+}
+	
+
 .ChatingTxYou{
 width:100%;
 /*position:absolute;*/
@@ -3138,8 +3163,8 @@ background-color:red;
 .main-alert-box{
 	position:absolute;
 	background-color:#18072B;
-	width:60vh;
-	height:19vh;
+	min-width:60vh;
+	min-height:19vh;
 	margin-top:-11vh;
 	left:50%;
 	top:50%;
@@ -3841,6 +3866,9 @@ background-color:red;
 		cursor: pointer;
 		color:#FF8E00;
 	}
+	.claim-view .btn-inactive{		
+		color:#333;
+	}
 
 	.claimdiv{
 	position:absolute;
@@ -3898,10 +3926,18 @@ background-color:red;
 	-o-transform: translateX(-50%) translateY(-50%);
 	transform: translateX(-50%) translateY(-50%);	
 			
-	color:#FF8E00;
+	color:#ffffff;
 	text-align:center;
 	font-family: 'Roboto';  
 	font-size:2.77vh;
+	}
+
+	.activeBtnWithBg{
+		background-color: #FF8E00;
+		cursor: pointer;
+	}
+	.inActiveBtnWithBg{		
+		color: #ffffff;
 	}
 	.claimbtn{
 	position:absolute;

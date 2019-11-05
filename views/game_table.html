@@ -274,27 +274,30 @@
 	<div class="claim-view" style="z-index:500" ng-show="isTrickClaimVisible">
 		<div class="claimnmbr">
 			<div class="grid-container">
-				<div class="grid-item btn" ng-class="claimNoCls[trick]" style="margin: 5px;" ng-click="selectTricksToClaim(trick)" ng-repeat="trick in range(0,13)">{{trick}}</div>					
+				<div class="grid-item" ng-class="claimNoCls[trick]" ng-repeat="trick in range(0,13)">
+					<span ng-if="isTricksActiveToClaim[trick]" ng-click="selectTricksToClaim(trick)">{{trick}}</span>
+					<span ng-if="!isTricksActiveToClaim[trick]">{{trick}}</span>
+				</div>					
 			</div>
 		</div>	
 		<div class="claimareadwn">
-			<div class="claimbtn"><div class="Claim_TX_1 btn" ng-click="tpntArea=isTrickClaimVisible=false">Cancel</div></div>
+			<div class="cancelbtn"><div class="Claim_TX_1 btn" ng-click="tpntArea=isTrickClaimVisible=false">Cancel</div></div>
 			<div class="claimdiv">
-				<div class="doyouclaim">How many more tricks you want to claim?</div>
+				<div class="doyouclaim">How many tricks you want to claim?</div>
 			</div>
-			<div class="cancelbtn"><div class="Claim_TX_1 btn" ng-click="claimSelectedTricksToApprove()">Claim</div></div>
+			<div class="claimbtn {{isClaimBtnActive==true?'activeBtnWithBg':'inActiveBtnWithBg'}}"><div class="Claim_TX_1" ng-click="claimSelectedTricksToApprove()">Claim</div></div>
 		</div>
 	</div>
 
 	<!--This html view is for opponent to accept or reject Claim -->		
 	<div class="claim-asprej" style="z-index:500" ng-show="isClaimAcceptRejectVisible">	
-		<div class="claimnmbr"><div class="doyouclaim-tx">{{claimedByPlayer}}: I claim {{claimedTricks}} more tricks.</div></div>					
+		<div class="claimnmbr"><div class="doyouclaim-tx">{{claimedByPlayer}}: {{claimedMessage}}</div></div>					
 		<div class="claimareadwn">
-			<div class="claimbtn"><div class="Claim_TX_1" ng-click="acceptRejectClaimedTricks(0)">Reject</div></div>
+			<div class="claimbtn"><div class="Claim_TX_1" ng-click="acceptRejectClaimedTricks(1)">Accept</div></div>
 			<div class="claimdiv">
 				<div class="doyouclaim">&nbsp;</div>
 			</div>
-			<div class="cancelbtn"><div class="Claim_TX_1" ng-click="acceptRejectClaimedTricks(1)">Accept</div></div>
+			<div class="cancelbtn"><div class="Claim_TX_1" ng-click="acceptRejectClaimedTricks(0)">Reject</div></div>
 		</div>
 	</div>
 

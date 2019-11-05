@@ -37,6 +37,8 @@
 		<div class="Acpt1" ng-if="confirmbox.boxType=='confirm'" ng-click="getUserResponse(1)">{{confirmbox.btnYes}}</div>
 		<div class="Rejt1" ng-if="confirmbox.boxType=='confirm'" ng-click="getUserResponse(0)">{{confirmbox.btnNo}}</div>		
 	</div>
+
+	
    <script src="assets/plugins/ng-stomp/ng-stomp.standalone.min.js"></script>
    <script src="assets/plugins/jQuery/jquery-3.1.1.min.js"></script>
    <script src="config.js"></script> 
@@ -52,6 +54,24 @@
    <script src="app/services/tableServ.js"></script>  
    <script src="app/services/commonServ.js"></script> 
    <script src="app/services/playgameServ.js"></script>
-  
+
+   <div class="lightbox-dark" id="msgBox">
+		<div class="main-alert-box" ng-cloak>
+			<h3 style="color:white;">Important Message !</h3>
+			<p style="color:white; text-align: justify; line-height: 4vh;"><b> Hello Hooligans ! </b> We have just installed a new version of HOOL - and for this we had to
+				do some fundamental code changes. This means all your user-ids and
+				passwords have been cancelled please sign up once again. We are very sorry about this. Please ignore if already done.
+			</p>				
+		</div>
+		<div style="color:white;position:absolute;top:5vh;right:5vw;" class="btn" id="closeBtn">CLOSE</div>	
+	</div> 
+	
+   <script>
+	  $(document).ready(function(){
+		  $("#closeBtn").click(function(){
+			$("#msgBox").hide();
+		  });
+	  });
+   </script>  
 </body>
 </html>
