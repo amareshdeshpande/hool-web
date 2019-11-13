@@ -6,7 +6,7 @@
 				<div class="ADD_AICON_L"><img ng-src="{{leftMember.userImage}}"></div>
 			</div>
 			
-			<div class="BID_TopCard_New_L" ng-if="!leftMember.isDummy||!leftMember.isClaimed"  ng-show="isJoinTable==1||isJoinTable==2">
+			<div class="BID_TopCard_New_L" ng-if="!leftMember.isDummy && !leftMember.isClaimed"  ng-show="isJoinTable==1||isJoinTable==2">
 				<div  id="BID_LEFT_L" ng-class="{'borderGlow':activePole[leftMember.pole]&&isShareActive&&!leftInfo[0],'WBG infoBG':leftInfo[0],'WBDR':!leftInfo[0]}"></div>				
 				<div  id="BID_LEFT_R" ng-class="{'borderGlow':activePole[leftMember.pole]&&isShareActive&&!leftInfo[1],'WBG infoBG':leftInfo[1],'WBDR':!leftInfo[1]}" ></div>				
 			</div>
@@ -145,7 +145,7 @@
 			<div class="BID_Rgt_ADD btn" ng-click="joinTableAsPlayer(1)"  ng-show="isJoinTable==0" >
 				<div class="ADD_AICON_R"><img ng-src="{{rightMember.userImage}}"></div>
 			</div>
-			<div class="BID_TopCard_New_R"  ng-if="!rightMember.isDummy||!rightMember.isClaimed"  ng-show="isJoinTable==1||isJoinTable==2">
+			<div class="BID_TopCard_New_R"  ng-if="!rightMember.isDummy && !rightMember.isClaimed"  ng-show="isJoinTable==1||isJoinTable==2">
 				<div  id="BID_RIGHT_L" ng-class="{'borderGlow':activePole[rightMember.pole]&&isShareActive&&!rightInfo[0],'WBG infoBG':rightInfo[0],'WBDR':!rightInfo[0]}" ></div>
 				<div  id="BID_RIGHT_R" ng-class="{'borderGlow':activePole[rightMember.pole]&&isShareActive&&!rightInfo[1],'WBG infoBG':rightInfo[1],'WBDR':!rightInfo[1]}">	</div>
 			</div>
@@ -223,7 +223,7 @@
 	</div>
 
 	<!--To show score box details-->
-	<div  ng-class="winningTrickSide=='right'? 'BidingCntTP':'BidingCntTP_2'"  ng-if="isPlayStart&&(!showScore)">
+	<div  ng-class="winningTrickSide=='right'? 'BidingCntTP':'BidingCntTP_2'"  ng-if="isPlayStart&&(!isBidAndTrickBoxInBottom)">
 		<div id="BidingCntNS">N-S</div>	
 		<div id="BidingCntEW">E-W</div>
 		<div id="BidingCntNO1">{{NSPoint+'' |replace:'1':'I'}}</div>
@@ -231,7 +231,7 @@
 	</div>
 
 	<!--To show bidding box details-->
-	<div ng-class="gameContractSide=='right'? 'BidingCntBTMNew  color-white':'BidingCntBTMNew_2  color-white'"  ng-if="!showScore&&(isBiddingStart || isPlayStart)">
+	<div ng-class="gameContractSide=='right'? 'BidingCntBTMNew  color-white':'BidingCntBTMNew_2  color-white'"  ng-if="!isBidAndTrickBoxInBottom&&(isBiddingStart || isPlayStart)">
 		<div id="BidNew1">{{HighestBid.poleName}}</div>		
 		<div id="BidNew2">{{HighestBid.num |replace:'1':'I'}} <span ng-if="HighestBid.suit=='NT'">{{HighestBid.suit}}</span><img ng-if="HighestBid.suit!='NT'" ng-src="assets/images/misc/{{HighestBid.suit}}.svg" style="height:2.5vh"/></div>
 		<div class="BidNewCls3">
@@ -243,7 +243,7 @@
 	
 	
 	<!-- for showing score -->
-	<div class="bidboxarea"  ng-show="showScore">	
+	<div class="bidboxarea"  ng-show="isBidAndTrickBoxInBottom">	
 		<div class="BidingCntBTMNew_2  color-grey">
 			<div id="BidNew1">{{HighestBid.poleName}}</div>		
 			<div id="BidNew2">{{HighestBid.num |replace:'1':'I'}} <span ng-if="HighestBid.suit=='NT'">{{HighestBid.suit}}</span><img ng-if="HighestBid.suit!='NT'" ng-src="assets/images/misc/{{HighestBid.suit}}.svg" style="height:2.5vh"/></div>

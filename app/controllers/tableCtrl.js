@@ -184,7 +184,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	var dealerPole=-1;
 	$scope.activePole=[false,false,false,false];
 	$scope.topMember={status:0}; $scope.rightMember={status:0,isClaimed:false};$scope.bottomMember={status:0};$scope.leftMember={status:0,isClaimed:false};
-	var claimeSide=-1; //0: north, 1: East, 2: South and 3: West
+	var claimedBySide=-1; //0: north, 1: East, 2: South and 3: West
 	$scope.init=function(){
 		tableServ.gameTableRecord(table.id).then(function(result){					
 			populatePlayerList(result.data.table);
@@ -330,7 +330,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				let data = JSON.parse(payload.content);			
 				if(claimAcceptedByPlayer==2 || $scope.Declarer.pole==data.accepted_by_pole){
 					$timeout(function(){									
-						onClaimAcceptRejectDone();	
+						onClaimAcceptRejectDone(data);	
 						claimAcceptedByPlayer=0;			
 					},1000);
 				}				
@@ -1454,7 +1454,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	$scope.playedCard=[];
 	$scope.isPoleActiveToPlay=[false,false,false,false];
 	$scope.showScore=false;
-	
+	$scope.isBidAndTrickBoxInBottom=false;
 	var turnCount=0;
 	$scope.NSScore=0;
 	$scope.EWScore=0;
@@ -1744,6 +1744,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		}						
 		$timeout(function(){
 			$scope.showScore=false;
+			$scope.isBidAndTrickBoxInBottom=false;
 			resetGameTable();
 		},15000);	//chnaged as per Amresh's suggestion 6th April 2019	
 	};
@@ -1767,6 +1768,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 			$scope.TotalNSPoint=$scope.TotalNSPoint+ $scope.NSScore;
 			$scope.TotalEWPoint=$scope.TotalEWPoint+ $scope.EWScore;			
 			$scope.showScore=true;
+			$scope.isBidAndTrickBoxInBottom=true;
 		},3000);	
 	};	
 
@@ -1822,11 +1824,11 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	var resetGameTableOnLeave=function(){
 		resetBiddingScreen();
 		 $scope.isJoinTable=0;
-		// reset InfoSharing
-		
+		// reset InfoSharing		
 		
 		/* reset score board */
 		$scope.showScore=false;
+		$scope.isBidAndTrickBoxInBottom=false;
 		$scope.NSScore=0;
 		$scope.EWScore=0;		  
 		$scope.TotalNSPoint=0;
@@ -1860,9 +1862,10 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	
 		$scope.HighestBid={double:0};
 		$scope.topMember={status:0}; $scope.rightMember={status:0};
-		$scope.bottomMember={status:0};$scope.leftMember={status:0};
-		//$rootScope.isHistoryEnabled=false;
-		$rootScope.sidebar[3]=false;
+		$scope.bottomMember={status:0};$scope.leftMember={status:0};		
+		$rootScope.sidebar[2]=false;
+		$rootScope.sidebar[3]=false;//$rootScope.isHistoryEnabled=false;
+		$rootScope.sidebar[4]=false;
 		$rootScope.tpntAreaHist=false;
 		$rootScope.IsHistoryVisible=false;
 		$rootScope.historyIcon="HOOLAsset14mdpi";
@@ -1945,7 +1948,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				}else if($scope.leftMember.memberId==table.hostId){
 					$scope.leftMember.isHost=true;	
 				}
-				$localStorage.table = table;
+				$localStorage.table = JSON.stringify(table);
 			} 
 		},1000);		
 	}
@@ -2060,9 +2063,11 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		}else if(content.claimed_by_pole==$scope.leftMember.pole){			
 			$scope.leftMember.isClaimed=true;
 		}
+		$scope.isBidAndTrickBoxInBottom=true;//To show bidding box in bottom side of the screen;
+
 		claimedInfo=content;		
-		claimeSide=content.claimed_by_pole;			
-		if(loggedInMemberPole==((claimeSide+3)%4) || loggedInMemberPole==((claimeSide+1)%4)){											
+		claimedBySide=content.claimed_by_pole;			
+		if(loggedInMemberPole==((claimedBySide+3)%4) || loggedInMemberPole==((claimedBySide+1)%4)){											
 			if(!$scope.bottomMember.isDummy){	//to not show takeback alert for dummy																		
 				if(loggedInMemberPole==$scope.Declarer.pole || $scope.topMember.pole==$scope.dummy.pole){
 					$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
@@ -2089,7 +2094,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 			isAccept=false;
 			if(actionCode==1){
 				$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
-				let claimMessage = {sender: $localStorage.username, type: 'CLAIM_APPROVAL', content:JSON.stringify({'accepted_by_pole':loggedInMemberPole,'claim_tricks':$scope.selectedTricksToClaim})};	
+				let claimMessage = {sender: $localStorage.username, type: 'CLAIM_APPROVAL', content:JSON.stringify({'accepted_by_pole':loggedInMemberPole,'claimed_by_pole':claimedBySide, 'claimed_tricks':$scope.claimedTricks})};	
 				$rootScope.sendMessage(claimMessage);
 				isAccept=true;
 			}else{
@@ -2099,17 +2104,19 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		};
 	};
 
-	var onClaimAcceptRejectDone= function(content){	
+	var onClaimAcceptRejectDone= function(content){			
+		let claimedTricks = $scope.claimedTricks = content.claimed_tricks;
+		let claimedByPole = content.claimed_by_pole;	
 		$scope.isClaimAcceptRejectVisible = $scope.tpntArea =false;	
-		$scope.isMessageVisibleAfterClaim = $scope.tpntArea = $scope.tpntArea ==true? false:true;
-		let claimedTricks=claimedInfo.claimed_tricks;
-		let claimedByPole=claimedInfo.claimed_by_pole;		
+		$scope.isMessageVisibleAfterClaim = $scope.tpntArea = $scope.tpntArea ==true? false:true;			
 		if(claimedByPole==0 || claimedByPole==2){
-			wonTricksCount[0]=wonTricksCount[0] + claimedTricks;
-			console.log("Total gained tricks by NS : "+wonTricksCount[0]);
+			wonTricksCount[0] = wonTricksCount[0] + claimedTricks;
+			$scope.NSPoint = wonTricksCount[0]; //Assigned claimed tricks to claimer
+			$scope.EWPoint = 13 - wonTricksCount[0];//Assigned rest tricks to opponent of claimer
 		}else if(claimedByPole==1 || claimedByPole==3){
-			wonTricksCount[1]=wonTricksCount[1] + claimedTricks;
-			console.log("Total gained tricks by EW : "+wonTricksCount[1]);
+			wonTricksCount[1] = wonTricksCount[1] + claimedTricks;
+			$scope.EWPoint = wonTricksCount[1]; //Assigned claimed tricks to claimer
+			$scope.NSPoint = 13 - wonTricksCount[1];//Assigned rest tricks to opponent of claimer
 		}
 		
 		$timeout(function(){
@@ -2125,10 +2132,10 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 			claimedInfo=null;		
 			if(loggedInMemberPole==dealerPole){	
 				tableServ.saveGameResult(dealInfo).then(function(result){						
-						$rootScope.sendMessage({sender: memberInfo.memberId, type: 'SCORE', content:JSON.stringify(result.data)}); 
+					$rootScope.sendMessage({sender: memberInfo.memberId, type: 'SCORE', content:JSON.stringify(result.data)}); 
 				});							
 			}		
-		},4000);
+		},2000);
 	};
 	
     /***********************************************************************************************
