@@ -5,7 +5,7 @@
   app.controller('mainCtrl',function($scope,$rootScope,commonServ,$sessionStorage, $localStorage,$location,$window,ngNotify,$timeout){
          $scope.viewName='views/home.html';        
          if(!$sessionStorage.memberinfo){
-              $location.path('/login'); 
+             $location.path('/login'); 
          }else{    
             $rootScope.username = $localStorage.username;
             $rootScope.initializeWebSocket();   

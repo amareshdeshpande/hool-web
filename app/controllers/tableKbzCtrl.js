@@ -7,15 +7,13 @@
         $scope.IsTakeBackVisible=false;
         $scope.vPlayerName="";
         var isTakeBackApproved=0;
-        var lastCardPlayedInfo={};            
-        //$rootScope.isHistoryEnabled=false;	//history only visible if first card played
-        $rootScope.sidebar[3]=false;
-        //$rootScope.pageNo=3;
+        var lastCardPlayedInfo={}; 
+        $rootScope.pageNo=5;
         $scope.isJoinTable=0;
         $scope.startingPole=0;	      
         var imgSrc="assets/images/HOOLAsset8mdpi.svg";
         var table=JSON.parse($localStorage.table);
-        
+        var claimAcceptedByPlayer=0;
         var memberInfo=JSON.parse($localStorage.memberinfo);	
         var addName="Open";	
         var poleArr=['N','E','S','W'];
@@ -237,8 +235,32 @@
                     $timeout(function(){
                         onTakeBackDone(JSON.parse(payload.content));				
                     },1000);				
-                }
-                else if(payload.type=='CHAT'){	
+                }else if(payload.type=='CLAIM_REQUEST'){
+                    let content=JSON.parse(payload.content);					
+                    $timeout(function(){	
+                        if(payload.content!="NA"){
+                            let msg=content.claimed_tricks>1 ? "I claim "+content.claimed_tricks+" of the remaining tricks":(content.claimed_tricks==1?"I claim "+content.claimed_tricks+"of the remaining trick":"I concede all the tricks");
+                            msg = content.sender+ " : "+msg;
+                            onShowClaimEvents(content, msg);
+                        }
+                    },1000);							
+                }else if(payload.type=='CLAIM_APPROVAL'){	
+                    claimAcceptedByPlayer+=1;
+                    if(claimAcceptedByPlayer==2){
+                        let content=JSON.parse(payload.content);
+                        $timeout(function(){	
+                            let msg= "Claim of "+content.claimed_tricks+" tricks accepted"; 								
+                            onShowClaimEvents(content, msg);	
+                            claimAcceptedByPlayer=0;                            		
+                        },1000);
+                    }				
+                }else if(payload.type=='CLAIM_CANCEL'){	
+                    let content=JSON.parse(payload.content);				
+                    $timeout(function(){  
+                        let msg=  content.sender+ ": rejected the claim";                                        
+                        onShowClaimEvents(content, msg);                      
+                    },1000);							
+                }else if(payload.type=='CHAT'){	
                     $timeout(function(){
                         $scope.showChatMessage(payload);				
                     },1000);
@@ -946,11 +968,7 @@
             $scope.activePole=[false,false,false,false];
             turnCount=0;
         };
-
-        /*$scope.playedCardsByTop=[];
-        $scope.playedCardsByRight=[];
-        $scope.playedCardsByBottom=[];
-        $scope.playedCardsByLeft=[];*/
+      
         var isHistoryButtonClicked=true;
         $rootScope.showHistory=function(){           
             if(isHistoryButtonClicked){               
@@ -997,6 +1015,14 @@
                         isHistoryButtonClicked=true;
                 });
             }
+        };
+
+        var onShowClaimEvents=function(content, msg){                
+            $rootScope.confirmbox = {message : msg, boxType : "alert", boxCode : "back"};
+            $rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = true;
+            $timeout(function(){
+                $rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = false;
+            },4000);
         };
 
         var resetGameTableOnLeave=function(){
@@ -1048,8 +1074,7 @@
             tableServ.gameTableRecord(table.id).then(function(result){						
                  populatePlayerList(result.data.table);						
             });		
-        };
-    
+        };    
 
         $scope.$on('$destroy', function() {	           		        
             var tableInfo={tableId : table.id, memberId : memberInfo.memberId};	           

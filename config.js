@@ -3,8 +3,8 @@ var db;
 'use strict';
 
 	var app = angular.module("hoolApp", ["ngRoute","ngStorage","ngStomp","ngNotify"]);
-	 //app.constant("webapiUrl","http://hool.org/hool");
-	 app.constant("webapiUrl","http://hcspl.in:90/hool");  
+	 app.constant("webapiUrl","https://hool.org/hool");
+	 //app.constant("webapiUrl","http://hcspl.in:90/hool");  
 	 //app.constant("webapiUrl","http://192.168.1.202:8080/hool");
 	 
 	//var apiUrl= window.location.protocol+"//"+ window.location.hostname+":"+window.location.port;	

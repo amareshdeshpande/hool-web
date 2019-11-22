@@ -137,7 +137,7 @@
 						if(table.noOfPlayer<4){					
 							$rootScope.changePage('views/game_table.html',4);
 						}else{
-							$rootScope.changePage('views/game_table_kbz.html',4);
+							$rootScope.changePage('views/game_table_kbz.html',5);
 						}
 						$rootScope.IsLoadingOn = $rootScope.IsLightBoxOn = false;																				
 					});
@@ -166,6 +166,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	$rootScope.pageNo=4;
 	$scope.isJoinTable=0;
 	$scope.startingPole=0;	
+	var sideMenuStatus=[];
 	var imgSrc="assets/images/HOOLAsset8mdpi.svg";
 	var table=JSON.parse($localStorage.table);
 	var isKibitzerMovedToOwnScreen=false;
@@ -312,8 +313,8 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 			}else if(payload.type=='SCORE'){				
 				showGameResult(JSON.parse(payload.content));									
 			}else if(payload.type=='TAKEBACK_REQUEST'){					
-				$timeout(function(){	
-					$scope.vPlayerName=payload.sender;				
+				$timeout(function(){					
+					$scope.vPlayerName = payload.content.sender;				
 					onTakeBackClicked(JSON.parse(payload.content));
 				},1000);							
 			}else if(payload.type=='TAKEBACK_APPROVAL'){	
@@ -322,18 +323,29 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 				},1000);				
 			}else if(payload.type=='CLAIM_REQUEST'){					
 				$timeout(function(){	
-					//$scope.vPlayerName=payload.sender;				
-					showAcceptRejectClaimDialogueBox(JSON.parse(payload.content));
+					if(payload.content!="NA"){
+						sideMenuStatus = $rootScope.sidebar;								
+						showAcceptRejectClaimDialogueBox(JSON.parse(payload.content));
+						$rootScope.sidebar=[false,false,false,false,false];	
+					}
 				},1000);							
 			}else if(payload.type=='CLAIM_APPROVAL'){	
 				claimAcceptedByPlayer+=1;	
 				let data = JSON.parse(payload.content);			
 				if(claimAcceptedByPlayer==2 || $scope.Declarer.pole==data.accepted_by_pole){
 					$timeout(function(){									
-						onClaimAcceptRejectDone(data);	
-						claimAcceptedByPlayer=0;			
+						onClaimRequestAcceptDone(data);	
+						claimAcceptedByPlayer=0;
+						$rootScope.sidebar=sideMenuStatus;			
 					},1000);
 				}				
+			}else if(payload.type=='CLAIM_CANCEL'){					
+				$timeout(function(){	
+					let data = JSON.parse(payload.content);	
+					//alert(JSON.stringify(payload.content));
+					onClaimRequestRejectedDone(data);
+					$rootScope.sidebar=sideMenuStatus;
+				},1000);							
 			}else if(payload.type=='CHAT'){					
 				$timeout(function(){					
 					$scope.showChatMessage(payload);				
@@ -353,8 +365,9 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	/****************************************************************************
 	 * This block of code is writen to generate request to take back card
 	 ***************************************************************************/
-	$rootScope.takeBack=function(){				
-		var takebackMessage = {sender: $localStorage.username, type: 'TAKEBACK_REQUEST', content:JSON.stringify(lastCardPlayedInfo)};	
+	$rootScope.takeBack=function(){	
+		lastCardPlayedInfo.sender = $localStorage.username;			
+		var takebackMessage = {sender:memberInfo.memberId, type: 'TAKEBACK_REQUEST', content:JSON.stringify(lastCardPlayedInfo)};	
 		$rootScope.sendMessage(takebackMessage);
 		//$rootScope.isTakeBackEnabled=false;		//Added by Shuvankar dated 2019.01.28 (for hiding takeback button once clicked)
 		$rootScope.sidebar[4]=false;
@@ -366,8 +379,9 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 	$scope.TakeBackApproval=function(val){		
 		if($scope.IsTakeBackVisible){
 			lastCardPlayedInfo.responseVal=val;
+			lastCardPlayedInfo.sender = $localStorage.username;	
 			if(val==1){	//Here 1 is for accept and 0 for reject	
-				var takebackMessage = {sender: $localStorage.username, type: 'TAKEBACK_APPROVAL', content:JSON.stringify(lastCardPlayedInfo)};
+				var takebackMessage = {sender: memberInfo.memberId, type: 'TAKEBACK_APPROVAL', content:JSON.stringify(lastCardPlayedInfo)};
 				$rootScope.sendMessage(takebackMessage);
 			}else{
 				//If player rejects the takeback request of right side player 
@@ -1224,10 +1238,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 					$scope.biddingInfo[round]={pole:hightBidPole,bid:hightestBidding};	
 					highLightHighestBid(hightBidPole);
 					$scope.HighestBid={pole:hightBidPole,poleName:poleNameArr[hightBidPole],BID:hightestBidding,num:hightestBidding[0],
-						suit:hightestBidding.substring(1), double:0};
-					/*$scope.HighestBid={pole:hightBidPole,poleName:poleNameArr[hightBidPole],BID:hightestBidding,num:hightestBidding[0],
-						suit:getSuitAscii(hightestBidding.substring(1)), double:0};	*/
-					
+						suit:hightestBidding.substring(1), double:0};					
 					$scope.isBiddingStart=true;				
 					break;
 				}
@@ -1662,10 +1673,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 						turnCount=0;
 						playedCardInfo=[];
 					
-						if(wonTricksCount[0]+wonTricksCount[1]==13){ //upen 
-							let biddingContractNo = parseInt($scope.Declarer.bid.substring(0,1));
-							let biddingContractPole = parseInt($scope.Declarer.pole);
-							
+						if(wonTricksCount[0]+wonTricksCount[1]==13){ //upen 							
 							let dealInfo=$scope.HighestBid;								
 							dealInfo.wonTricks=wonTricksCount;
 							dealInfo.tableId=table.id;
@@ -2051,7 +2059,7 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		if($scope.isClaimBtnActive){
 			$scope.isTrickClaimVisible = $scope.tpntArea = false;
 			let content=JSON.stringify({'claimed_by_pole':loggedInMemberPole,'claimed_tricks':$scope.selectedTricksToClaim,'sender': $localStorage.username});
-			let claimMessage = {sender: $localStorage.username, type: 'CLAIM_REQUEST', content:content};	
+			let claimMessage = {sender: memberInfo.memberId, type: 'CLAIM_REQUEST', content:content};	
 			$rootScope.sendMessage(claimMessage);
 		}
 	};
@@ -2073,13 +2081,13 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 					$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
 					$scope.claimedTricks=content.claimed_tricks;
 					$scope.claimedByPlayer = content.sender;
-					let msg=content.claimed_tricks>1 ? "I claim "+content.claimed_tricks+" tricks":(content.claimed_tricks==1?"I claim "+content.claimed_tricks+" trick":"I concede all the tricks");
+					let msg=content.claimed_tricks>1 ? "I claim "+content.claimed_tricks+" of the remaining tricks":(content.claimed_tricks==1?"I claim "+content.claimed_tricks+" trick":"I concede all the tricks");
 					$scope.claimedMessage=msg;		
 				}else{	
 					$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
 					$scope.claimedTricks=content.claimed_tricks;
 					$scope.claimedByPlayer=content.sender;
-					let msg=content.claimed_tricks>1 ? "I claim "+content.claimed_tricks+" tricks":(content.claimed_tricks==1?"I claim "+content.claimed_tricks+" trick":"I concede all the tricks");
+					let msg=content.claimed_tricks>1 ? "I claim "+content.claimed_tricks+" of the remaining tricks":(content.claimed_tricks==1?"I claim "+content.claimed_tricks+" trick":"I concede all the tricks");
 					$scope.claimedMessage=msg;	
 				}
 			}
@@ -2094,46 +2102,52 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 			isAccept=false;
 			if(actionCode==1){
 				$scope.isClaimAcceptRejectVisible = $scope.tpntArea = $scope.tpntArea ==true? false:true;
-				let claimMessage = {sender: $localStorage.username, type: 'CLAIM_APPROVAL', content:JSON.stringify({'accepted_by_pole':loggedInMemberPole,'claimed_by_pole':claimedBySide, 'claimed_tricks':$scope.claimedTricks})};	
+				let claimMessage = {sender: memberInfo.memberId, type: 'CLAIM_APPROVAL', content:JSON.stringify({'accepted_by_pole':loggedInMemberPole,'claimed_by_pole':claimedBySide, 'claimed_tricks':$scope.claimedTricks,'sender': $localStorage.username})};	
 				$rootScope.sendMessage(claimMessage);
 				isAccept=true;
 			}else{
 				$scope.isClaimAcceptRejectVisible = $scope.tpntArea =false;
+				let claimMessage = {sender: memberInfo.memberId, type: 'CLAIM_CANCEL', content:JSON.stringify({'canceled_by_pole':loggedInMemberPole,'claimed_by_pole':claimedBySide, 'claimed_tricks':$scope.claimedTricks,'sender': $localStorage.username})};	
+				$rootScope.sendMessage(claimMessage);
 				isAccept=true;
 			}
 		};
 	};
-
-	var onClaimAcceptRejectDone= function(content){			
+	var onClaimRequestRejectedDone=function(content){
+		$scope.isClaimAcceptRejectVisible = $scope.tpntArea = false;
+		$rootScope.confirmbox={message : content.sender+ ": rejected the claim!", boxType : "alert", boxCode : "back"};
+		$rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = true;
+		$timeout(function(){
+			$rootScope.IsConfirmBoxOn = $rootScope.IsLightBoxOn = false;
+		},2000);
+	};
+	var onClaimRequestAcceptDone= function(content){			
 		let claimedTricks = $scope.claimedTricks = content.claimed_tricks;
 		let claimedByPole = content.claimed_by_pole;	
 		$scope.isClaimAcceptRejectVisible = $scope.tpntArea =false;	
 		$scope.isMessageVisibleAfterClaim = $scope.tpntArea = $scope.tpntArea ==true? false:true;			
-		if(claimedByPole==0 || claimedByPole==2){
-			wonTricksCount[0] = wonTricksCount[0] + claimedTricks;
-			$scope.NSPoint = wonTricksCount[0]; //Assigned claimed tricks to claimer
-			$scope.EWPoint = 13 - wonTricksCount[0];//Assigned rest tricks to opponent of claimer
-		}else if(claimedByPole==1 || claimedByPole==3){
-			wonTricksCount[1] = wonTricksCount[1] + claimedTricks;
-			$scope.EWPoint = wonTricksCount[1]; //Assigned claimed tricks to claimer
-			$scope.NSPoint = 13 - wonTricksCount[1];//Assigned rest tricks to opponent of claimer
+		if(claimedByPole==0 || claimedByPole==2){			
+			$scope.NSPoint = wonTricksCount[0] = (wonTricksCount[0] + claimedTricks); //Assigned claimed tricks to claimer
+			$scope.EWPoint = wonTricksCount[1] = (13 - wonTricksCount[0]);//Assigned rest tricks to opponent of claimer
+		}else if(claimedByPole==1 || claimedByPole==3){			
+			$scope.EWPoint = wonTricksCount[1] = (wonTricksCount[1] + claimedTricks); //Assigned claimed tricks to claimer
+			$scope.NSPoint = wonTricksCount[0] = (13 - wonTricksCount[1]);//Assigned rest tricks to opponent of claimer
 		}
 		
 		$timeout(function(){
-			$scope.isMessageVisibleAfterClaim = $scope.tpntArea =false;
-			let biddingContractNo = parseInt($scope.Declarer.bid.substring(0,1));
-			let biddingContractPole = parseInt($scope.Declarer.pole);		
-			let dealInfo=$scope.HighestBid;								
-			dealInfo.wonTricks=wonTricksCount;
+			$scope.isMessageVisibleAfterClaim = $scope.tpntArea =false;			
+			let dealInfo = $scope.HighestBid;								
+			dealInfo.wonTricks = wonTricksCount;
 			dealInfo.tableId=table.id;
 			dealInfo.doubleCount=$scope.HighestBid.double;
+
 			$scope.isPoleActiveToPlay=[false,false,false,false];
 			$scope.activePole=[false,false,false,false];
-			claimedInfo=null;		
+			claimedInfo=null;				
 			if(loggedInMemberPole==dealerPole){	
 				tableServ.saveGameResult(dealInfo).then(function(result){						
-					$rootScope.sendMessage({sender: memberInfo.memberId, type: 'SCORE', content:JSON.stringify(result.data)}); 
-				});							
+					$rootScope.sendMessage({sender: memberInfo.memberId, type: 'SCORE', content:JSON.stringify(result.data)});				
+				});						
 			}		
 		},2000);
 	};
@@ -2153,6 +2167,13 @@ app.controller("gameTableCtrl", function ($scope, $rootScope,commonServ,$log,web
 		//$rootScope.isHistoryEnabled=false;
 		$rootScope.sidebar[3]=false;
 	});
+
+	$scope.hitAndTest=function(){
+		let data={pole:0,poleName:"North",BID:"4H",num:"4",suit:"H",double:0,wonTricks:[1,9],tableId:1,doubleCount:0};
+		tableServ.saveGameResult(data).then(function(result){
+			console.log("Score Result----"+JSON.stringify(result.data));
+		});	
+	}
 });
 
 

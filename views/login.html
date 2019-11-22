@@ -1,24 +1,27 @@
 
-
-	<div id="loginbody" ng-init="init()">
-		<div class="container">
-		  <div id="login">
-			<form action="javascript:void(0);" ng-submit="signIn()">
-
-				<p class="bhi"><span class="fme-user"></span>
-					<input type="text" placeholder="Username" ng-model="member.loginId" required>
-				</p> 
-				<p class="bhi"><span class="fme-lock"></span>
-					<input type="password" placeholder="Password" ng-model="member.password" required>
-				</p> 
-				<p class="bhi"><input type="submit" value="sign in"></p>
-				<p class="iup" ng-show="isWrongLoginInfo" >Incorrect username or password</p>
-				<p>
-					<a href="#/register" style="color:white;text-decoration: none; float:left;">sign up</a>
-					<a href="#/recover/password" style="color:white;text-decoration: none; float:right;">forgot password</a>
-				</p>				
-			  
+<div id="loginbody" ng-init="init()">
+		<div class="LG-New-Logo"><img class="App-Logo" src="assets/images/Hool-App-Logo.svg"></div> 
+		<div class="LG-New-Fild">
+			<form action="javascript:void(0);" ng-submit="signIn()">	
+				<div class="Fild-User-Area">
+					<div class="icondv"><img class="imgg" src="assets/images/usericon.png"></div>
+					<div class="Fild">
+						<div class="Fild-bdrr"><input class="ubx" type="text" ng-model="member.loginId" placeholder="username" required></div>
+					</div>
+				</div>				
+				<div class="Fild-Password-Area"><div class="icondv"><img class="imgg" src="assets/images/passwordicon.png"></div>
+					<div class="Fild">
+						<div class="Fild-bdrr"><input class="ubx" type="password"  ng-model="member.password" placeholder="password" required></div>
+					</div>
+				</div>				
+				<div class="Incorrect-UsPwd" ng-show="isWrongLoginInfo">incorrect username or password</div>
+				<div class="SubmitAreaDiv">
+					<div class="SgnUpDiv">
+						<p><a href="#/register"><b>sign up</b></a></p>
+						<p><a href="#/recover/password">forgot password?</a></p>
+					</div>
+					<div class="NextDiv btn"><button type="submit">next</button></div>
+				</div>
 			</form>
-		  </div> 
 		</div>
-	</div>
+</div>

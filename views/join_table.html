@@ -18,7 +18,7 @@
             </thead>
 
             <tbody>
-            <tr ng-repeat = "table in $root.tables | orderBy:sortColumn:reverseSort" ng-click="clickTableList(table)">
+            <tr ng-repeat = "table in $root.tables | orderBy:sortColumn:reverseSort" ng-click="clickTableList(table)" class="btn">
                   <td class="column_time" ><!--{{ table.turnTime }}--> ∞ {{second}}</td> 
                   <td  ng-class="table.privacy==1?'privacy_lock':'privacy_unlock'"></td>                     
                   <td class="column_host">{{ table.hostName }}</td>                       

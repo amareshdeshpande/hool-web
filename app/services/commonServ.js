@@ -24,7 +24,7 @@
                     $rootScope.sidebar=[true,true,false,false,false];                   
                 }
                 else if(pageNo==5){//kibitzer page
-                    $rootScope.sidebar=[true,false,false,false,false];                    
+                    $rootScope.sidebar=[true,true,false,false,false];                    
                 }  
             }
     	};
